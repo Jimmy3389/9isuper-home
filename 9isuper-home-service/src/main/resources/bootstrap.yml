@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: 120.92.82.208
+  cloud:
+    config:
+      uri: http://admin:administrator@120.92.82.208:9999
+      profile: prd
+      label: master
