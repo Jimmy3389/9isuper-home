@@ -19,8 +19,8 @@
 	</parent>
 	
 	<modules>
-	 	<!--<module>9isuper-home-domain</module>
-		<module>9isuper-home-common</module>
+	 	<module>9isuper-home-domain</module>
+		<!--<module>9isuper-home-common</module>
 		<module>9isuper-home-service</module>
 		<module>9isuper-home-web</module> -->
 	</modules>
