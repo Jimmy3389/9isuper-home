@@ -3,6 +3,6 @@ spring:
     name: 120.92.82.208
   cloud:
     config:
-      uri: http://admin:administrator@120.92.82.208:9999
+      uri: http://admin:administrator@cloud.9isuper.com
       profile: prd
       label: master
