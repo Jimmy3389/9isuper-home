@@ -13,7 +13,7 @@
 		<groupId>com.isuper.soft.home</groupId>
 		<artifactId>9isuper-home-paren</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
 	<dependencies>
@@ -25,6 +25,15 @@
 	</dependencies>
 
 	<repositories>
+		<repository>
+			<id>central</id>
+			<name> Maven Repository Switchboard</name>
+			<layout> default</layout>
+			<url> http://repo1.maven.org/maven2</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
 		<repository>
 			<id>spring-snapshots</id>
 			<name>Spring Snapshots</name>
@@ -67,7 +76,7 @@
 			</resource>
 		</resources>
 	</build>
-	
+
 	<pluginRepositories>
 		<pluginRepository>
 			<id>spring-snapshots</id>

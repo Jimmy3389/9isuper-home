@@ -1,8 +1,8 @@
 spring:
   application:
-    name: 120.92.82.208
+    name: 9isuper-home-oauth
   cloud:
     config:
-      uri: http://admin:administrator@cloud.9isuper.com
+      uri: https://admin:administrator@cloud.9isuper.com/cloud
       profile: prd
       label: master

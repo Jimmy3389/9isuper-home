@@ -1,7 +1,7 @@
 package com.isuper.soft.home.domain.system.entity;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,8 +24,8 @@ import com.isuper.soft.home.domain.common.DataEntity;
  *
  */
 @Entity
-@Table(name = "SYSTEM_USER_LOGIN")
-public class SystemUserLogin extends DataEntity implements Serializable {
+@Table(name = "SYSTEM_USER")
+public class SystemUser extends DataEntity implements Serializable {
 
 	/**
 	 * @Fields serialVersionUID : TODO(用一句话描述这个变量表示什么)
@@ -34,8 +34,6 @@ public class SystemUserLogin extends DataEntity implements Serializable {
 
 	/** 登陆账号 */
 	@Column(nullable = false, length = 450)
-	@Max(value = 400)
-	@Min(value = 3)
 	private String loginAccount;
 
 	/** 登录密码 */
@@ -44,14 +42,10 @@ public class SystemUserLogin extends DataEntity implements Serializable {
 
 	/** 昵称 */
 	@Column(length = 300)
-	@Max(value = 300)
-	@Min(value = 3)
 	private String nickName;
 
 	/** 真实姓名 */
 	@Column(length = 300)
-	@Max(value = 300)
-	@Min(value = 3)
 	private String realName;
 
 	/** 国际编码 */
@@ -60,8 +54,6 @@ public class SystemUserLogin extends DataEntity implements Serializable {
 
 	/** 手机号码 */
 	@Column(nullable = false, length = 20)
-	@Max(value = 20)
-	@Min(value = 3)
 	private String mobile;
 
 	/** 邮箱 */
