@@ -26,6 +26,7 @@ public class LoginConfig extends WebSecurityConfigurerAdapter {
 	@Inject
 	private SystemUserDetailsService userDetailsService;
 
+	//http://demo:demo@localhost:9998/oauth/token?grant_type=password&username=admin@9isuper.com&password=administrator
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.formLogin().loginPage("/login").permitAll().and().requestMatchers()
