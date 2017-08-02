@@ -13,7 +13,7 @@
 		<groupId>com.isuper.soft.home</groupId>
 		<artifactId>9isuper-home-paren</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
 	<repositories>
@@ -59,7 +59,7 @@
 			</resource>
 		</resources>
 	</build>
-	
+
 	<pluginRepositories>
 		<pluginRepository>
 			<id>spring-snapshots</id>
