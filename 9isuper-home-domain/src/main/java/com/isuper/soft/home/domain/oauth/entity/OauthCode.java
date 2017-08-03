@@ -9,9 +9,11 @@ import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
+import com.isuper.soft.home.domain.common.IdEntity;
+
 @Entity
 @Table(name = "OAUTH_CODE")
-public class OauthCode implements Serializable {
+public class OauthCode  extends IdEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

@@ -9,9 +9,11 @@ import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
+import com.isuper.soft.home.domain.common.IdEntity;
+
 @Entity
 @Table(name = "OAUTH_REFRESH_TOKEN")
-public class OauthRefreshToken implements Serializable {
+public class OauthRefreshToken extends IdEntity  implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

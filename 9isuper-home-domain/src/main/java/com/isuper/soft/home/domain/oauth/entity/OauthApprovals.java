@@ -9,9 +9,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.isuper.soft.home.domain.common.IdEntity;
+
 @Entity
 @Table(name = "OAUTH_APPROVALS")
-public class OauthApprovals implements Serializable {
+public class OauthApprovals extends IdEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
