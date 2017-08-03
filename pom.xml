@@ -23,8 +23,8 @@
 		<module>9isuper-home-common</module>
 		<module>9isuper-home-service</module>
 		<module>9isuper-home-oauth</module>
-		<!--<module>9isuper-home-sso</module>
-		<module>9isuper-home-web</module> -->
+		<module>9isuper-home-sso</module>
+		<module>9isuper-home-web</module>
 	</modules>
 
 	<properties>
