@@ -51,7 +51,7 @@
 				<configuration>
 					<imageName>${docker.image.prefix}/${project.artifactId}</imageName>
 					<newName>docker.io/9isuper/${project.artifactId}:${project.version}</newName>
-					<dockerDirectory>src/main/docker</dockerDirectory>
+					<dockerDirectory>9isuper-home-oauth/src/main/docker</dockerDirectory>
 					<imageTags>
 						<imageTag>${project.version}</imageTag>
 					</imageTags>
