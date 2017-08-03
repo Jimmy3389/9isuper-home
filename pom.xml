@@ -34,6 +34,7 @@
 		<spring-cloud.version>Finchley.M1</spring-cloud.version>
 		<isuper.version>0.0.1-SNAPSHOT</isuper.version>
 		<querydsl.version>4.1.4</querydsl.version>
+		<docker.image.prefix>9isuper</docker.image.prefix>
 	</properties>
 
 	<dependencies>
