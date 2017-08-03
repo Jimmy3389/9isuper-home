@@ -28,6 +28,7 @@ public class OauthRefreshToken implements Serializable {
 	@Column(columnDefinition = "BLOB")
 	private String authentication;
 
+	
 	/**
 	 * @return the tokenId
 	 */
