@@ -45,7 +45,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<mainClass>com.isuper.soft.home.OauthApplication</mainClass>
+					<mainClass>com.isuper.soft.OauthApplication</mainClass>
 				</configuration>
 			</plugin>
 			<plugin>
