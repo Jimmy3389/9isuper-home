@@ -48,7 +48,7 @@ public class StartupRunner implements CommandLineRunner {
 
 	private Map<String, SystemRole> checkDefaultRole() {
 		Map<String, SystemRole> defaultRoleMap = new HashMap<String, SystemRole>();
-		/*SystemRole systemRole = null;
+		SystemRole systemRole = null;
 		if (systemRoleService.queryByRoleName(ROLE_ADMIN) == null) {
 			systemRole = new SystemRole();
 			systemRole.setDelFlag(false);
@@ -78,7 +78,7 @@ public class StartupRunner implements CommandLineRunner {
 		systemRole = systemRoleService.queryByRoleName(ROLE_GUEST);
 		if (systemRole != null) {
 			defaultRoleMap.put(ROLE_GUEST, systemRole);
-		}*/
+		}
 		return defaultRoleMap;
 	}
 
