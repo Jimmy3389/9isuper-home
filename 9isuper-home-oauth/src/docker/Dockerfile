@@ -5,7 +5,7 @@ FROM frolvlad/alpine-oraclejdk8:slim
 VOLUME /tmp
 
 #复制文件到容器
-ADD 9isuper-config-server-0.0.1-SNAPSHOT.jar app.jar
+ADD 9isuper-home-oauth-0.0.1-SNAPSHOT.jar app.jar
 RUN sh -c 'touch /app.jar'
 
 #声明需要暴露的端口
