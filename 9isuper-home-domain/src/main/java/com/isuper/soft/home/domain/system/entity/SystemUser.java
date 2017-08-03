@@ -101,16 +101,6 @@ public class SystemUser extends DataEntity implements UserDetails {
 	@ManyToMany(cascade = { CascadeType.REFRESH }, fetch = FetchType.EAGER)
 	private List<SystemRole> systemRoles;
 
-	// 将用户的角色作为权限
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		List<GrantedAuthority> auths = new ArrayList<GrantedAuthority>();
-		List<SystemRole> roles = this.getSystemRoles();
-		for (SystemRole role : roles) {
-			auths.add(new SimpleGrantedAuthority(role.getRoleName()));
-		}
-		return auths;
-	}
 
 	public String getLoginAccount() {
 		return loginAccount;
@@ -276,6 +266,12 @@ public class SystemUser extends DataEntity implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return super.getEnableFlag();
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
