@@ -48,7 +48,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<mainClass>com.isuper.soft.home.web.WebApplication</mainClass>
+					<mainClass>com.isuper.soft.home.WebApplication</mainClass>
 				</configuration>
 			</plugin>
 			<plugin>
