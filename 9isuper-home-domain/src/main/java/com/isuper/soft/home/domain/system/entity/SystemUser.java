@@ -1,21 +1,29 @@
 package com.isuper.soft.home.domain.system.entity;
 
-import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.validator.constraints.Email;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.isuper.soft.home.domain.common.DataEntity;
 
 /**
  * 
- * @ClassName: SystemUserLogin
+ * @ClassName: SystemUser
  * @Description: 用户登陆表
  * @author Jimmy YongLe.Chow@9isuper.com
  * @date 2017年8月2日 下午1:05:47
@@ -23,7 +31,7 @@ import com.isuper.soft.home.domain.common.DataEntity;
  */
 @Entity
 @Table(name = "SYSTEM_USER")
-public class SystemUser extends DataEntity implements Serializable {
+public class SystemUser extends DataEntity implements UserDetails {
 
 	/**
 	 * @Fields serialVersionUID : TODO(用一句话描述这个变量表示什么)
@@ -88,6 +96,21 @@ public class SystemUser extends DataEntity implements Serializable {
 
 	/** 登陆成功数量 */
 	private Integer loginCount;
+
+	// 配置用户与角色多对多关系
+	@ManyToMany(cascade = { CascadeType.REFRESH }, fetch = FetchType.EAGER)
+	private List<SystemRole> systemRoles;
+
+	// 将用户的角色作为权限
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		List<GrantedAuthority> auths = new ArrayList<GrantedAuthority>();
+		List<SystemRole> roles = this.getSystemRoles();
+		for (SystemRole role : roles) {
+			auths.add(new SimpleGrantedAuthority(role.getRoleName()));
+		}
+		return auths;
+	}
 
 	public String getLoginAccount() {
 		return loginAccount;
@@ -207,6 +230,52 @@ public class SystemUser extends DataEntity implements Serializable {
 
 	public void setLoginCount(Integer loginCount) {
 		this.loginCount = loginCount;
+	}
+
+	/**
+	 * @return the systemRoles
+	 */
+	public List<SystemRole> getSystemRoles() {
+		return systemRoles;
+	}
+
+	/**
+	 * @param systemRoles
+	 *            the systemRoles to set
+	 */
+	public void setSystemRoles(List<SystemRole> systemRoles) {
+		this.systemRoles = systemRoles;
+	}
+
+	@Override
+	public String getPassword() {
+		return loginPwd;
+	}
+
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return loginAccount;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return expireDate == null || expireDate.after(new Date());
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return lockType == null || lockType == 0;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return super.getEnableFlag();
 	}
 
 }

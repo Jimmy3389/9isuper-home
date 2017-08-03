@@ -1,4 +1,4 @@
-package com.isuper.soft.home.runner;
+package com.isuper.soft.home.web.runner;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 
 import com.isuper.soft.home.domain.system.entity.SystemRole;
 import com.isuper.soft.home.domain.system.entity.SystemUser;
-import com.isuper.soft.home.repository.SystemRoleRepository;
 import com.isuper.soft.home.repository.SystemUserRepository;
 import com.isuper.soft.home.service.SystemRoleService;
 import com.isuper.soft.home.service.SystemUserService;
@@ -32,8 +31,6 @@ public class StartupRunner implements CommandLineRunner {
 	private SystemRoleService systemRoleService;
 	@Inject
 	private SystemUserRepository systemUserRepository;
-	@Inject
-	private SystemRoleRepository systemRoleRepository;
 
 	private static final String ROLE_ADMIN = "ROLE_ADMIN";
 
@@ -58,7 +55,6 @@ public class StartupRunner implements CommandLineRunner {
 			systemRole.setRemark("系统自动创建");
 			systemRole.setRoleCnName("系统管理员组");
 			systemRole.setRoleName(ROLE_ADMIN);
-			systemRoleRepository.save(systemRole);
 		}
 		systemRole = systemRoleService.queryByRoleName(ROLE_ADMIN);
 		if (systemRole != null) {
@@ -73,7 +69,6 @@ public class StartupRunner implements CommandLineRunner {
 			systemRole.setRemark("系统自动创建");
 			systemRole.setRoleCnName("访客");
 			systemRole.setRoleName(ROLE_GUEST);
-			systemRoleRepository.save(systemRole);
 		}
 		systemRole = systemRoleService.queryByRoleName(ROLE_GUEST);
 		if (systemRole != null) {
