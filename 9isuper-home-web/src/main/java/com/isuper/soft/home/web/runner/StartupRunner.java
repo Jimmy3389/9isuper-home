@@ -1,23 +1,14 @@
 package com.isuper.soft.home.web.runner;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import com.isuper.soft.home.domain.system.entity.SystemRole;
-import com.isuper.soft.home.domain.system.entity.SystemUser;
 import com.isuper.soft.home.repository.SystemUserRepository;
-import com.isuper.soft.home.service.SystemRoleService;
+import com.isuper.soft.home.service.SystemGroupService;
 import com.isuper.soft.home.service.SystemUserService;
 
 @Component
@@ -28,7 +19,7 @@ public class StartupRunner implements CommandLineRunner {
 	@Inject
 	private SystemUserService systemUserService;
 	@Inject
-	private SystemRoleService systemRoleService;
+	private SystemGroupService systemGroupService;
 	@Inject
 	private SystemUserRepository systemUserRepository;
 
@@ -39,11 +30,11 @@ public class StartupRunner implements CommandLineRunner {
 	@Override
 	public void run(String... arg0) throws Exception {
 		logger.info("服务启动执行,初始化数据[开始]......");
-		this.checkDefaultUser(checkDefaultRole());
+		//this.checkDefaultUser(checkDefaultRole());
 		logger.info("服务启动执行,初始化数据[完成]!");
 	}
 
-	private Map<String, SystemRole> checkDefaultRole() {
+	/*private Map<String, SystemRole> checkDefaultRole() {
 		Map<String, SystemRole> defaultRoleMap = new HashMap<String, SystemRole>();
 		SystemRole systemRole = null;
 		if (systemRoleService.queryByRoleName(ROLE_ADMIN) == null) {
@@ -77,9 +68,9 @@ public class StartupRunner implements CommandLineRunner {
 		return defaultRoleMap;
 	}
 
-	private void checkDefaultUser(Map<String, SystemRole> defaultRoleMap) {
+	private void checkDefaultUser(Map<String, SystemMenu> defaultRoleMap) {
 		SystemUser systemUser = null;
-		List<SystemRole> roles = null;
+		List<SystemGroup> groups = null;
 		if (systemUserService.queryByLoginAccount("admin") == null) {
 			systemUser = new SystemUser();
 			systemUser.setLoginAccount("admin");
@@ -95,9 +86,9 @@ public class StartupRunner implements CommandLineRunner {
 			systemUser.setRealName("系统管理员");
 			systemUser.setRemark("系统自动创建");
 			if (!defaultRoleMap.isEmpty() && defaultRoleMap.get(ROLE_ADMIN) != null) {
-				roles = new ArrayList<SystemRole>();
+				roles = new ArrayList<SystemMenu>();
 				roles.add(defaultRoleMap.get(ROLE_ADMIN));
-				systemUser.setSystemRoles(roles);
+				systemUser.setSystemGroups(systemGroups);
 			}
 			systemUserRepository.save(systemUser);
 		}
@@ -122,5 +113,5 @@ public class StartupRunner implements CommandLineRunner {
 			}
 			systemUserRepository.save(systemUser);
 		}
-	}
+	}*/
 }

@@ -4,9 +4,9 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
-import com.isuper.soft.home.domain.system.entity.SystemRole;
+import com.isuper.soft.home.domain.system.entity.SystemGroup;
 
 @Repository
-public interface SystemRoleRepository extends PagingAndSortingRepository<SystemRole, Long>, QuerydslPredicateExecutor<SystemRole> {
+public interface SystemGroupRepository extends PagingAndSortingRepository<SystemGroup, Long>, QuerydslPredicateExecutor<SystemGroup> {
 
 }

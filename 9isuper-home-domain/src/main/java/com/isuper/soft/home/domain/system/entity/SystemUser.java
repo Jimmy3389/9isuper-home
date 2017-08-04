@@ -14,6 +14,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -97,17 +99,38 @@ public class SystemUser extends DataEntity implements UserDetails {
 	/** 登陆成功数量 */
 	private Integer loginCount;
 
+	/** 用户的图片信息 */
+	@Column(length = 512)
+	private String userPic;
+
+	/** 会员生日 */
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date birthDay;
+
 	// 配置用户与角色多对多关系
 	@ManyToMany(cascade = { CascadeType.REFRESH }, fetch = FetchType.EAGER)
-	private List<SystemRole> systemRoles;
+	private List<SystemGroup> systemGroups;
 
 	// 将用户的角色作为权限
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		List<GrantedAuthority> auths = new ArrayList<GrantedAuthority>();
-		List<SystemRole> roles = this.getSystemRoles();
-		for (SystemRole role : roles) {
-			auths.add(new SimpleGrantedAuthority(role.getRoleName()));
+		List<SystemGroup> groups = this.getSystemGroups();
+		if (CollectionUtils.isNotEmpty(groups)) {
+			for (SystemGroup group : groups) {
+				if (StringUtils.equals(group.getGroupCode().toLowerCase(), "admin")) {
+					auths.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+				}
+				if (!group.getDelFlag() && group.getEnableFlag() && CollectionUtils.isNotEmpty(group.getSystemMenus())) {
+					for (SystemMenu menu : group.getSystemMenus()) {
+						auths.add(new SimpleGrantedAuthority(menu.getRoleTag()));
+					}
+				}
+			}
+		}
+		// 默认游客权限
+		if (CollectionUtils.isEmpty(auths)) {
+			auths.add(new SimpleGrantedAuthority("ROLE_GUEST"));
 		}
 		return auths;
 	}
@@ -232,19 +255,20 @@ public class SystemUser extends DataEntity implements UserDetails {
 		this.loginCount = loginCount;
 	}
 
-	/**
-	 * @return the systemRoles
-	 */
-	public List<SystemRole> getSystemRoles() {
-		return systemRoles;
+	public String getUserPic() {
+		return userPic;
 	}
 
-	/**
-	 * @param systemRoles
-	 *            the systemRoles to set
-	 */
-	public void setSystemRoles(List<SystemRole> systemRoles) {
-		this.systemRoles = systemRoles;
+	public void setUserPic(String userPic) {
+		this.userPic = userPic;
+	}
+
+	public Date getBirthDay() {
+		return birthDay;
+	}
+
+	public void setBirthDay(Date birthDay) {
+		this.birthDay = birthDay;
 	}
 
 	@Override
@@ -254,7 +278,6 @@ public class SystemUser extends DataEntity implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		// TODO Auto-generated method stub
 		return loginAccount;
 	}
 
@@ -276,6 +299,14 @@ public class SystemUser extends DataEntity implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return super.getEnableFlag();
+	}
+
+	public List<SystemGroup> getSystemGroups() {
+		return systemGroups;
+	}
+
+	public void setSystemGroups(List<SystemGroup> systemGroups) {
+		this.systemGroups = systemGroups;
 	}
 
 }

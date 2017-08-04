@@ -17,6 +17,7 @@ public class SystemUserService {
 	private SystemUserRepository systemUserRepository;
 
 	private QSystemUser qSystemUser = QSystemUser.systemUser;
+	
 
 	public SystemUser queryByLoginAccount(String loginAccount) {
 		if (StringUtils.isBlank(loginAccount)) {

@@ -1,24 +1,13 @@
 package com.isuper.soft.home.runner;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import com.isuper.soft.home.domain.system.entity.SystemRole;
-import com.isuper.soft.home.domain.system.entity.SystemUser;
-import com.isuper.soft.home.repository.SystemRoleRepository;
 import com.isuper.soft.home.repository.SystemUserRepository;
-import com.isuper.soft.home.service.SystemRoleService;
 import com.isuper.soft.home.service.SystemUserService;
 
 @Component
@@ -28,12 +17,12 @@ public class StartupRunner implements CommandLineRunner {
 
 	@Inject
 	private SystemUserService systemUserService;
-	@Inject
-	private SystemRoleService systemRoleService;
+	//@Inject
+	//private SystemRoleService systemRoleService;
 	@Inject
 	private SystemUserRepository systemUserRepository;
-	@Inject
-	private SystemRoleRepository systemRoleRepository;
+	//@Inject
+	//private SystemRoleRepository systemRoleRepository;
 
 	private static final String ROLE_ADMIN = "ROLE_ADMIN";
 
@@ -42,11 +31,11 @@ public class StartupRunner implements CommandLineRunner {
 	@Override
 	public void run(String... arg0) throws Exception {
 		logger.info("服务启动执行,初始化数据[开始]......");
-		this.checkDefaultUser(checkDefaultRole());
+		//this.checkDefaultUser(checkDefaultRole());
 		logger.info("服务启动执行,初始化数据[完成]!");
 	}
 
-	private Map<String, SystemRole> checkDefaultRole() {
+	/*private Map<String, SystemRole> checkDefaultRole() {
 		Map<String, SystemRole> defaultRoleMap = new HashMap<String, SystemRole>();
 		SystemRole systemRole = null;
 		if (systemRoleService.queryByRoleName(ROLE_ADMIN) == null) {
@@ -127,5 +116,5 @@ public class StartupRunner implements CommandLineRunner {
 			}
 			systemUserRepository.save(systemUser);
 		}
-	}
+	}*/
 }
