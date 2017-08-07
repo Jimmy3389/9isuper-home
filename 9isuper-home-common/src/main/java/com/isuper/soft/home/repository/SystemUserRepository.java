@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import com.isuper.soft.home.domain.system.entity.SystemUser;
 
 @Repository
-public interface SystemUserRepository  extends PagingAndSortingRepository<SystemUser, Long>, QuerydslPredicateExecutor<SystemUser> {
+public interface SystemUserRepository  extends PagingAndSortingRepository<SystemUser, String>, QuerydslPredicateExecutor<SystemUser> {
 
 	
 }

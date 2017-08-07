@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import com.isuper.soft.home.domain.system.entity.SystemGroup;
 
 @Repository
-public interface SystemGroupRepository extends PagingAndSortingRepository<SystemGroup, Long>, QuerydslPredicateExecutor<SystemGroup> {
+public interface SystemGroupRepository extends PagingAndSortingRepository<SystemGroup, String>, QuerydslPredicateExecutor<SystemGroup> {
 
 }

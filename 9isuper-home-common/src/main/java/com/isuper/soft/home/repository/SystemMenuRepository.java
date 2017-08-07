@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import com.isuper.soft.home.domain.system.entity.SystemMenu;
 
 @Repository
-public interface SystemMenuRepository extends PagingAndSortingRepository<SystemMenu, Long>, QuerydslPredicateExecutor<SystemMenu> {
+public interface SystemMenuRepository extends PagingAndSortingRepository<SystemMenu, String>, QuerydslPredicateExecutor<SystemMenu> {
 
 }
