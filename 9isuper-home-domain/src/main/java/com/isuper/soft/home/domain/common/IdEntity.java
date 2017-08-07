@@ -4,12 +4,15 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.isuper.soft.home.domain.utils.IdGen;
 
 @MappedSuperclass
 public class IdEntity implements Serializable {
@@ -53,20 +56,36 @@ public class IdEntity implements Serializable {
 	// "TestUSER_ID")
 	// @GeneratedValue(strategy=GenerationType.TABLE, generator="test111")
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@Column(length = 40, updatable = false)
+	private String id;
 
 	/** 创建时间 */
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "create_date", updatable = false)
 	private Date createDate;
 
-	public Long getId() {
+	@PrePersist
+	public void prePersist() {
+		if (StringUtils.isBlank(this.id)) {
+			this.id = IdGen.uuid();
+		}
+		this.createDate = new Date();
+	}
+
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
 	}
 
 }

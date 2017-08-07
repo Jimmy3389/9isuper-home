@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
@@ -13,6 +11,10 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.isuper.soft.home.domain.utils.IdGen;
 
 @MappedSuperclass
 public class DataEntity implements Serializable {
@@ -56,8 +58,8 @@ public class DataEntity implements Serializable {
 	// "TestUSER_ID")
 	// @GeneratedValue(strategy=GenerationType.TABLE, generator="test111")
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@Column(length = 40, updatable = false)
+	private String id;
 
 	/** 逻辑删除标识 */
 	@org.hibernate.annotations.Type(type = "yes_no")
@@ -91,6 +93,9 @@ public class DataEntity implements Serializable {
 
 	@PrePersist
 	public void preDataPersist() {
+		if (StringUtils.isBlank(this.id)) {
+			this.id = IdGen.uuid();
+		}	
 		this.updateDate = new Date();
 		this.createDate = new Date();
 	}
@@ -98,14 +103,6 @@ public class DataEntity implements Serializable {
 	@PreUpdate
 	public void preDataUpdate() {
 		this.updateDate = new Date();
-	}
-	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public Boolean getDelFlag() {
