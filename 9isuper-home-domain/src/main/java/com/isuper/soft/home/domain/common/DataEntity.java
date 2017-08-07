@@ -99,10 +99,18 @@ public class DataEntity implements Serializable {
 		this.updateDate = new Date();
 		this.createDate = new Date();
 	}
-
+	
 	@PreUpdate
 	public void preDataUpdate() {
 		this.updateDate = new Date();
+	}
+	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public Boolean getDelFlag() {

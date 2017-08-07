@@ -44,7 +44,8 @@ public class SystemMenu extends DataEntity implements Serializable {
 	private Integer menuSort;
 
 	/** 父级ID */
-	private Long parentId;
+	@Column(length = 40)
+	private String parentId;
 
 	/** 所有子目录 */
 	@Transient
@@ -106,11 +107,11 @@ public class SystemMenu extends DataEntity implements Serializable {
 		this.menuSort = menuSort;
 	}
 
-	public Long getParentId() {
+	public String getParentId() {
 		return parentId;
 	}
 
-	public void setParentId(Long parentId) {
+	public void setParentId(String parentId) {
 		this.parentId = parentId;
 	}
 
