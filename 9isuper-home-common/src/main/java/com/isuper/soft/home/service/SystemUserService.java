@@ -1,8 +1,11 @@
 package com.isuper.soft.home.service;
 
+import java.util.Date;
+
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.isuper.soft.home.domain.system.entity.QSystemUser;
@@ -35,5 +38,18 @@ public class SystemUserService {
 
 	public SystemUser save(SystemUser systemUser) {
 		return systemUserRepository.save(systemUser);
+	}
+
+	public boolean modifyPassword(String useId, String updater, String password) {
+		if (systemUserRepository.findById(useId).isPresent()) {
+			SystemUser systemUser = new SystemUser();
+			systemUser.setId(useId);
+			systemUser.setUpdater(StringUtils.isBlank(updater) ? useId : updater);
+			systemUser.setLoginPwd(new BCryptPasswordEncoder(4).encode(password));
+			systemUser.setModifyPwdDate(new Date());
+			systemUserRepository.save(systemUser);
+			return true;
+		} else
+			return false;
 	}
 }

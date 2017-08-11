@@ -31,7 +31,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 		userDetails.setCurrentLoginTime(new Date());
 		userDetails.setLastLoginIp(StringUtils.isBlank(userDetails.getCurrentloginIp()) ? this.getIpAddress(request) : userDetails.getCurrentloginIp());
 		userDetails.setCurrentloginIp(this.getIpAddress(request));
-		userDetails.setLoginCount(userDetails.getLoginCount() == null || userDetails.getLoginCount() <= 1 ? 1 : userDetails.getLoginCount() + 1);
+		userDetails.setLoginCount(userDetails.getLoginCount() == null || userDetails.getLoginCount() < 1 ? 1 : userDetails.getLoginCount() + 1);
 		// 保存登陆信息
 		logger.info(userDetails.getUsername() + " from " + userDetails.getCurrentloginIp() + " Login !");
 		systemUserService.save(userDetails);

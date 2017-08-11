@@ -3,7 +3,9 @@ package com.isuper.soft.home.domain.system.entity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -133,6 +135,21 @@ public class SystemUser extends DataEntity implements UserDetails {
 			auths.add(new SimpleGrantedAuthority("ROLE_GUEST"));
 		}
 		return auths;
+	}
+
+	public Set<SystemMenu> getUserMenu() {
+		Set<SystemMenu> menus = new HashSet<SystemMenu>();
+		List<SystemGroup> groups = this.getSystemGroups();
+		if (CollectionUtils.isNotEmpty(groups)) {
+			for (SystemGroup group : groups) {
+				if (!group.getDelFlag() && group.getEnableFlag() && CollectionUtils.isNotEmpty(group.getSystemMenus())) {
+					for (SystemMenu menu : group.getSystemMenus()) {
+						menus.add(menu);
+					}
+				}
+			}
+		}
+		return menus;
 	}
 
 	public String getLoginAccount() {
