@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.isuper.soft.home.domain.system.entity.SystemUser;
 
 @Controller
-public class LoginController {
+public class LoginController extends BaseController {
 
 	@RequestMapping(value = { "/login", "/" })
 	@ResponseBody

@@ -1,5 +1,5 @@
 /* Font Import */
-@import url(fonts.googleapis.com/css?family=Open+Sans:400,300,600,700);
+@import url(front.css);
 :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
     color:#333843! important;
 }
@@ -7009,7 +7009,7 @@ ul.my-friends li .profile-pic{
 
 .post .post-links li:after {
     color: #999999;
-    content: "•";
+    content: "鈥�";
 	padding-left:8px;
 }
 
@@ -7482,7 +7482,7 @@ ul.my-friends li .profile-pic{
 
 .cbp_tmtimeline .action-links li:after {
     color: #999999;
-    content: "•";
+    content: "鈥�";
 	padding-left:8px;
 }
 

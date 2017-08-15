@@ -58,6 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.and().sessionManagement().sessionFixation().changeSessionId().maximumSessions(3).expiredUrl("/login?expire")
 				// 登录用户的数量限制
 				.and().and().exceptionHandling().accessDeniedPage("/accessDenied");
+		http.headers().frameOptions().sameOrigin();
 	}
 
 	/**

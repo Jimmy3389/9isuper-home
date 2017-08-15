@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]> <html lang="en" class="ie6 ielt8"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="ie7 ielt8"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="ie8"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>登陆</title>
+<link href="/css/login.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+	<div class="container">
+		<section id="content">
+			<form th:action="@{/login}" method="post"
+				class="form form-horizontal">
+				<h1>用户登录</h1>
+				<div>
+					<input type="text" placeholder="登录账号或手机或Email" required=""
+						id="username" name="username" />
+				</div>
+				<div>
+					<input type="password" placeholder="登录密码" required="" id="password" name="password" />
+				</div>
+				<div class="row" th:if="${param.error}">
+					<div class="alert alert-danger" role="alert" align="center">
+						<font color="red">用户名或者密码错误!</font>
+					</div>
+				</div>
+				<div class="row" th:if="${param.logout}">
+					<div class="alert alert-danger" role="alert" align="center">
+						<font color="red">您已注销成功</font>
+					</div>
+				</div>
+				<div>
+					<input type="submit" value="登录" /> <a href="#">忘记密码?</a> <a
+						href="#">注册</a>
+				</div>
+				<div></div>
+			</form>
+			<!-- form -->
+		</section>
+		<!-- content -->
+	</div>
+	<!-- container -->
+</body>
+</html>
