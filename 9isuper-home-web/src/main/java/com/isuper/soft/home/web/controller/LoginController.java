@@ -37,7 +37,7 @@ public class LoginController extends BaseController {
 				}
 
 				// 登录成功跳到主页
-				return new ModelAndView("home");
+				return new ModelAndView("index");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
