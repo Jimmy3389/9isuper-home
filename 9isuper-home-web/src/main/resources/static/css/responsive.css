@@ -245,7 +245,7 @@ and (min-width : 1824px) {
 	}	
   	/*** Page content ***/
   	.page-content { 
-  		margin-left: 50px; 
+  		margin-left: 0px; 
 		margin-top: 0px;
 		min-height: 911px; 
 	}

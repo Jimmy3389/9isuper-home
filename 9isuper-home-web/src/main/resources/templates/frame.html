@@ -406,7 +406,24 @@
 							<li><a href="javascript:;">查询用户</a></li>
 							<li><a href="javascript:;">审核列表</a></li>
 						</ul></li>
+						<li>
+						<a href="javascript:;">
+							<i class="fa fa-users"></i> 
+							<span class="title">菜单管理</span> 
+							<span class="arrow "></span>
+						</a>
+						<ul class="sub-menu">
+							<li><a href="javascript:;">菜单查询</a></li>
+						</ul></li>
 				</ul>
+			</li>
+			
+			<li th:each="item : ${systemMenu}" th:if="${item.parentId eq'0'}">
+				<a href="javascript:;"> 
+					<i class="fa fa-folder-open"></i> 
+					<span class="title" th:text="${item.menuName}"></span> 
+					<span class="arrow "></span>
+				</a>
 			</li>
 
 
@@ -768,7 +785,7 @@
 <body th:fragment="frame_js">
 
 	<!-- BEGIN PAGE LEVEL JS -->
-	<script th:src="@{/plugins/pace/pace.min.js}" type="text/javascript"></script> -->
+	<script th:src="@{/plugins/pace/pace.min.js}" type="text/javascript"></script>
 	<script th:src="@{/plugins/jquery-slimscroll/jquery.slimscroll.min.js}" type="text/javascript"></script>
 	<script th:src="@{/plugins/jquery-numberAnimate/jquery.animateNumbers.js}" type="text/javascript"></script>
 	<script th:src="@{/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js}" type="text/javascript"></script>

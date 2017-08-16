@@ -31,10 +31,17 @@
 			<div class="content"  style="height: 100%; border: none 0px">
 			<!-- <iframe src ="http://localhost:8891/dashboard/view" frameborder="0" marginheight="0" marginwidth="0" scrolling="no" id="home-center-frame" name="home-center-frame" onload="javascript:dyniframesize('home-center-frame');" width="100%" height="1000">  -->
 			<!--  frameborder="no" border="0" marginwidth="0" marginheight="0"   -->
-			<iframe src ="http://localhost:8891/dashboard/view" id="home-center-frame" name="home-center-frame" scrolling="no" allowtransparency="yes" marginheight="0"  frameborder="no" width="100%" height="1300">
+			<iframe th:src ="@{/dashboard/view}" id="home-center-frame" name="home-center-frame" scrolling="no" allowtransparency="yes" marginheight="0"  frameborder="no" width="100%">
 			</iframe>
 			</div>
 		</div>
+		
+		<script type="text/javascript">
+		$("#home-center-frame").load(function(){
+			var mainheight = $(this).contents().find("body").height();
+			$(this).height(mainheight);
+		}); 
+		</script>
 		
 		<!-- BEGIN CHAT -->
 		<div id="sidr" class="chat-window-wrapper">

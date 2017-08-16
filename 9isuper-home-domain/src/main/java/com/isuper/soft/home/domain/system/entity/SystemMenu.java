@@ -46,6 +46,9 @@ public class SystemMenu extends DataEntity implements Serializable {
 	/** 父级ID */
 	@Column(length = 40)
 	private String parentId;
+	
+	@Column(length = 10)
+	private String menuIco;
 
 	/** 所有子目录 */
 	@Transient
@@ -113,6 +116,20 @@ public class SystemMenu extends DataEntity implements Serializable {
 
 	public void setParentId(String parentId) {
 		this.parentId = parentId;
+	}
+
+	/**
+	 * @return the menuIco
+	 */
+	public String getMenuIco() {
+		return menuIco;
+	}
+
+	/**
+	 * @param menuIco the menuIco to set
+	 */
+	public void setMenuIco(String menuIco) {
+		this.menuIco = menuIco;
 	}
 
 	public List<SystemMenu> getChildMenus() {

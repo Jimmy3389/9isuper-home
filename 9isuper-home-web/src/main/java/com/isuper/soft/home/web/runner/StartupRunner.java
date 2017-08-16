@@ -47,13 +47,14 @@ public class StartupRunner implements CommandLineRunner {
 	public void run(String... arg0) throws Exception {
 		logger.info("服务启动执行,初始化数据[开始]......");
 		// 初始化目录
-		SystemMenu rootMenu = this.initDefaultMenu();
-		List<SystemGroup> systemGroups = this.initDefaultGroup(rootMenu);
+		List<SystemMenu> rootMenus = this.initDefaultMenu();
+		List<SystemGroup> systemGroups = this.initDefaultGroup(rootMenus);
 		this.checkDefaultUser(systemGroups);
 		logger.info("服务启动执行,初始化数据[完成]!");
 	}
 
-	private SystemMenu initDefaultMenu() {
+	private List<SystemMenu> initDefaultMenu() {
+		List<SystemMenu> rootMenus = new ArrayList<SystemMenu>();
 		SystemMenu systemMenu = systemMenuService.findMenuById("0");
 		if (systemMenu == null) {
 			systemMenu = new SystemMenu();
@@ -63,22 +64,82 @@ public class StartupRunner implements CommandLineRunner {
 			systemMenu.setEnableFlag(true);// 设定开启状态
 			systemMenu.setIsShow(false);// 设定是可以显示的
 			systemMenu.setMenuName("根目录");// 设定目录名称
-			systemMenu.setMenuSort(999);// 设定目录排序未最后一项
+			systemMenu.setMenuSort(99999);// 设定目录排序未最后一项
 			systemMenu.setMenuTile("根目录");//
-			systemMenu.setParentId("");// 已经是跟目录了，所以未设定目录
+			systemMenu.setParentId("-1");// 已经是跟目录了，所以未设定目录
 			systemMenu.setRemark("系统自动创建");// 设定拥有GUEST权限即可访问
 			systemMenu.setRoleTag(ROLE_GUEST);
 			systemMenu.setSystemId("0");
 			systemMenu.setUpdater("0");
-			return systemMenuRepository.save(systemMenu);
+			rootMenus.add(systemMenuRepository.save(systemMenu));
 		}
-		return systemMenu;
+		systemMenu = systemMenuService.findMenuById("1");
+		if (systemMenu == null) {
+			systemMenu = new SystemMenu();
+			systemMenu.setId("1");
+			systemMenu.setCreater("0");// 设定系统管理员创建
+			systemMenu.setDelFlag(false);// 设定未删除
+			systemMenu.setEnableFlag(true);// 设定开启状态
+			systemMenu.setIsShow(true);// 设定是可以显示的
+			systemMenu.setMenuName("系统管理");// 设定目录名称
+			systemMenu.setMenuSort(98000);// 设定目录排序未最后一项
+			systemMenu.setMenuTile("系统管理");//
+			systemMenu.setParentId("0");// 已经是跟目录了，所以未设定目录
+			systemMenu.setRemark("系统自动创建");// 设定拥有GUEST权限即可访问
+			systemMenu.setRoleTag("ROLE_SYSTEM_BASE");// 具有ADMIN权限才能使用该菜单
+			systemMenu.setSystemId("0");
+			systemMenu.setUpdater("0");
+			systemMenu.setMenuIco("fa-gears");
+			rootMenus.add(systemMenuRepository.save(systemMenu));
+		}
+		systemMenu = systemMenuService.findMenuById("2");
+		if (systemMenu == null) {
+			systemMenu = new SystemMenu();
+			systemMenu.setId("2");
+			systemMenu.setCreater("0");// 设定系统管理员创建
+			systemMenu.setDelFlag(false);// 设定未删除
+			systemMenu.setEnableFlag(true);// 设定开启状态
+			systemMenu.setIsShow(true);// 设定是可以显示的
+			systemMenu.setMenuName("用户管理");// 设定目录名称
+			systemMenu.setMenuSort(98010);// 设定目录排序未最后一项
+			systemMenu.setMenuTile("用户管理");//
+			systemMenu.setParentId("1");// 已经是跟目录了，所以未设定目录
+			systemMenu.setRemark("系统自动创建");// 设定拥有GUEST权限即可访问
+			systemMenu.setRoleTag("ROLE_SYSTEM_USER");// 具有ADMIN权限才能使用该菜单
+			systemMenu.setSystemId("0");
+			systemMenu.setUpdater("0");
+			systemMenu.setMenuIco("fa-users");
+			rootMenus.add(systemMenuRepository.save(systemMenu));
+		}
+		systemMenu = systemMenuService.findMenuById("3");
+		if (systemMenu == null) {
+			systemMenu = new SystemMenu();
+			systemMenu.setId("3");
+			systemMenu.setCreater("0");// 设定系统管理员创建
+			systemMenu.setDelFlag(false);// 设定未删除
+			systemMenu.setEnableFlag(true);// 设定开启状态
+			systemMenu.setIsShow(true);// 设定是可以显示的
+			systemMenu.setMenuName("菜单管理");// 设定目录名称
+			systemMenu.setMenuSort(98010);// 设定目录排序未最后一项
+			systemMenu.setMenuTile("菜单管理");//
+			systemMenu.setParentId("1");// 已经是跟目录了，所以未设定目录
+			systemMenu.setRemark("系统自动创建");// 设定拥有GUEST权限即可访问
+			systemMenu.setRoleTag("fa-book");// 具有ADMIN权限才能使用该菜单
+			systemMenu.setSystemId("0");
+			systemMenu.setUpdater("0");
+			rootMenus.add(systemMenuRepository.save(systemMenu));
+		}
+		return rootMenus;
 	}
 
-	private List<SystemGroup> initDefaultGroup(SystemMenu rootMenu) {
+	private List<SystemGroup> initDefaultGroup(List<SystemMenu> rootMenu) {
 		List<SystemMenu> systemMenus = new ArrayList<SystemMenu>();
 		if (rootMenu != null) {
-			systemMenus.add(rootMenu);
+			for (SystemMenu systemMenu : systemMenus) {
+				if (systemMenu.getId().equalsIgnoreCase("0")) {
+					systemMenus.add(systemMenu);
+				}
+			}
 		}
 		SystemGroup group = null;
 		if (systemGroupService.findGroupById("-1") == null) {
