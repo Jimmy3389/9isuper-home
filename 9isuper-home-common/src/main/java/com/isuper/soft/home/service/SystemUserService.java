@@ -1,10 +1,12 @@
 package com.isuper.soft.home.service;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -56,5 +58,11 @@ public class SystemUserService {
 
 	public SystemUser findByUserId(String userId) {
 		return this.systemUserRepository.findById(userId).get();
+	}
+
+	public List<SystemUser> findAllUser() {
+		BooleanBuilder booleanBuilder = new BooleanBuilder();
+		booleanBuilder.and(qSystemUser.delFlag.eq(false));
+		return  (List<SystemUser>) this.systemUserRepository.findAll(booleanBuilder.getValue());
 	}
 }

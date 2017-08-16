@@ -46,23 +46,28 @@
                     				<th>真实姓名</th>
                     				<th>手机号码</th>
                     				<th>用户邮箱</th>
+                    				<th>用户状态</th>
+                    				<th>有效期</th>
+                    				<th>操作</th>
                   				</tr>
                 			</thead>
                 			<tbody>
-                  				<tr class="odd gradeX">
-                    				<td>Trident</td>
-                    				<td>Internet Explorer 4.0</td>
-				                    <td>Win 95+</td>
-				                    <td class="center"> 4</td>
-				                    <td class="center">X</td>
-                 				</tr>
-			                  	<tr class="even gradeC">
-			                    	<td>Trident</td>
-			                    	<td>Internet Explorer 5.0</td>
-			                    	<td>Win 95+</td>
-			                    	<td class="center">5</td>
-			                    	<td class="center">C</td>
-			                  	</tr>
+                				<tr th:each="item : ${allSystemUsers}">
+                					<td th:text="${item.loginAccount}"></td>
+                					<td th:text="${item.nickName}"></td>
+                					<td th:text="${item.realName}"></td>
+                					<td th:text="${item.countryCode eq null ? '' : '+'+item.countryCode + ' ' + item.mobile }"></td>
+                					<td th:text="${item.email}"></td>
+                					<td th:text="${item.lockType}"></td>
+                					<td th:text="${item.expireDate eq null ? '--': #calendars.format(item.expireDate,'yyyy-MM-dd HH:mm:ss')}" ></td>
+                					<td>
+                						<font hidden="hidden" th:text="${item.currentLoginTime eq null ? '--': #calendars.format(item.currentLoginTime,'yyyy-MM-dd HH:mm:ss')}"></font>
+                						<font hidden="hidden" th:text="${item.currentloginIp}"></font>
+                						<font hidden="hidden" th:text="${item.loginCount}"></font>
+                						<font hidden="hidden" th:text="${item.birthDay eq null ? '--': #calendars.format(item.birthDay,'yyyy-MM-dd HH:mm:ss')}"></font>
+                						<font hidden="hidden" th:text="${item.userPic}"></font>
+                					</td>
+                				</tr>
                 			</tbody>
              			 </table>
            			</div>
