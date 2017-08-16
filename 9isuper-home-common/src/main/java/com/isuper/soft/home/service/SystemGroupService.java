@@ -44,4 +44,8 @@ public class SystemGroupService {
 		booleanBuilder.and(orBuilder);
 		return (List<SystemGroup>) systemGroupRepository.findAll(booleanBuilder.getValue());
 	}
+
+	public List<SystemGroup> findGroupByUserId(String... ids) {
+		return null;
+	}
 }

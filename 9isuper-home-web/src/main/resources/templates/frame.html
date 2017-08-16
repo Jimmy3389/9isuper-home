@@ -25,7 +25,9 @@
 	<link th:href="@{/plugins/jquery-slider/css/jquery.sidr.light.css}" rel="stylesheet" type="text/css" media="screen" />
 	<link th:href="@{/plugins/bootstrap-select2/select2.css}" rel="stylesheet" type="text/css" media="screen" />
 	<link th:href="@{/plugins/jquery-jvectormap/css/jquery-jvectormap-1.2.2.css}" rel="stylesheet" type="text/css" media="screen" />
+	<link th:href="@{/plugins/jquery-datatable/css/jquery.dataTables.css}" rel="stylesheet" type="text/css"/>
 	<link th:href="@{/plugins/boostrap-checkbox/css/bootstrap-checkbox.css}" rel="stylesheet" type="text/css" media="screen" />
+	<link th:href="@{/plugins/datatables-responsive/css/datatables.responsive.css}" rel="stylesheet" type="text/css" media="screen"/>
 	<!-- END PLUGIN CSS -->
 
 	<!-- BEGIN CORE CSS FRAMEWsORK -->
@@ -295,135 +297,26 @@
 					<span class=" badge badge-disable pull-right ">203</span>
 				</a>
 			</li>
-			<li class="">
-				<a href="../frontend/index.html"> 
-					<i class="fa fa-flag"></i> 
-					<span class="title">Frontend</span>
-				</a>
-			</li>
-			<li class="">
-				<a href="javascript:;"> 
-					<i class="icon-custom-ui"></i> 
-					<span class="title">UI Elements</span>
-					<span class="arrow "></span>
-				</a>
-				<ul class="sub-menu">
-					<li><a href="typography.html"> Typography </a></li>
-					<li><a href="messages_notifications.html"> 消息 & 通知 </a></li>
-					<li><a href="icons.html">Icons</a></li>
-					<li><a href="buttons.html">Buttons</a></li>
-					<li><a href="tabs_accordian.html"> Tabs & Accordions </a></li>
-					<li><a href="sliders.html">Sliders</a></li>
-					<li><a href="group_list.html">Group list </a></li>
-				</ul>
-			</li>
-			<li class="">
-				<a href="javascript:;"> 
-					<i class="icon-custom-form"></i> 
-					<span class="title">Forms</span> 
-					<span class="arrow "></span>
-				</a>
-				<ul class="sub-menu">
-					<li><a href="form_elements.html">Form Elements </a></li>
-					<li><a href="form_validations.html">Form Validations</a></li>
-				</ul>
-			</li>
-			<li class="">
-				<a href="javascript:;"> 
-					<i class="icon-custom-portlets"></i> 
-					<span class="title">Grids</span>
-					<span class="arrow "></span>
-				</a>
-				<ul class="sub-menu">
-					<li><a href="grids_simple.html">Simple Grids</a></li>
-					<li><a href="grids_draggable.html">Draggable Grids </a></li>
-				</ul>
-			</li>
-			<li class="">
-				<a href="javascript:;"> 
-					<i class="icon-custom-thumb"></i> 
-					<span class="title">Tables</span> 
-					<span class="arrow "></span>
-				</a>
-				<ul class="sub-menu">
-					<li><a href="tables.html"> Basic Tables </a></li>
-					<li><a href="datatables.html"> Data Tables </a></li>
-				</ul>
-			</li>
-			<li class="">
-				<a href="javascript:;"> 
-					<i class="icon-custom-map"></i> 
-					<span class="title">Maps</span> 
-					<span class="arrow "></span>
-				</a>
-				<ul class="sub-menu">
-					<li><a href="google_map.html"> Google Maps </a></li>
-					<li><a href="vector_map.html"> Vector Maps </a></li>
-				</ul>
-			</li>
-			<li class="">
-				<a href="charts.html"> 
-					<i class="icon-custom-chart"></i> 
-					<span class="title">Charts</span>
-				</a>
-			</li>
-			<li class="">
-				<a href="javascript:;"> 
-					<i class="icon-custom-extra"></i> 
-					<span class="title">Extra</span> 
-					<span class="arrow "></span>
-				</a>
-				<ul class="sub-menu">
-					<li><a href="user-profile.html"> User Profile </a></li>
-					<li><a href="time_line.html"> Time line </a></li>
-					<li><a href="support_ticket.html"> Support Ticket </a></li>
-					<li><a href="gallery.html"> Gallery</a></li>
-					<li class=""><a href="calender.html"> Calendar</a></li>
-					<li><a href="search_results.html"> Search Results </a></li>
-					<li><a href="invoice.html"> Invoice </a></li>
-					<li><a href="404.html"> 404 Page </a></li>
-					<li><a href="500.html"> 500 Page </a></li>
-					<li><a href="blank_template.html"> Blank Page </a></li>
-					<li><a href="login.html"> Login </a></li>
-					<li><a href="login_v2.html">Login v2</a></li>
-					<li><a href="lockscreen.html"> Lockscreen </a></li>
-				</ul>
-			</li>
-			<li class="">
-				<a href="javascript:;"> 
-					<i class="fa fa-folder-open"></i> 
-					<span class="title">系统管理</span> 
-					<span class="arrow "></span>
-				</a>
-				<ul class="sub-menu">
-					<li>
-						<a href="javascript:;">
-							<i class="fa fa-users"></i> 
-							<span class="title">用户管理</span> 
-							<span class="arrow "></span>
-						</a>
-						<ul class="sub-menu">
-							<li><a href="javascript:;">查询用户</a></li>
-							<li><a href="javascript:;">审核列表</a></li>
-						</ul></li>
-						<li>
-						<a href="javascript:;">
-							<i class="fa fa-users"></i> 
-							<span class="title">菜单管理</span> 
-							<span class="arrow "></span>
-						</a>
-						<ul class="sub-menu">
-							<li><a href="javascript:;">菜单查询</a></li>
-						</ul></li>
-				</ul>
-			</li>
 			
 			<li th:each="item : ${systemMenu}" th:if="${item.parentId eq'0'}">
-				<a href="javascript:;"> 
-					<i class="fa fa-folder-open"></i> 
+				<a href="javascript:;" th:title="${#lists.size(item)}"> 
+					<i th:class="'fa '+${item.menuIco}"></i> 
 					<span class="title" th:text="${item.menuName}"></span> 
 					<span class="arrow "></span>
 				</a>
+				<ul class="sub-menu">
+					<li th:each="item1 : ${systemMenu}" th:if="${item1.parentId eq item.id }" >
+						<a href="javascript:;">
+							<i th:class="'fa '+${item1.menuIco}"></i> 
+							<span class="title" th:text="${item1.menuName}"></span> 
+						</a>
+						<ul class="sub-menu">
+							<li th:each="item2 : ${systemMenu}" th:if="${item2.parentId eq item1.id }" >
+								<a th:class="'fa '+${item2.menuIco}" href="#" th:text="'&nbsp;&nbsp;&nbsp;&nbsp;'+${item2.menuName}" th:onclick="'javascript:menuSkip(\''+${item2.sourceUrl}+'\');'"></a>
+							</li>
+						</ul>
+					</li>
+				</ul>
 			</li>
 
 
@@ -434,7 +327,7 @@
 				<ul class="sub-menu">
 					<li class="side-bar-widgets">
 						<p class="menu-title">
-							FOLDER 
+							我的快捷菜单 
 							<span class="pull-right">
 								<a href="#" class="create-folder">
 									<i class="icon-plus"></i>
@@ -491,18 +384,30 @@
 				</ul>
 			</li>
 		</ul>
+		
 		<div class="side-bar-widgets">
 			<p class="menu-title">
-				FOLDER <span class="pull-right"><a href="#"
-					class="create-folder"> <i class="fa fa-plus"></i></a></span>
+				快捷菜单 
+				<span class="pull-right">
+					<a href="#" class="create-folder"> 
+						<i class="fa fa-plus"></i>
+					</a>
+				</span>
 			</p>
 			<ul class="folders">
-				<li><a href="#"><div class="status-icon green"></div> My
-						quick tasks </a></li>
-				<li><a href="#"><div class="status-icon red"></div> To do
-						list </a></li>
-				<li><a href="#"><div class="status-icon blue"></div>
-						Projects </a></li>
+				<li>
+					<a href="#">
+						<div class="status-icon green"></div> 
+						我的行程
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<div class="status-icon red"></div> 
+						代办事项
+					</a>
+				</li>
+
 				<li class="folder-input" style="display: none"><input
 					type="text" placeholder="Name of folder"
 					class="no-boarder folder-name" name=""></li>

@@ -2,10 +2,11 @@ package com.isuper.soft.home.domain.system.entity;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -138,7 +139,14 @@ public class SystemUser extends DataEntity implements UserDetails {
 	}
 
 	public Set<SystemMenu> getUserMenu() {
-		Set<SystemMenu> menus = new HashSet<SystemMenu>();
+
+		Set<SystemMenu> menus = new TreeSet<>(new Comparator<SystemMenu>() {
+			@Override
+			public int compare(SystemMenu o1, SystemMenu o2) {
+				return o2.getMenuSort().compareTo(o1.getMenuSort());
+			}
+		});
+
 		List<SystemGroup> groups = this.getSystemGroups();
 		if (CollectionUtils.isNotEmpty(groups)) {
 			for (SystemGroup group : groups) {

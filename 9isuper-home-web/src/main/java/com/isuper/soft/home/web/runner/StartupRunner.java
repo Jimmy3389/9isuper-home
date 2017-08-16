@@ -101,7 +101,7 @@ public class StartupRunner implements CommandLineRunner {
 			systemMenu.setEnableFlag(true);// 设定开启状态
 			systemMenu.setIsShow(true);// 设定是可以显示的
 			systemMenu.setMenuName("用户管理");// 设定目录名称
-			systemMenu.setMenuSort(98010);// 设定目录排序未最后一项
+			systemMenu.setMenuSort(98100);// 设定目录排序未最后一项
 			systemMenu.setMenuTile("用户管理");//
 			systemMenu.setParentId("1");// 已经是跟目录了，所以未设定目录
 			systemMenu.setRemark("系统自动创建");// 设定拥有GUEST权限即可访问
@@ -119,15 +119,173 @@ public class StartupRunner implements CommandLineRunner {
 			systemMenu.setDelFlag(false);// 设定未删除
 			systemMenu.setEnableFlag(true);// 设定开启状态
 			systemMenu.setIsShow(true);// 设定是可以显示的
+			systemMenu.setMenuName("用户列表");// 设定目录名称
+			systemMenu.setMenuSort(98110);// 设定目录排序未最后一项
+			systemMenu.setMenuTile("用户列表");//
+			systemMenu.setParentId("2");
+			systemMenu.setRemark("系统自动创建");// 设定拥有GUEST权限即可访问
+			systemMenu.setRoleTag("ROLE_SYSTEM_USER_LIST");// 具有ADMIN权限才能使用该菜单
+			systemMenu.setSystemId("0");
+			systemMenu.setSourceUrl("/system/user/list");
+			systemMenu.setUpdater("0");
+			systemMenu.setMenuIco("fa-th-list");
+			rootMenus.add(systemMenuRepository.save(systemMenu));
+		}
+		systemMenu = systemMenuService.findMenuById("4");
+		if (systemMenu == null) {
+			systemMenu = new SystemMenu();
+			systemMenu.setId("4");
+			systemMenu.setCreater("0");// 设定系统管理员创建
+			systemMenu.setDelFlag(false);// 设定未删除
+			systemMenu.setEnableFlag(true);// 设定开启状态
+			systemMenu.setIsShow(false);// 设定是可以显示的
+			systemMenu.setMenuName("添加用户");// 设定目录名称
+			systemMenu.setMenuSort(98111);// 设定目录排序未最后一项
+			systemMenu.setMenuTile("添加用户");//
+			systemMenu.setParentId("3");
+			systemMenu.setRemark("系统自动创建");// 设定拥有GUEST权限即可访问
+			systemMenu.setRoleTag("ROLE_SYSTEM_USER_ADD");// 具有ADMIN权限才能使用该菜单
+			systemMenu.setSystemId("0");
+			systemMenu.setUpdater("0");
+			systemMenu.setMenuIco("fa-plus");
+			rootMenus.add(systemMenuRepository.save(systemMenu));
+		}
+		systemMenu = systemMenuService.findMenuById("5");
+		if (systemMenu == null) {
+			systemMenu = new SystemMenu();
+			systemMenu.setId("5");
+			systemMenu.setCreater("0");// 设定系统管理员创建
+			systemMenu.setDelFlag(false);// 设定未删除
+			systemMenu.setEnableFlag(true);// 设定开启状态
+			systemMenu.setIsShow(false);// 设定是可以显示的
+			systemMenu.setMenuName("添加用户");// 设定目录名称
+			systemMenu.setMenuSort(98112);// 设定目录排序未最后一项
+			systemMenu.setMenuTile("添加用户");//
+			systemMenu.setParentId("3");
+			systemMenu.setRemark("系统自动创建");// 设定拥有GUEST权限即可访问
+			systemMenu.setRoleTag("ROLE_SYSTEM_USER_EDIT");// 具有ADMIN权限才能使用该菜单
+			systemMenu.setSystemId("0");
+			systemMenu.setUpdater("0");
+			systemMenu.setMenuIco("fa-pencil");
+			rootMenus.add(systemMenuRepository.save(systemMenu));
+		}
+		systemMenu = systemMenuService.findMenuById("6");
+		if (systemMenu == null) {
+			systemMenu = new SystemMenu();
+			systemMenu.setId("6");
+			systemMenu.setCreater("0");// 设定系统管理员创建
+			systemMenu.setDelFlag(false);// 设定未删除
+			systemMenu.setEnableFlag(true);// 设定开启状态
+			systemMenu.setIsShow(false);// 设定是可以显示的
+			systemMenu.setMenuName("删除用户");// 设定目录名称
+			systemMenu.setMenuSort(98113);// 设定目录排序未最后一项
+			systemMenu.setMenuTile("删除用户");//
+			systemMenu.setParentId("3");
+			systemMenu.setRemark("系统自动创建");// 设定拥有GUEST权限即可访问
+			systemMenu.setRoleTag("ROLE_SYSTEM_USER_DEL");// 具有ADMIN权限才能使用该菜单
+			systemMenu.setSystemId("0");
+			systemMenu.setUpdater("0");
+			systemMenu.setMenuIco("fa-times");
+			rootMenus.add(systemMenuRepository.save(systemMenu));
+		}
+
+		systemMenu = systemMenuService.findMenuById("7");
+		if (systemMenu == null) {
+			systemMenu = new SystemMenu();
+			systemMenu.setId("7");
+			systemMenu.setCreater("0");// 设定系统管理员创建
+			systemMenu.setDelFlag(false);// 设定未删除
+			systemMenu.setEnableFlag(true);// 设定开启状态
+			systemMenu.setIsShow(true);// 设定是可以显示的
 			systemMenu.setMenuName("菜单管理");// 设定目录名称
-			systemMenu.setMenuSort(98010);// 设定目录排序未最后一项
+			systemMenu.setMenuSort(98200);// 设定目录排序未最后一项
 			systemMenu.setMenuTile("菜单管理");//
 			systemMenu.setParentId("1");// 已经是跟目录了，所以未设定目录
 			systemMenu.setRemark("系统自动创建");// 设定拥有GUEST权限即可访问
-			systemMenu.setRoleTag("fa-book");// 具有ADMIN权限才能使用该菜单
+			systemMenu.setRoleTag("ROLE_SYSTEM_MENU");// 具有ADMIN权限才能使用该菜单
 			systemMenu.setSystemId("0");
 			systemMenu.setUpdater("0");
+			systemMenu.setRoleTag("fa-book");
 			rootMenus.add(systemMenuRepository.save(systemMenu));
+		}
+
+		systemMenu = systemMenuService.findMenuById("8");
+		if (systemMenu == null) {
+			systemMenu = new SystemMenu();
+			systemMenu.setId("8");
+			systemMenu.setCreater("0");// 设定系统管理员创建
+			systemMenu.setDelFlag(false);// 设定未删除
+			systemMenu.setEnableFlag(true);// 设定开启状态
+			systemMenu.setIsShow(true);// 设定是可以显示的
+			systemMenu.setMenuName("菜单列表");// 设定目录名称
+			systemMenu.setMenuSort(98210);// 设定目录排序未最后一项
+			systemMenu.setMenuTile("菜单列表");//
+			systemMenu.setParentId("7");
+			systemMenu.setRemark("系统自动创建");// 设定拥有GUEST权限即可访问
+			systemMenu.setRoleTag("ROLE_SYSTEM_MENU_LIST");// 具有ADMIN权限才能使用该菜单
+			systemMenu.setSystemId("0");
+			systemMenu.setUpdater("0");
+			systemMenu.setMenuIco("fa-times");
+			rootMenus.add(systemMenuRepository.save(systemMenu));
+		}
+		systemMenu = systemMenuService.findMenuById("9");
+		if (systemMenu == null) {
+			systemMenu = new SystemMenu();
+			systemMenu.setId("9");
+			systemMenu.setCreater("0");// 设定系统管理员创建
+			systemMenu.setDelFlag(false);// 设定未删除
+			systemMenu.setEnableFlag(true);// 设定开启状态
+			systemMenu.setIsShow(false);// 设定是可以显示的
+			systemMenu.setMenuName("添加菜单");// 设定目录名称
+			systemMenu.setMenuSort(98211);// 设定目录排序未最后一项
+			systemMenu.setMenuTile("添加菜单");//
+			systemMenu.setParentId("8");
+			systemMenu.setRemark("系统自动创建");// 设定拥有GUEST权限即可访问
+			systemMenu.setRoleTag("ROLE_SYSTEM_MENU_ADD");// 具有ADMIN权限才能使用该菜单
+			systemMenu.setSystemId("0");
+			systemMenu.setUpdater("0");
+			systemMenu.setMenuIco("fa-times");
+			rootMenus.add(systemMenuRepository.save(systemMenu));
+
+			systemMenu = systemMenuService.findMenuById("10");
+			if (systemMenu == null) {
+				systemMenu = new SystemMenu();
+				systemMenu.setId("10");
+				systemMenu.setCreater("0");// 设定系统管理员创建
+				systemMenu.setDelFlag(false);// 设定未删除
+				systemMenu.setEnableFlag(true);// 设定开启状态
+				systemMenu.setIsShow(false);// 设定是可以显示的
+				systemMenu.setMenuName("修改菜单");// 设定目录名称
+				systemMenu.setMenuSort(98212);// 设定目录排序未最后一项
+				systemMenu.setMenuTile("修改菜单");//
+				systemMenu.setParentId("8");
+				systemMenu.setRemark("系统自动创建");// 设定拥有GUEST权限即可访问
+				systemMenu.setRoleTag("ROLE_SYSTEM_MENU_EDIT");// 具有ADMIN权限才能使用该菜单
+				systemMenu.setSystemId("0");
+				systemMenu.setUpdater("0");
+				systemMenu.setMenuIco("fa-times");
+				rootMenus.add(systemMenuRepository.save(systemMenu));
+			}
+			
+			systemMenu = systemMenuService.findMenuById("11");
+			if (systemMenu == null) {
+				systemMenu = new SystemMenu();
+				systemMenu.setId("11");
+				systemMenu.setCreater("0");// 设定系统管理员创建
+				systemMenu.setDelFlag(false);// 设定未删除
+				systemMenu.setEnableFlag(true);// 设定开启状态
+				systemMenu.setIsShow(false);// 设定是可以显示的
+				systemMenu.setMenuName("删除菜单");// 设定目录名称
+				systemMenu.setMenuSort(98213);// 设定目录排序未最后一项
+				systemMenu.setMenuTile("删除菜单");//
+				systemMenu.setParentId("8");
+				systemMenu.setRemark("系统自动创建");// 设定拥有GUEST权限即可访问
+				systemMenu.setRoleTag("ROLE_SYSTEM_MENU_DEL");// 具有ADMIN权限才能使用该菜单
+				systemMenu.setSystemId("0");
+				systemMenu.setUpdater("0");
+				systemMenu.setMenuIco("fa-times");
+				rootMenus.add(systemMenuRepository.save(systemMenu));
+			}
 		}
 		return rootMenus;
 	}

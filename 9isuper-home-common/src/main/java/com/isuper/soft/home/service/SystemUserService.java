@@ -37,6 +37,7 @@ public class SystemUserService {
 	}
 
 	public SystemUser save(SystemUser systemUser) {
+		systemUser.setLoginPwd(this.findByUserId(systemUser.getId()).getLoginPwd());
 		return systemUserRepository.save(systemUser);
 	}
 
@@ -51,5 +52,9 @@ public class SystemUserService {
 			return true;
 		} else
 			return false;
+	}
+
+	public SystemUser findByUserId(String userId) {
+		return this.systemUserRepository.findById(userId).get();
 	}
 }

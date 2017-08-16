@@ -1,5 +1,7 @@
 package com.isuper.soft.home.web.controller;
 
+import javax.inject.Inject;
+
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -9,11 +11,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
+import com.isuper.soft.home.service.SystemMenuService;
 import com.isuper.soft.home.domain.system.entity.SystemUser;
 
 @Controller
 public class LoginController extends BaseController {
+
+	@Inject
+	private SystemMenuService SystemMenuService;
 
 	@RequestMapping(value = { "/login", "/" })
 	@ResponseBody
@@ -28,7 +33,7 @@ public class LoginController extends BaseController {
 				if (pinciba instanceof UserDetails) {
 					SystemUser systemUser = ((SystemUser) pinciba);
 					model.addAttribute("systemUser", systemUser);
-					model.addAttribute("systemMenu", systemUser.getUserMenu());
+					model.addAttribute("systemMenu", SystemMenuService.findAllMenu());
 				}
 
 				// 登录成功跳到主页
