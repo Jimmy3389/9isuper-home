@@ -305,10 +305,14 @@ $(document).ready(function() {
 function fnFormatDetails ( oTable, nTr )
 {
     var aData = oTable.fnGetData( nTr );
+    var img = aData[12];
+    if(img == ''){
+    	img = '/img/profiles/df.jpg';
+    }
     var sOut = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;" class="inner-table">';
     sOut += '<tr><td>登陆时间</td><td>'+aData[8]+'</td><td>登陆IP</td><td>'+aData[9]+'</td></tr>';
     sOut += '<tr><td>登陆次数:</td><td>'+aData[10]+'</td><td>会员生日:</td><td>'+aData[11]+'</td></tr>';
-    sOut += '<tr><td>会员图像:</td><td colspan=3>And any further details here (images etc)</td></tr>';
+    sOut += '<tr><td>会员图像:</td><td colspan=3><img src='+img+' width="35" height="35"></img></td></tr>';
     sOut += '</table>';
     return sOut;
 }

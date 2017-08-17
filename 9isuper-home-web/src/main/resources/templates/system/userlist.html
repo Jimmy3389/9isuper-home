@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:include="frame :: frame_header" />
 
@@ -74,7 +74,10 @@
                 					<td hidden="hidden" th:text="${item.birthDay eq null ? '--': #calendars.format(item.birthDay,'yyyy-MM-dd HH:mm:ss')}"> </td>
                 					<td hidden="hidden" th:text="${item.userPic}"> </td>
                 					<td th:if="${item.loginAccount ne 'admin' and item.loginAccount ne 'guest' }"></td>
-                					<td th:if="${item.loginAccount eq 'admin' or item.loginAccount eq 'guest' }">操作</td>
+                					<td th:if="${item.loginAccount eq 'admin' or item.loginAccount eq 'guest' }">
+                						<a sec:authorize="hasRole('ROLE_SYSTEM_USER_EDIT')" href="#" class="fa fa-pencil" title="编辑"></a>
+                						<a sec:authorize="hasRole('ROLE_SYSTEM_USER_DEL')" href="#" class="fa fa-times" title="删除"></a>
+                					</td>
                 				</tr>
                 			</tbody>
              			 </table>
@@ -131,7 +134,7 @@
 <script src="assets/js/core.js" type="text/javascript"></script>
 <script src="assets/js/chat.js" type="text/javascript"></script> 
 <script src="assets/js/demo.js" type="text/javascript"></script> -->
-
+		
 <body th:include="frame :: frame_js" />
 </body>
 <!-- END BODY -->

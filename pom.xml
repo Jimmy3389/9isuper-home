@@ -19,12 +19,12 @@
 	</parent>
 
 	<modules>
-		<!-- <module>9isuper-home-domain</module>
+		<module>9isuper-home-domain</module>
 		<module>9isuper-home-common</module>
 		<module>9isuper-home-service</module>
 		<module>9isuper-home-oauth</module>
 		<module>9isuper-home-sso</module>
-		<module>9isuper-home-web</module> -->
+		<module>9isuper-home-web</module>
 	</modules>
 
 	<properties>
@@ -161,6 +161,10 @@
 			<scope>provided</scope>
 		</dependency>
 		<!-- Add querydsl Support End -->
+		<dependency>
+			<groupId>org.thymeleaf.extras</groupId>
+			<artifactId>thymeleaf-extras-springsecurity4</artifactId>
+		</dependency>
 	</dependencies>
 
 

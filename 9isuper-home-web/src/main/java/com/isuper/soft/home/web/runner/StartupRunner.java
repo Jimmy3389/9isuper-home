@@ -353,6 +353,7 @@ public class StartupRunner implements CommandLineRunner {
 			systemUser.setNickName("Jimmy3389");
 			systemUser.setRealName("系统管理员");
 			systemUser.setRemark("系统自动创建");
+			systemUser.setUserPic("https://avatars2.githubusercontent.com/u/16607231?v=4&s=460");
 			if (CollectionUtils.isNotEmpty(groups)) {
 				for (SystemGroup systemGroup : groups) {
 					if (systemGroup.getId().equals("0")) {
