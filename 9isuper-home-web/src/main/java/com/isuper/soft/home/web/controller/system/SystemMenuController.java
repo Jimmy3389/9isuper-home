@@ -1,4 +1,4 @@
-package com.isuper.soft.home.web.controller;
+package com.isuper.soft.home.web.controller.system;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,29 +15,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.isuper.soft.home.service.SystemMenuService;
 import com.isuper.soft.home.service.SystemUserService;
+import com.isuper.soft.home.web.controller.BaseController;
 
 @Controller
-@RequestMapping(value = "system/user")
-public class SystemUserController extends BaseController {
+@RequestMapping(value = "system/menu")
+public class SystemMenuController extends BaseController {
 
-	private static final Logger logger = LoggerFactory.getLogger(SystemUserController.class);
+	private static final Logger logger = LoggerFactory.getLogger(SystemMenuController.class);
 
 	@Inject
-	private SystemUserService systemUserService;
+	private SystemMenuService systemMenuService;
 
-	@PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_USER_LIST')")
+	@PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_MENU_LIST')")
 	@RequestMapping(value = { "", "list" })
 	@ResponseBody
 	public ModelAndView toList(Model model) {
-		model.addAttribute("allSystemUsers", this.systemUserService.findAllUser());
-		return new ModelAndView("system/userlist");
+		model.addAttribute("allSystemMenus", this.systemMenuService.findAllMenu());
+		return new ModelAndView("system/menulist");
 	}
 
-	@PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_USER_DEL')")
+	@PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_MENU_DEL')")
 	@RequestMapping(value = "/delete")
 	@ResponseBody
-	public Map<String, Object> deleteSystemUser(HttpServletRequest request) {
+	public Map<String, Object> deleteSystemMenu(HttpServletRequest request) {
 		Map<String, Object> result = new HashMap<>();
 		try {
 			result.put("status", true);
@@ -48,11 +50,11 @@ public class SystemUserController extends BaseController {
 		}
 		return result;
 	}
-	
-	@PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_USER_EDIT')")
+
+	@PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_MENU_EDIT')")
 	@RequestMapping(value = "/edit")
 	@ResponseBody
-	public Map<String, Object> editSystemUser(HttpServletRequest request) {
+	public Map<String, Object> editSystemMenu(HttpServletRequest request) {
 		Map<String, Object> result = new HashMap<>();
 		try {
 			result.put("status", true);

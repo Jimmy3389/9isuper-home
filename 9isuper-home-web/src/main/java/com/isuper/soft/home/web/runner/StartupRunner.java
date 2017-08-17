@@ -225,6 +225,7 @@ public class StartupRunner implements CommandLineRunner {
 			systemMenu.setRoleTag("ROLE_SYSTEM_MENU_LIST");// 具有ADMIN权限才能使用该菜单
 			systemMenu.setSystemId("0");
 			systemMenu.setUpdater("0");
+			systemMenu.setSourceUrl("/system/menu/list");
 			systemMenu.setMenuIco("fa-times");
 			rootMenus.add(systemMenuRepository.save(systemMenu));
 		}

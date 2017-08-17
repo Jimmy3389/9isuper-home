@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:include="frame :: frame_header" />
+
+<!-- BEGIN BODY -->
+<body class="" >
+	
+<div class="page-content">
+	<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+   	<div class="clearfix">
+    	<ul class="breadcrumb">
+        	<li>
+          		<p>当前位置</p>
+        	</li>
+        	<li>
+        		<a href="#" class="active">菜单列表</a> 
+        	</li>
+      	</ul>
+      	
+      	<div class="page-title"> 
+      		<i class="icon-custom-left"></i>
+        	<h3>系统菜单 - <span class="semi-bold">菜单清单</span></h3>
+      	</div>
+      
+      	<div class="row-fluid">
+        	<div class="span12">
+          		<div class="grid simple ">
+            		<div class="grid-title">
+              			<h4>用户列表</h4>
+              			<div class="tools"> 
+              				<a sec:authorize="hasRole('ROLE_SYSTEM_USER_ADD')" href="javascript:;" class="add" ></a> 
+              				<a href="#grid-config" data-toggle="modal" class="config"></a> 
+              				<a href="javascript:;" class="reload" ></a> 
+              			</div>
+            		</div>
+            
+            		<div class="grid-body ">
+              			<table class="table table-striped" id="example2" >
+                			<thead>
+                  				<tr>
+                    				<th>菜单名称</th>
+                    				<th>所属系统</th>
+                    				<th>菜单URL</th>
+                    				<th>是否显示</th>
+                    				<th>排序号</th>
+                    				<th>菜单权限</th>
+                    				<th>菜单状态</th>
+                    				<th>操作</th>
+                  				</tr>
+                			</thead>
+                			<tbody>
+                				<tr th:each="item : ${allSystemMenus}" th:if="${item.parentId eq '0'}">
+                					<td th:text="${item.menuName}"></td>
+                					<td th:text="${item.systemId}"></td>
+                					<td th:text="${item.sourceUrl}"></td>
+                					<td th:text="${item.isShow}"></td>
+                					<td th:text="${item.menuSort}"></td>
+                					<td th:text="${item.roleTag}"></td>
+                					<td th:text="${item.enableFlag}"></td>
+                					<td th:if="${item.id ne '0'}">
+                						<a sec:authorize="hasRole('ROLE_SYSTEM_USER_EDIT')" href="#" class="fa fa-pencil" title="编辑"></a>
+                						<a sec:authorize="hasRole('ROLE_SYSTEM_USER_DEL')" href="#" class="fa fa-times" title="删除" th:onclick="'javascript:deleteUser(\''+${item.id}+'\');'"></a>
+                					</td>
+                				</tr>
+                			</tbody>
+             			 </table>
+           			</div>
+          		</div>
+        	</div>
+      	</div>
+	</div>
+</div>
+
+<div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUserModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        	<form role="form"  th:action="@{/system/user/delete}" method="post" autocomplete="off" id="f" >
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    			<br>
+	                <h4 id="myModalLabel" class="semi-bold">删除用户</h4>
+	                <p class="no-margin"><span class="fa fa-info-circle"></span>  确认需要需要删除该用户？ </p>
+	                <br>
+	         	</div>
+	         	<div class="modal-footer">
+	            	<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	              	<button type="submit" class="btn btn-primary">确定</button>
+	       		</div>
+       		</form>
+   		</div>
+    </div>
+</div>
+ 
+ <!-- BEGIN CORE JS FRAMEWORK-->
+<script th:src="@{/plugins/jquery-1.8.3.min.js}" type="text/javascript"></script>
+<script th:src="@{/plugins/jquery-ui/jquery-ui-1.10.1.custom.min.js}" type="text/javascript"></script>
+<script th:src="@{/plugins/bootstrap/js/bootstrap.min.js}" type="text/javascript"></script>
+<script th:src="@{/plugins/breakpoints.js}" type="text/javascript"></script>
+<script th:src="@{/plugins/jquery-unveil/jquery.unveil.min.js}" type="text/javascript"></script>
+<!-- END CORE JS FRAMEWORK -->
+<!-- BEGIN PAGE LEVEL JS -->
+<script th:src="@{/plugins/jquery-block-ui/jqueryblockui.js}" type="text/javascript"></script> 
+<script th:src="@{/plugins/jquery-slider/jquery.sidr.min.js}" type="text/javascript"></script>
+<script th:src="@{/plugins/jquery-numberAnimate/jquery.animateNumbers.js}" type="text/javascript"></script>
+<script th:src="@{/plugins/jquery-slimscroll/jquery.slimscroll.min.js}" type="text/javascript"></script>
+<script th:src="@{/plugins/bootstrap-select2/select2.min.js}" type="text/javascript"></script>
+<script th:src="@{/plugins/jquery-datatable/js/jquery.dataTables.min.js}" type="text/javascript" ></script>
+<script th:src="@{/plugins/jquery-datatable/extra/js/TableTools.min.js}" type="text/javascript" ></script>
+<script type="text/javascript" th:src="@{/plugins/datatables-responsive/js/datatables.responsive.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/datatables-responsive/js/lodash.min.js}"></script>
+<!-- END PAGE LEVEL PLUGINS -->
+ <script th:src="@{/js/datatables.js}" type="text/javascript"></script>
+<!--BEGIN CORE TEMPLATE JS
+<script src="assets/js/core.js" type="text/javascript"></script>
+<script src="assets/js/chat.js" type="text/javascript"></script> 
+<script src="assets/js/demo.js" type="text/javascript"></script> -->
+<script th:inline="javascript">
+function deleteUser(id){
+	$('#deleteUserModal').find('#id').val(id);
+	$('#deleteUserModal').modal('show');
+}
+</script>
+		
+<body th:include="frame :: frame_js" />
+</body>
+<!-- END BODY -->
+</html>
