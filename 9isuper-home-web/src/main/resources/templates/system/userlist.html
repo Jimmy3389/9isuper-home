@@ -31,7 +31,7 @@
             		<div class="grid-title">
               			<h4>用户列表</h4>
               			<div class="tools"> 
-              				<a href="javascript:;" class="collapse"></a> 
+              				<a sec:authorize="hasRole('ROLE_SYSTEM_USER_ADD')" href="javascript:;" class="add" ></a> 
               				<a href="#grid-config" data-toggle="modal" class="config"></a> 
               				<a href="javascript:;" class="reload" ></a> 
               			</div>
@@ -73,11 +73,12 @@
                 					<td hidden="hidden" th:text="${item.loginCount  eq null ? '0' : item.loginCount}"> </td>
                 					<td hidden="hidden" th:text="${item.birthDay eq null ? '--': #calendars.format(item.birthDay,'yyyy-MM-dd HH:mm:ss')}"> </td>
                 					<td hidden="hidden" th:text="${item.userPic}"> </td>
-                					<td th:if="${item.loginAccount ne 'admin' and item.loginAccount ne 'guest' }"></td>
-                					<td th:if="${item.loginAccount eq 'admin' or item.loginAccount eq 'guest' }">
+                					<!-- <td th:if="${item.loginAccount ne 'admin' and item.loginAccount ne 'guest' }"> -->
+                					<td th:if="${item.loginAccount ne 'admin'}">
                 						<a sec:authorize="hasRole('ROLE_SYSTEM_USER_EDIT')" href="#" class="fa fa-pencil" title="编辑"></a>
                 						<a sec:authorize="hasRole('ROLE_SYSTEM_USER_DEL')" href="#" class="fa fa-times" title="删除"></a>
                 					</td>
+                					<td th:if="${item.loginAccount eq 'admin'}"></td>
                 				</tr>
                 			</tbody>
              			 </table>
@@ -86,29 +87,6 @@
         	</div>
       	</div>
 	</div>
-	
-	<div class="admin-bar" id="quick-access" style="display:">
-		<div class="admin-bar-inner">
-			<div class="form-horizontal">
-				<select id="val1" class="select2-wrapper">
-	              	<option value="Gecko">Gecko</option>
-	              	<option value="Webkit">Webkit</option>
-	              	<option value="KHTML">KHTML</option>
-	              	<option value="Tasman">Tasman</option>
-         		</select>
-           		<select id="val2" class="select2-wrapper">
-	              	<option value="Internet Explorer 10">Internet Explorer 10</option>
-	              	<option value="Firefox 4.0">Firefox 4.0</option>
-	              	<option value="Chrome">Chrome</option>
-            	</select>
-          	</div>
-          	<button class="btn btn-primary btn-cons btn-add" type="button">Add Browser</button>
-          	<button class="btn btn-white btn-cons btn-cancel" type="button">Cancel</button>
-       	</div>
-	</div>
-
-	<div class="addNewRow"></div>
-
 </div>
  
  <!-- BEGIN CORE JS FRAMEWORK-->
