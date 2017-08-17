@@ -185,9 +185,9 @@
 							</div>
 						</div>
 						<div class="profile-pic">
-							<img th:src="${systemUser.userPic}" alt=""
-								th:data-src="${systemUser.userPic}"
-								data-src-retina="img/profiles/avatar_small2x.jpg" width="35"
+							<img th:src="${systemUser.userPic eq null ? '/img/profiles/df.jpg' : systemUser.userPic}" alt=""
+								th:data-src="${systemUser.userPic eq null ? '/img/profiles/df.jpg' : systemUser.userPic}"
+								data-src-retina="/img/profiles/df.jpg" width="35"
 								height="35" src="" />
 						</div>
 					</div>
@@ -263,9 +263,9 @@
 		<!-- BEGIN MINI-PROFILE -->
 		<div class="user-info-wrapper">
 			<div class="profile-wrapper">
-				<img th:src="${systemUser.userPic}" alt=""
-					th:data-src="${systemUser.userPic}"
-					data-src-retina="img/profiles/avatar2x.jpg" width="69" height="69"
+				<img th:src="${systemUser.userPic eq null ? '/img/profiles/df.jpg' : systemUser.userPic}" alt=""
+					th:data-src="${systemUser.userPic eq null ? '/img/profiles/df.jpg' : systemUser.userPic}"
+					data-src-retina="/img/profiles/df.jpg" width="69" height="69"
 					src="" />
 			</div>
 			<div class="user-info">
