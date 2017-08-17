@@ -32,8 +32,8 @@
               			<h4>用户列表</h4>
               			<div class="tools"> 
               				<a href="javascript:;" class="collapse"></a> 
-              				<a href="#grid-config" data-toggle="modal" class=""></a> 
-              				<a href="javascript:;" class="reload"></a> <a href="javascript:;" class="remove"></a> 
+              				<a href="#grid-config" data-toggle="modal" class="config"></a> 
+              				<a href="javascript:;" class="reload" ></a> 
               			</div>
             		</div>
             
@@ -63,14 +63,18 @@
                 					<td th:text="${item.realName}"></td>
                 					<td th:text="${item.countryCode eq null ? '' : '+'+item.countryCode + ' ' + item.mobile }"></td>
                 					<td th:text="${item.email}"></td>
-                					<td th:text="${item.lockType}"></td>
+                					<td th:switch="${item.lockType}">
+                						<span th:case="0">正常</span>
+                						<span th:case="*">Unknown</span>
+                					</td>
                 					<td th:text="${item.expireDate eq null ? '--': #calendars.format(item.expireDate,'yyyy-MM-dd HH:mm:ss')}" ></td>
                 					<td hidden="hidden" th:text="${item.currentLoginTime eq null ? '--': #calendars.format(item.currentLoginTime,'yyyy-MM-dd HH:mm:ss')}"> </td>
                 					<td hidden="hidden" th:text="${item.currentloginIp eq null ? '--': item.currentloginIp}"> </td>
                 					<td hidden="hidden" th:text="${item.loginCount  eq null ? '0' : item.loginCount}"> </td>
                 					<td hidden="hidden" th:text="${item.birthDay eq null ? '--': #calendars.format(item.birthDay,'yyyy-MM-dd HH:mm:ss')}"> </td>
                 					<td hidden="hidden" th:text="${item.userPic}"> </td>
-                					<th>操作</th>
+                					<td th:if="${item.loginAccount ne 'admin' and item.loginAccount ne 'guest' }"></td>
+                					<td th:if="${item.loginAccount eq 'admin' or item.loginAccount eq 'guest' }">操作</td>
                 				</tr>
                 			</tbody>
              			 </table>

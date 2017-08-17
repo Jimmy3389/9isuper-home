@@ -305,7 +305,6 @@ $(document).ready(function() {
 function fnFormatDetails ( oTable, nTr )
 {
     var aData = oTable.fnGetData( nTr );
-    alert(aData[8]);
     var sOut = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;" class="inner-table">';
     sOut += '<tr><td>登陆时间</td><td>'+aData[8]+'</td><td>登陆IP</td><td>'+aData[9]+'</td></tr>';
     sOut += '<tr><td>登陆次数:</td><td>'+aData[10]+'</td><td>会员生日:</td><td>'+aData[11]+'</td></tr>';
