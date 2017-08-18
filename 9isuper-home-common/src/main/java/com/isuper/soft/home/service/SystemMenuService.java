@@ -7,8 +7,6 @@ import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Service;
 
 import com.isuper.soft.home.domain.system.entity.QSystemMenu;
@@ -39,8 +37,26 @@ public class SystemMenuService {
 
 	public List<SystemMenu> findAllMenu() {
 		BooleanBuilder booleanBuilder = new BooleanBuilder();
-		BooleanBuilder orBuilder = new BooleanBuilder();
 		booleanBuilder.and(qSystemMenu.delFlag.eq(false));
-		return (List<SystemMenu>) systemMenuRepository.findAll(orBuilder.getValue());
+		return (List<SystemMenu>) systemMenuRepository.findAll(booleanBuilder.getValue(),this.sortByMenuSortAsc());
 	}
+	
+	public List<SystemMenu> findMainMenu() {
+		BooleanBuilder booleanBuilder = new BooleanBuilder();
+		booleanBuilder.and(qSystemMenu.delFlag.eq(false));
+		booleanBuilder.and(qSystemMenu.parentId.eq("0"));
+		return (List<SystemMenu>) systemMenuRepository.findAll(booleanBuilder.getValue(),this.sortByMenuSortAsc());
+	}
+	
+	public List<SystemMenu> findByParentId(String parentId) {
+		BooleanBuilder booleanBuilder = new BooleanBuilder();
+		booleanBuilder.and(qSystemMenu.delFlag.eq(false));
+		booleanBuilder.and(qSystemMenu.parentId.eq(parentId));
+		return (List<SystemMenu>) systemMenuRepository.findAll(booleanBuilder.getValue(),this.sortByMenuSortAsc());
+	}
+	
+    private Sort sortByMenuSortAsc() {
+        return new Sort(Sort.Direction.ASC, "menuSort");
+    }
+	
 }

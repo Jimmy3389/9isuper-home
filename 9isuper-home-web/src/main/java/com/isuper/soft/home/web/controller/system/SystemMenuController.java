@@ -1,6 +1,7 @@
 package com.isuper.soft.home.web.controller.system;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -15,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.isuper.soft.home.domain.system.entity.SystemMenu;
 import com.isuper.soft.home.service.SystemMenuService;
-import com.isuper.soft.home.service.SystemUserService;
 import com.isuper.soft.home.web.controller.BaseController;
 
 @Controller
@@ -64,5 +65,12 @@ public class SystemMenuController extends BaseController {
 			result.put("message", "删除异常");
 		}
 		return result;
+	}
+	
+	@PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_MENU_LIST')")
+	@RequestMapping("queryChildMenus")
+	@ResponseBody
+	public List<SystemMenu> queryChildMenus(String parentId){
+		return this.systemMenuService.findByParentId(parentId);
 	}
 }
