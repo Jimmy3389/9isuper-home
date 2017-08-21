@@ -149,11 +149,11 @@ function expandMenu(id,level){
 						addTable += "<td class=\"fa fa-plus\" id=\"menu_expand_status_"+data.id+"\" onclick=\"javascript:expandMenu('"+data.id+"',"+(level+1)+");\"></td>";
 					}
 					if(level == 0){
-						addTable += "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+data.menuName+"</td>";
+						addTable += "<td>&nbsp;&nbsp;&nbsp;"+data.menuName+"</td>";
 					}else if(level == 1){
-						addTable += "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+data.menuName+"</td>";
+						addTable += "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+data.menuName+"</td>";
 					}else{
-						addTable += "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+data.menuName+"</td>";
+						addTable += "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+data.menuName+"</td>";
 					}
 					addTable += "<td>"+data.systemId+"</td>";
 					addTable += "<td>"+(data.sourceUrl == null ? "" : data.sourceUrl)+"</td>";
