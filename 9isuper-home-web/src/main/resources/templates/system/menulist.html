@@ -29,7 +29,7 @@
         	<div class="span12">
           		<div class="grid simple ">
             		<div class="grid-title">
-              			<h4>用户列表</h4>
+              			<h4>菜单列表</h4>
               			<div class="tools"> 
               				<a sec:authorize="hasRole('ROLE_SYSTEM_USER_ADD')" href="javascript:;" class="add" ></a> 
               				<a href="#grid-config" data-toggle="modal" class="config"></a> 
@@ -59,7 +59,7 @@
                 					<td hidden="hidden">
                 					<input th:id="${'menu_list_expend_'+item.id}" hidden="hidden" value="0"></input>
                 					</td>
-                					<td class="fa fa-plus" th:id="${'menu_expand_status_'+item.id}" th:onclick="'javascript:expandMenu(\''+${item.id}+'\',0);'"></td>
+                					<td class="fa fa-arrow-circle-right" th:id="${'menu_expand_status_'+item.id}" th:onclick="'javascript:expandMenu(\''+${item.id}+'\',0);'"></td>
                 					<td th:text="${item.menuName}"></td>
                 					<td th:text="${item.systemId}"></td>
                 					<td th:text="${item.sourceUrl}"></td>
@@ -67,9 +67,17 @@
                 					<td th:text="${item.menuSort}"></td>
                 					<td th:text="${item.roleTag}"></td>
                 					<td th:text="${item.enableFlag ? '启用':'禁用'}"></td>
-                					<td th:if="${item.id ne '0'}">
-                						<a sec:authorize="hasRole('ROLE_SYSTEM_USER_EDIT')" href="#" class="fa fa-pencil" title="编辑"></a>
-                						<a sec:authorize="hasRole('ROLE_SYSTEM_USER_DEL')" href="#" class="fa fa-times" title="删除" th:onclick="'javascript:deleteMenu(\''+${item.id}+'\');'"></a>
+                					<td th:if="${#strings.length(item.id) gt 10 }">
+                						<a sec:authorize="hasRole('ROLE_SYSTEM_MENU_ADD')" href="#" class="fa fa-plus" title="添加下级菜单"  th:onclick="'javascript:addMenu(\''+${item.id}+'\',\''+${item.menuName}+'\');'"></a>
+                						<sec:authorize access="hasRole('ROLE_SYSTEM_MENU_ADD')">
+                							&nbsp;&nbsp;&nbsp;<a href="#" class="fa fa-pencil" title="编辑"></a>
+                						</sec:authorize>
+                						<sec:authorize access="hasRole('ROLE_SYSTEM_MENU_ADD')">
+                							&nbsp;&nbsp;&nbsp;<a href="#" class="fa fa-times" title="删除" th:onclick="'javascript:deleteMenu(\''+${item.id}+'\');'"></a>
+                						</sec:authorize>
+                					</td>
+                					<td th:if="${#strings.length(item.id) le 10 }">
+                						<a sec:authorize="hasRole('ROLE_SYSTEM_MENU_ADD')" href="#" class="fa fa-plus" title="添加下级菜单" th:onclick="'javascript:addMenu(\''+${item.id}+'\',\''+${item.menuName}+'\');'"></a>
                 					</td>
                 				</tr>
                 			</tbody>
@@ -101,6 +109,118 @@
     </div>
 </div>
  
+ 
+ <div class="modal fade" id="deleteMenuModal" tabindex="-1" role="dialog" aria-labelledby="deleteMenuModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        	<form role="form"  th:action="@{/system/menu/delete}" method="post" autocomplete="off" id="f" >
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    			<br>
+	                <h4 id="myModalLabel" class="semi-bold">删除菜单</h4>
+	                <p class="no-margin"><span class="fa fa-info-circle"></span>  确认需要需要删除该菜单？ </p>
+	                <input type="hidden" id="id" name="id" value=""></input>
+	                <br>
+	         	</div>
+	         	<div class="modal-footer">
+	            	<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	              	<button type="submit" class="btn btn-primary">确定</button>
+	       		</div>
+       		</form>
+   		</div>
+    </div>
+</div>
+ 
+<!-- addChildMenuModal Modal -->
+<div class="modal fade" id="addChildMenuModal" tabindex="-1" role="dialog" aria-labelledby="addChildMenuModal" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<br>
+					<i class="icon-credit-card icon-7x"></i>
+					<h4 id="myModalLabel" class="semi-bold">添加菜单</h4>
+				<br>
+			</div>
+			<form id="form_traditional_validation" th:action="@{/system/menu/doAdd}" method="post" autocomplete="off">
+				<div class="grid simple">
+					<div class="grid-body no-border">
+						<div class="row-fluid">
+							<div class="input-group">
+				  				<span class="input-group-addon primary">				  
+				  					<span class="arrow"></span>
+									<i class="fa fa-align-justify"></i>
+				  				</span>
+				  				<input type="text" class="form-control" id="menuName" name="menuName" placeholder="菜单名称">
+							</div>
+							<br>
+							<div class="input-group">
+				  				<span class="input-group-addon primary">				  
+				  					<span class="arrow"></span>
+									<i class="fa fa-align-justify"></i>
+				  				</span>
+				  				<input type="text" class="form-control" id="menuTile" name="menuTile" placeholder="菜单标题">
+							</div>
+							<br>
+							<div class="input-group">
+				  				<span class="input-group-addon primary">				  
+				  					<span class="arrow"></span>
+									<i class="fa fa-align-justify"></i>
+				  				</span>
+				  				<input type="text" class="form-control" id="roleTag" name="roleTag" placeholder="菜单权限">
+							</div>
+							<br>
+							<div class="input-group">
+				  				<span class="input-group-addon primary">				  
+				  					<span class="arrow"></span>
+									<i class="fa fa-align-justify"></i>
+				  				</span>
+				  				<input type="text" class="form-control" id="systemId" name="systemId" placeholder="所属系统" value="0">
+							</div>
+							<br>
+							<div class="input-group">
+				  				<span class="input-group-addon primary">				  
+				  					<span class="arrow"></span>
+									<i class="fa fa-align-justify"></i>
+				  				</span>
+				  				<input type="text" class="form-control" id="sourceUrl" name="sourceUrl" placeholder="菜单路径">
+							</div>
+							<br>
+                    		<div class="radio radio-success">
+                     			<input id="yes" type="radio" name="isShow" value="yes" checked="checked">
+                      			<label for="yes">显示菜单</label>
+                      			<input id="no" type="radio" name="isShow" value="no" >
+                      			<label for="no">隐藏菜单</label>
+                    		</div>
+							<br>
+							<div class="input-group">
+				  				<span class="input-group-addon primary">				  
+				  					<span class="arrow"></span>
+									<i class="fa fa-align-justify"></i>
+				  				</span>
+				  				<input type="text" class="form-control" id="menuSort" name="menuSort" placeholder="菜单排序">
+							</div>
+							<br>
+							<select id="parentId" name="parentId" style="width:100%">
+								<option value="0">顶级菜单</option>
+							</select>
+
+					       	<div class="modal-footer">
+					     		<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					            <button type="submit" class="btn btn-primary">确定</button>
+					       	</div>
+					       	<br>
+				         </div>
+			         </div>
+		         </div>
+	         </form>
+     	</div>
+          <!-- /.modal-content -->
+  		</div>
+       <!-- /.modal-dialog -->
+</div>
+<!-- /.addChildMenuModal -->
+ 
  <!-- BEGIN CORE JS FRAMEWORK-->
 <script th:src="@{/plugins/jquery-1.8.3.min.js}" type="text/javascript"></script>
 <script th:src="@{/plugins/jquery-ui/jquery-ui-1.10.1.custom.min.js}" type="text/javascript"></script>
@@ -129,8 +249,8 @@ function expandMenu(id,level){
 	var expendStatus = $("#menu_list_expend_" + id).val();
 	if(expendStatus == '0'){
 		$("#menu_list_expend_" + id).val('1');
-		$("#menu_expand_status_" + id).removeClass("fa fa-plus");
-		$("#menu_expand_status_" + id).addClass("fa fa-minus");
+		$("#menu_expand_status_" + id).removeClass("fa fa-arrow-circle-right");
+		$("#menu_expand_status_" + id).addClass("fa fa-arrow-circle-down");
 		$.ajax({
 			url : "queryChildMenus",
 			timeout : 1000, // 超时时间设置，单位毫秒
@@ -146,7 +266,7 @@ function expandMenu(id,level){
 					if(level == 2){
 						addTable += "<td></td>";
 					}else{
-						addTable += "<td class=\"fa fa-plus\" id=\"menu_expand_status_"+data.id+"\" onclick=\"javascript:expandMenu('"+data.id+"',"+(level+1)+");\"></td>";
+						addTable += "<td class=\"fa fa-arrow-circle-right\" id=\"menu_expand_status_"+data.id+"\" onclick=\"javascript:expandMenu('"+data.id+"',"+(level+1)+");\"></td>";
 					}
 					if(level == 0){
 						addTable += "<td>&nbsp;&nbsp;&nbsp;"+data.menuName+"</td>";
@@ -161,7 +281,14 @@ function expandMenu(id,level){
 					addTable += "<td>"+data.menuSort+"</td>";
 					addTable += "<td>"+data.roleTag+"</td>";
 					addTable += "<td>"+(data.enableFlag?"启用":"禁用")+"</td>";
-					addTable += "<td><a sec:authorize=\"hasRole('ROLE_SYSTEM_USER_EDIT')\" href=\"#\" class=\"fa fa-pencil\" title=\"编辑\"></a><a sec:authorize=\"hasRole('ROLE_SYSTEM_USER_DEL')\" href=\"#\" class=\"fa fa-times\" title=\"删除\" onclick=\"javascript:deleteMenu(\''+${item.id}+'\');\"></a></td>";
+					addTable += "<td>";
+					if(level != 2){
+						addTable += "<a sec:authorize=\"hasRole('ROLE_SYSTEM_MENU_ADD')\" href=\"#\" class=\"fa fa-plus\" title=\"添加下级菜单\"  onclick=\"javascript:addMenu('"+data.id+"','"+data.menuName+"');\"></a>";
+					}
+					if(data.id !=null && data.id.length > 10){
+						addTable += "&nbsp;&nbsp;&nbsp;<a sec:authorize=\"hasRole('ROLE_SYSTEM_USER_EDIT')\" href=\"#\" class=\"fa fa-pencil\" title=\"编辑\"></a>&nbsp;&nbsp;&nbsp;<a sec:authorize=\"hasRole('ROLE_SYSTEM_USER_DEL')\" href=\"#\" class=\"fa fa-times\" title=\"删除\" onclick=\"javascript:deleteMenu(\''+${item.id}+'\');\"></a>";
+					}
+					addTable += "</td>";
 					addTable += "</tr>"
 					$("#menu_list_"+id).after(addTable);
 				});
@@ -169,8 +296,8 @@ function expandMenu(id,level){
 		});
 	}else{
 		$("#menu_list_expend_" + id).val('0');
-		$("#menu_expand_status_" + id).removeClass("fa fa-minus");
-		$("#menu_expand_status_" + id).addClass("fa fa-plus");
+		$("#menu_expand_status_" + id).removeClass("fa fa-arrow-circle-down");
+		$("#menu_expand_status_" + id).addClass("fa fa-arrow-circle-right");
 		delChildRow(id);
 	}
 }
@@ -184,6 +311,20 @@ function delChildRow(id){
 		}
 		$(this).parent().remove();
 	});
+}
+
+function deleteMenu(id){
+	$('#deleteMenuModal').find('#id').val(id);
+	$('#deleteMenuModal').modal('show');
+}
+
+
+function addMenu(parentId,parentName){
+	$('#form_traditional_validation')[0].reset();
+	$("#parentId").empty(); 
+	$("#parentId").append("<option value='"+parentId+"' selected=\"selected\" >上级菜单-->"+parentName+"</option>");
+	$("#parentId").append("<option value='0'>顶级菜单</option>");
+	$('#addChildMenuModal').modal('show');
 }
 </script>
 		

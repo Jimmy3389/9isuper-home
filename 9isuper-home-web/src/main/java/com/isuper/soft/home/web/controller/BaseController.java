@@ -27,6 +27,8 @@ public class BaseController {
 	public void getRequestInfo(HttpServletRequest request) {
 		// 设置IP
 		remoteIp = NetworkUtil.getClientIpAddr(request);
+		SystemUser systemUser = this.getCurrentUser();
+		logger.debug(systemUser.getLoginAccount());
 		// 获取可以访问的目录
 	}
 

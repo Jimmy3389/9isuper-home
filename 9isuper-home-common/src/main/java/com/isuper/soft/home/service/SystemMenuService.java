@@ -1,6 +1,7 @@
 package com.isuper.soft.home.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -38,25 +39,38 @@ public class SystemMenuService {
 	public List<SystemMenu> findAllMenu() {
 		BooleanBuilder booleanBuilder = new BooleanBuilder();
 		booleanBuilder.and(qSystemMenu.delFlag.eq(false));
-		return (List<SystemMenu>) systemMenuRepository.findAll(booleanBuilder.getValue(),this.sortByMenuSortAsc());
+		return (List<SystemMenu>) systemMenuRepository.findAll(booleanBuilder.getValue(), this.sortByMenuSortAsc());
 	}
-	
+
 	public List<SystemMenu> findMainMenu() {
 		BooleanBuilder booleanBuilder = new BooleanBuilder();
 		booleanBuilder.and(qSystemMenu.delFlag.eq(false));
 		booleanBuilder.and(qSystemMenu.parentId.eq("0"));
-		return (List<SystemMenu>) systemMenuRepository.findAll(booleanBuilder.getValue(),this.sortByMenuSortAsc());
+		return (List<SystemMenu>) systemMenuRepository.findAll(booleanBuilder.getValue(), this.sortByMenuSortAsc());
 	}
-	
+
 	public List<SystemMenu> findByParentId(String parentId) {
 		BooleanBuilder booleanBuilder = new BooleanBuilder();
 		booleanBuilder.and(qSystemMenu.delFlag.eq(false));
 		booleanBuilder.and(qSystemMenu.parentId.eq(parentId));
-		return (List<SystemMenu>) systemMenuRepository.findAll(booleanBuilder.getValue(),this.sortByMenuSortAsc());
+		return (List<SystemMenu>) systemMenuRepository.findAll(booleanBuilder.getValue(), this.sortByMenuSortAsc());
 	}
-	
-    private Sort sortByMenuSortAsc() {
-        return new Sort(Sort.Direction.ASC, "menuSort");
-    }
-	
+
+	private Sort sortByMenuSortAsc() {
+		return new Sort(Sort.Direction.ASC, "menuSort");
+	}
+
+	public void addMenu(SystemMenu systemMenu) {
+		this.systemMenuRepository.save(systemMenu);
+	}
+
+	public void delMenu(String id,String creater) {
+		SystemMenu menu = this.findMenuById(id);
+		if (menu != null && StringUtils.isNotBlank(menu.getId())) {
+			menu.setDelFlag(true);
+			menu.setUpdater(creater);
+			menu.setUpdateDate(new Date());
+			this.systemMenuRepository.save(menu);
+		}
+	}
 }

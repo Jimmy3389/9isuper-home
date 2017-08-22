@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -36,20 +38,13 @@ public class SystemMenuController extends BaseController {
 		model.addAttribute("allSystemMenus", this.systemMenuService.findAllMenu());
 		return new ModelAndView("system/menulist");
 	}
-
+	
 	@PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_MENU_DEL')")
-	@RequestMapping(value = "/delete")
+	@RequestMapping(value = { "delete", "doDelete" },method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> deleteSystemMenu(HttpServletRequest request) {
-		Map<String, Object> result = new HashMap<>();
-		try {
-			result.put("status", true);
-			result.put("message", "删除成功");
-		} catch (Exception e) {
-			result.put("status", false);
-			result.put("message", "删除异常");
-		}
-		return result;
+	public ModelAndView doAdd(String id, HttpServletRequest request, HttpServletResponse response, Model model) {
+		this.systemMenuService.delMenu(id,super.getCurrentUser().getId());
+		return this.toList(model);
 	}
 
 	@PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_MENU_EDIT')")
@@ -72,5 +67,20 @@ public class SystemMenuController extends BaseController {
 	@ResponseBody
 	public List<SystemMenu> queryChildMenus(String parentId){
 		return this.systemMenuService.findByParentId(parentId);
+	}
+	
+	
+	@PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_MENU_ADD')")
+	@RequestMapping(value = { "add", "doAdd" },method = RequestMethod.POST)
+	@ResponseBody
+	public ModelAndView doAdd(SystemMenu systemMenu, HttpServletRequest request, HttpServletResponse response, Model model) {
+		if(systemMenu.getEnableFlag() == null) {
+			systemMenu.setEnableFlag(true);
+		}
+		systemMenu.setDelFlag(false);
+		systemMenu.setCreater(super.getCurrentUser().getId());
+		systemMenu.setUpdater(super.getCurrentUser().getId());
+		this.systemMenuService.addMenu(systemMenu);
+		return this.toList(model);
 	}
 }
