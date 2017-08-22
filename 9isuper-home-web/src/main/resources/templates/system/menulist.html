@@ -141,7 +141,7 @@ function expandMenu(id,level){
 			success : function(list) {
 				$.each(list, function(index, data){
 					var addTable= "<tr id=\"menu_list_"+data.id+"\" name=\"menu_list_"+data.id+"\">";
-					addTable += "<td class=\"parentId_"+data.parentId+"\" hidden=\"hidden\"> </td>";
+					addTable += "<td class=\"parentId_"+data.parentId+"\" hidden=\"hidden\" id=\"menu_id_"+data.id+"\" ></td>";
 					addTable += "<td hidden=\"hidden\"><input id=\"menu_list_expend_"+data.id+"\" hidden=\"hidden\" value=\"0\"></input></td>";
 					if(level == 2){
 						addTable += "<td></td>";
@@ -171,10 +171,19 @@ function expandMenu(id,level){
 		$("#menu_list_expend_" + id).val('0');
 		$("#menu_expand_status_" + id).removeClass("fa fa-minus");
 		$("#menu_expand_status_" + id).addClass("fa fa-plus");
-		$(".parentId_"+id).each(function () {
-			$(this).parent().remove();
-		});
+		 delChildRow(id);
 	}
+}
+
+function delChildRow(id){
+	$(".parentId_"+id).each(function () {
+		var childId = $(this).attr("id");
+		if(childId != null){
+			var child = childId.substring(8,childId.length);
+			delChildRow(child);
+		}
+		$(this).parent().remove();
+	});
 }
 </script>
 		
