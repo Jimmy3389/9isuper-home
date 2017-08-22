@@ -20,6 +20,9 @@ public class BaseController {
 
 	protected SystemUser getCurrentUser() {
 		Object pinciba = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if(pinciba==null||pinciba.equals("anonymousUser") ){
+			return null;
+		}
 		return (SystemUser) pinciba;
 	}
 
@@ -28,7 +31,9 @@ public class BaseController {
 		// 设置IP
 		remoteIp = NetworkUtil.getClientIpAddr(request);
 		SystemUser systemUser = this.getCurrentUser();
-		logger.debug(systemUser.getLoginAccount());
+		if(systemUser !=null){
+			logger.debug(systemUser.getLoginAccount());
+		}
 		// 获取可以访问的目录
 	}
 

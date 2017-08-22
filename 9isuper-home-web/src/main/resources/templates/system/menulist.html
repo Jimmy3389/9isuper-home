@@ -89,6 +89,12 @@
 	</div>
 </div>
 
+<div id="user_in_role">
+	<input id="user_has_add_role" type="hidden" th:value="${hasAuthorityAdd}" readonly="readonly" >
+	<input id="user_has_edit_role" type="hidden" th:value="${hasAuthorityEdit}" readonly="readonly" >
+	<input id="user_has_del_role" type="hidden" th:value="${hasAuthorityDel}" readonly="readonly" >
+</div>
+
 <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUserModal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -282,11 +288,17 @@ function expandMenu(id,level){
 					addTable += "<td>"+data.roleTag+"</td>";
 					addTable += "<td>"+(data.enableFlag?"启用":"禁用")+"</td>";
 					addTable += "<td>";
-					if(level != 2){
-						addTable += "<a sec:authorize=\"hasRole('ROLE_SYSTEM_MENU_ADD')\" href=\"#\" class=\"fa fa-plus\" title=\"添加下级菜单\"  onclick=\"javascript:addMenu('"+data.id+"','"+data.menuName+"');\"></a>";
+					alert($("#user_has_add_role").val());
+					if(level != 2 && $("#user_has_add_role").val()){
+						addTable += "<a href=\"#\" class=\"fa fa-plus\" title=\"添加下级菜单\"  onclick=\"javascript:addMenu('"+data.id+"','"+data.menuName+"');\"></a>";
 					}
 					if(data.id !=null && data.id.length > 10){
-						addTable += "&nbsp;&nbsp;&nbsp;<a sec:authorize=\"hasRole('ROLE_SYSTEM_USER_EDIT')\" href=\"#\" class=\"fa fa-pencil\" title=\"编辑\"></a>&nbsp;&nbsp;&nbsp;<a sec:authorize=\"hasRole('ROLE_SYSTEM_USER_DEL')\" href=\"#\" class=\"fa fa-times\" title=\"删除\" onclick=\"javascript:deleteMenu(\''+${item.id}+'\');\"></a>";
+						if($("#user_has_edit_role").val()){
+							addTable += "&nbsp;&nbsp;&nbsp;<a href=\"#\" class=\"fa fa-pencil\" title=\"编辑\"></a>";
+						}
+						if($("#user_has_del_role").val()){
+							addTable += "&nbsp;&nbsp;&nbsp;<a href=\"#\" class=\"fa fa-times\" title=\"删除\" onclick=\"javascript:deleteMenu(\''+${item.id}+'\');\"></a>";
+						}
 					}
 					addTable += "</td>";
 					addTable += "</tr>"

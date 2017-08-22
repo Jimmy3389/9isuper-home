@@ -34,8 +34,11 @@ public class SystemMenuController extends BaseController {
 	@PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_MENU_LIST')")
 	@RequestMapping(value = { "", "list" })
 	@ResponseBody
-	public ModelAndView toList(Model model) {
+	public ModelAndView toList(Model model,HttpServletRequest request, HttpServletResponse response) {
 		model.addAttribute("allSystemMenus", this.systemMenuService.findAllMenu());
+		model.addAttribute("hasAuthorityEdit",  request.isUserInRole("ROLE_SYSTEM_MENU_EDIT") );
+		model.addAttribute("hasAuthorityDel", request.isUserInRole("ROLE_SYSTEM_MENU_DEL") );
+		model.addAttribute("hasAuthorityAdd", request.isUserInRole("ROLE_SYSTEM_MENU_ADD") );
 		return new ModelAndView("system/menulist");
 	}
 	
@@ -44,7 +47,7 @@ public class SystemMenuController extends BaseController {
 	@ResponseBody
 	public ModelAndView doAdd(String id, HttpServletRequest request, HttpServletResponse response, Model model) {
 		this.systemMenuService.delMenu(id,super.getCurrentUser().getId());
-		return this.toList(model);
+		return this.toList(model, request, response);
 	}
 
 	@PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_MENU_EDIT')")
@@ -81,6 +84,6 @@ public class SystemMenuController extends BaseController {
 		systemMenu.setCreater(super.getCurrentUser().getId());
 		systemMenu.setUpdater(super.getCurrentUser().getId());
 		this.systemMenuService.addMenu(systemMenu);
-		return this.toList(model);
+		return this.toList(model, request, response);
 	}
 }
