@@ -26,7 +26,7 @@ public class SystemGroupController extends BaseController {
 	@Inject
 	private SystemGroupService systemGroupService;
 
-	@PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_GROUP_LIST')")
+	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SYSTEM_GROUP_LIST')")
 	@RequestMapping(value = { "", "list" })
 	@ResponseBody
 	public ModelAndView toList(Model model, HttpServletRequest request, HttpServletResponse response) {
@@ -34,7 +34,7 @@ public class SystemGroupController extends BaseController {
 		return new ModelAndView("system/grouplist");
 	}
 
-	@PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_GROUP_DEL')")
+	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SYSTEM_GROUP_DEL')")
 	@RequestMapping(value = "/add")
 	@ResponseBody
 	public ModelAndView AddSystemGroup(SystemGroup systemGroup, HttpServletRequest request, HttpServletResponse response, Model model) {
@@ -48,7 +48,7 @@ public class SystemGroupController extends BaseController {
 		return this.toList(model, request, response);
 	}
 
-	@PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_GROUP_DEL')")
+	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SYSTEM_GROUP_DEL')")
 	@RequestMapping(value = "/del")
 	@ResponseBody
 	public ModelAndView doDel(String id, HttpServletRequest request, HttpServletResponse response, Model model) {
@@ -56,7 +56,7 @@ public class SystemGroupController extends BaseController {
 		return this.toList(model, request, response);
 	}
 
-	@PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_GROUP_EDIT')")
+	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SYSTEM_GROUP_EDIT')")
 	@RequestMapping(value = "/edit")
 	@ResponseBody
 	public ModelAndView editSystemGroup(SystemGroup systemGroup, HttpServletRequest request, HttpServletResponse response, Model model) {

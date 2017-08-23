@@ -31,7 +31,7 @@
             		<div class="grid-title">
               			<h4>菜单列表</h4>
               			<div class="tools"> 
-              				<a sec:authorize="hasRole('ROLE_SYSTEM_USER_ADD')" href="javascript:;" class="add" ></a> 
+              				<a sec:authorize="hasRole('ROLE_ADMIN','ROLE_SYSTEM_USER_ADD')" href="javascript:;" class="add" ></a> 
               				<a href="#grid-config" data-toggle="modal" class="config"></a> 
               				<a href="javascript:;" class="reload" ></a> 
               			</div>
@@ -68,16 +68,16 @@
                 					<td th:text="${item.roleTag}"></td>
                 					<td th:text="${item.enableFlag ? '启用':'禁用'}"></td>
                 					<td th:if="${#strings.length(item.id) gt 10 }">
-                						<a sec:authorize="hasRole('ROLE_SYSTEM_MENU_ADD')" href="#" class="fa fa-plus" title="添加下级菜单"  th:onclick="'javascript:addMenu(\''+${item.id}+'\',\''+${item.menuName}+'\');'"></a>
+                						<a sec:authorize="hasRole('ROLE_ADMIN','ROLE_SYSTEM_MENU_ADD')" href="#" class="fa fa-plus" title="添加下级菜单"  th:onclick="'javascript:addMenu(\''+${item.id}+'\',\''+${item.menuName}+'\');'"></a>
                 						<sec:authorize access="hasRole('ROLE_SYSTEM_MENU_ADD')">
                 							&nbsp;&nbsp;&nbsp;<a href="#" class="fa fa-pencil" title="编辑" th:onclick="'javascript:editMenu(\''+${item.id}+'\');'"></a>
                 						</sec:authorize>
-                						<sec:authorize access="hasRole('ROLE_SYSTEM_MENU_ADD')">
+                						<sec:authorize access="hasRole('ROLE_ADMIN','ROLE_SYSTEM_MENU_ADD')">
                 							&nbsp;&nbsp;&nbsp;<a href="#" class="fa fa-times" title="删除" th:onclick="'javascript:deleteMenu(\''+${item.id}+'\');'"></a>
                 						</sec:authorize>
                 					</td>
                 					<td th:if="${#strings.length(item.id) le 10 }">
-                						<a sec:authorize="hasRole('ROLE_SYSTEM_MENU_ADD')" href="#" class="fa fa-plus" title="添加下级菜单" th:onclick="'javascript:addMenu(\''+${item.id}+'\',\''+${item.menuName}+'\');'"></a>
+                						<a sec:authorize="hasRole('ROLE_ADMIN','ROLE_SYSTEM_MENU_ADD')" href="#" class="fa fa-plus" title="添加下级菜单" th:onclick="'javascript:addMenu(\''+${item.id}+'\',\''+${item.menuName}+'\');'"></a>
                 					</td>
                 				</tr>
                 			</tbody>

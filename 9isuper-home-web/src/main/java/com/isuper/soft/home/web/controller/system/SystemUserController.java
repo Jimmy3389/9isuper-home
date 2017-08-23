@@ -27,7 +27,7 @@ public class SystemUserController extends BaseController {
 	@Inject
 	private SystemUserService systemUserService;
 
-	@PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_USER_LIST')")
+	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SYSTEM_USER_LIST')")
 	@RequestMapping(value = { "", "list" })
 	@ResponseBody
 	public ModelAndView toList(Model model) {
@@ -35,7 +35,7 @@ public class SystemUserController extends BaseController {
 		return new ModelAndView("system/userlist");
 	}
 
-	@PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_USER_DEL')")
+	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SYSTEM_USER_DEL')")
 	@RequestMapping(value = "/delete")
 	@ResponseBody
 	public Map<String, Object> deleteSystemUser(HttpServletRequest request) {
@@ -50,7 +50,7 @@ public class SystemUserController extends BaseController {
 		return result;
 	}
 	
-	@PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_USER_EDIT')")
+	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SYSTEM_USER_EDIT')")
 	@RequestMapping(value = "/edit")
 	@ResponseBody
 	public Map<String, Object> editSystemUser(HttpServletRequest request) {

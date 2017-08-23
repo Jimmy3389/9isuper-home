@@ -33,18 +33,18 @@ public class SystemMenuController extends BaseController {
 	@Inject
 	private SystemMenuService systemMenuService;
 
-	@PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_MENU_LIST')")
+	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SYSTEM_MENU_LIST')")
 	@RequestMapping(value = { "", "list" })
 	@ResponseBody
 	public ModelAndView toList(Model model, HttpServletRequest request, HttpServletResponse response) {
 		model.addAttribute("allSystemMenus", this.systemMenuService.findMainMenu());
-		model.addAttribute("hasAuthorityEdit", request.isUserInRole("ROLE_SYSTEM_MENU_EDIT"));
-		model.addAttribute("hasAuthorityDel", request.isUserInRole("ROLE_SYSTEM_MENU_DEL"));
-		model.addAttribute("hasAuthorityAdd", request.isUserInRole("ROLE_SYSTEM_MENU_ADD"));
+		model.addAttribute("hasAuthorityEdit", request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_SYSTEM_MENU_EDIT"));
+		model.addAttribute("hasAuthorityDel", request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_SYSTEM_MENU_DEL"));
+		model.addAttribute("hasAuthorityAdd", request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_SYSTEM_MENU_ADD"));
 		return new ModelAndView("system/menulist");
 	}
 
-	@PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_MENU_DEL')")
+	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SYSTEM_MENU_DEL')")
 	@RequestMapping(value = { "delete", "doDelete" }, method = RequestMethod.POST)
 	@ResponseBody
 	public ModelAndView doDel(String id, HttpServletRequest request, HttpServletResponse response, Model model) {
@@ -52,7 +52,7 @@ public class SystemMenuController extends BaseController {
 		return this.toList(model, request, response);
 	}
 
-	@PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_MENU_EDIT')")
+	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SYSTEM_MENU_EDIT')")
 	@RequestMapping("doEdit")
 	@ResponseBody
 	public SystemMenu editSystemMenu(String id) {
@@ -66,57 +66,55 @@ public class SystemMenuController extends BaseController {
 		return menu;
 	}
 
-	@PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_MENU_EDIT','ROLE_SYSTEM_MENU_LIST')")
+	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SYSTEM_MENU_EDIT','ROLE_SYSTEM_MENU_LIST')")
 	@RequestMapping("toSelectMenu")
 	@ResponseBody
 	public List<String> querySelectMenu() {
-		List<SystemMenu> allMenus=this.systemMenuService.findAllMenu();
-		return this.getMenuTree(allMenus, 0, "0",1);
+		List<SystemMenu> allMenus = this.systemMenuService.findAllMenu();
+		return this.getMenuTree(allMenus, 0, "0", 1);
 	}
-	
-	
+
 	@SuppressWarnings("unused")
-	private List<String> getAllMenuTree(List<SystemMenu> allMenus,int count,String menuId) {
-		List<String> menuList= new ArrayList<String>();
-		List<SystemMenu> childMenus  = allMenus.stream().filter(menu -> menu.getParentId().equals(menuId)).distinct().collect(Collectors.toList());
-		if(CollectionUtils.isNotEmpty(childMenus)) {
+	private List<String> getAllMenuTree(List<SystemMenu> allMenus, int count, String menuId) {
+		List<String> menuList = new ArrayList<String>();
+		List<SystemMenu> childMenus = allMenus.stream().filter(menu -> menu.getParentId().equals(menuId)).distinct().collect(Collectors.toList());
+		if (CollectionUtils.isNotEmpty(childMenus)) {
 			for (SystemMenu systemMenu : childMenus) {
-				menuList.add(this.menuPrefix(count)+systemMenu.getMenuName()+"!"+systemMenu.getId());
-				menuList.addAll(this.getAllMenuTree(allMenus, count+1, systemMenu.getId()));
+				menuList.add(this.menuPrefix(count) + systemMenu.getMenuName() + "!" + systemMenu.getId());
+				menuList.addAll(this.getAllMenuTree(allMenus, count + 1, systemMenu.getId()));
 			}
 		}
 		return menuList;
 	}
-	
-	private List<String> getMenuTree(List<SystemMenu> allMenus,int count,String menuId,int deep) {
-		List<String> menuList= new ArrayList<String>();
-		List<SystemMenu> childMenus  = allMenus.stream().filter(menu -> menu.getParentId().equals(menuId)).distinct().collect(Collectors.toList());
-		if(CollectionUtils.isNotEmpty(childMenus) && deep <= 3) {
+
+	private List<String> getMenuTree(List<SystemMenu> allMenus, int count, String menuId, int deep) {
+		List<String> menuList = new ArrayList<String>();
+		List<SystemMenu> childMenus = allMenus.stream().filter(menu -> menu.getParentId().equals(menuId)).distinct().collect(Collectors.toList());
+		if (CollectionUtils.isNotEmpty(childMenus) && deep <= 3) {
 			for (SystemMenu systemMenu : childMenus) {
-				menuList.add(this.menuPrefix(count)+systemMenu.getMenuName()+"!"+systemMenu.getId());
-				menuList.addAll(this.getMenuTree(allMenus, count+1, systemMenu.getId(),deep +1));
+				menuList.add(this.menuPrefix(count) + systemMenu.getMenuName() + "!" + systemMenu.getId());
+				menuList.addAll(this.getMenuTree(allMenus, count + 1, systemMenu.getId(), deep + 1));
 			}
 		}
 		return menuList;
 	}
-	
-	
-	private String menuPrefix(int count){
-		StringBuffer sb= new StringBuffer();
-		for(int i = 0;i<count;i++) {
+
+	private String menuPrefix(int count) {
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < count; i++) {
 			sb.append("│&nbsp;&nbsp;&nbsp;&nbsp;");
 		}
-		return sb.toString()+"├─";
+		return sb.toString() + "├─";
 	}
-	
-	@PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_MENU_LIST')")
+
+	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SYSTEM_MENU_LIST')")
 	@RequestMapping("queryChildMenus")
 	@ResponseBody
 	public List<SystemMenu> queryChildMenus(String parentId) {
 		return this.systemMenuService.findByParentId(parentId);
 	}
 
-	@PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_MENU_ADD')")
+	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SYSTEM_MENU_ADD')")
 	@RequestMapping(value = { "add", "doAdd" }, method = RequestMethod.POST)
 	@ResponseBody
 	public ModelAndView doAdd(SystemMenu systemMenu, HttpServletRequest request, HttpServletResponse response, Model model) {

@@ -289,7 +289,7 @@ $(document).ready(function() {
         }
     });
 	
-		$(".select2-wrapper").select2({minimumResultsForSearch: -1});
+	$(".select2-wrapper").select2({minimumResultsForSearch: -1});
 
 	function fnClickAddRow() {
     $('#example3').dataTable().fnAddData( [
@@ -297,8 +297,60 @@ $(document).ready(function() {
         $("#val2 option:selected").text(),
         "Windows",
         "789.","A" ] );     
-	}	
-});
+	}
+	
+	
+	
+	
+	$('#expandGroupTabl_wrapper .dataTables_filter input').addClass("input-medium ");
+    $('#expandGroupTabl_wrapper .dataTables_length select').addClass("select2-wrapper span12"); 
+	
+    
+    $('#expandGroupTable thead tr').each( function () {
+        this.insertBefore( nCloneTh, this.childNodes[0] );
+    } );
+     
+    $('#expandGroupTable tbody tr').each( function () {
+        this.insertBefore(  nCloneTd.cloneNode( true ), this.childNodes[0] );
+    } );
+     
+    /*
+     * Initialse DataTables, with no sorting on the 'details' column
+     */
+    var systemGroupListTable = $('#expandGroupTable').dataTable( {
+	   "sDom": "<'row'<'col-md-6'l><'col-md-6'f>r>t<'row'<'col-md-12'p i>>",
+       "aaSorting": [],
+				"oLanguage": {
+			"sLengthMenu": "_MENU_ ",
+			"sInfo": "显示第  <b>_START_ 到  _END_</b> 条数据,共计  _TOTAL_ 条数据"
+		},
+    });
+    
+    $('#expandGroupTable tbody td i').live('click', function () {
+        var nTr = $(this).parents('tr')[0];
+        if ( systemGroupListTable.fnIsOpen(nTr) )
+        {
+            /* This row is already open - close it */
+			this.removeClass = "fa fa-plus-circle";
+            this.addClass = "fa fa-minus-circle";     
+            systemGroupListTable.fnClose( nTr );
+        }
+        else
+        {
+            /* Open this row */
+            this.removeClass = "fa fa-minus-circle";
+            this.addClass = "fa fa-plus-circle";  
+            systemGroupListTable.fnOpen( nTr, fnsystemGroupDetails(systemGroupListTable, nTr), 'details' );
+        }
+    });
+})
+
+/* Formating function for row details */
+function fnsystemGroupDetails ( systemGroupListTable, nTr )
+{
+    var aData = systemGroupListTable.fnGetData( nTr );
+    return sOut;
+};
 
 
 /* Formating function for row details */

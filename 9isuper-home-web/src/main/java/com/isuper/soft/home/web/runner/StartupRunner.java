@@ -476,6 +476,7 @@ public class StartupRunner implements CommandLineRunner {
 			}
 			systemUserRepository.save(systemUser);
 		}
+		userGroups = new ArrayList<SystemGroup>();
 		if (systemUserService.queryByLoginAccount("guest") == null) {
 			systemUser = new SystemUser();
 			systemUser.setLoginAccount("guest");
