@@ -56,6 +56,7 @@ public class StartupRunner implements CommandLineRunner {
 	private List<SystemMenu> initDefaultMenu() {
 		List<SystemMenu> rootMenus = new ArrayList<SystemMenu>();
 		SystemMenu systemMenu = systemMenuService.findMenuById("0");
+		//根菜单
 		if (systemMenu == null) {
 			systemMenu = new SystemMenu();
 			systemMenu.setId("0");
@@ -64,7 +65,7 @@ public class StartupRunner implements CommandLineRunner {
 			systemMenu.setEnableFlag(true);// 设定开启状态
 			systemMenu.setIsShow(false);// 设定是可以显示的
 			systemMenu.setMenuName("根目录");// 设定目录名称
-			systemMenu.setMenuSort(99999);// 设定目录排序未最后一项
+			systemMenu.setMenuSort(990000);// 设定目录排序未最后一项
 			systemMenu.setMenuTile("根目录");//
 			systemMenu.setParentId("-1");// 已经是跟目录了，所以未设定目录
 			systemMenu.setRemark("系统自动创建");// 设定拥有GUEST权限即可访问
@@ -73,16 +74,17 @@ public class StartupRunner implements CommandLineRunner {
 			systemMenu.setUpdater("0");
 			rootMenus.add(systemMenuRepository.save(systemMenu));
 		}
-		systemMenu = systemMenuService.findMenuById("1");
+		//系统管理主菜单
+		systemMenu = systemMenuService.findMenuById("100");
 		if (systemMenu == null) {
 			systemMenu = new SystemMenu();
-			systemMenu.setId("1");
+			systemMenu.setId("100");
 			systemMenu.setCreater("0");// 设定系统管理员创建
 			systemMenu.setDelFlag(false);// 设定未删除
 			systemMenu.setEnableFlag(true);// 设定开启状态
 			systemMenu.setIsShow(true);// 设定是可以显示的
 			systemMenu.setMenuName("系统管理");// 设定目录名称
-			systemMenu.setMenuSort(98000);// 设定目录排序未最后一项
+			systemMenu.setMenuSort(991000);// 设定目录排序未最后一项
 			systemMenu.setMenuTile("系统管理");//
 			systemMenu.setParentId("0");// 已经是跟目录了，所以未设定目录
 			systemMenu.setRemark("系统自动创建");// 设定拥有GUEST权限即可访问
@@ -92,18 +94,19 @@ public class StartupRunner implements CommandLineRunner {
 			systemMenu.setMenuIco("fa-gears");
 			rootMenus.add(systemMenuRepository.save(systemMenu));
 		}
-		systemMenu = systemMenuService.findMenuById("2");
+		//用户管理
+		systemMenu = systemMenuService.findMenuById("110");
 		if (systemMenu == null) {
 			systemMenu = new SystemMenu();
-			systemMenu.setId("2");
+			systemMenu.setId("110");
 			systemMenu.setCreater("0");// 设定系统管理员创建
 			systemMenu.setDelFlag(false);// 设定未删除
 			systemMenu.setEnableFlag(true);// 设定开启状态
 			systemMenu.setIsShow(true);// 设定是可以显示的
 			systemMenu.setMenuName("用户管理");// 设定目录名称
-			systemMenu.setMenuSort(98100);// 设定目录排序未最后一项
+			systemMenu.setMenuSort(991010);// 设定目录排序未最后一项
 			systemMenu.setMenuTile("用户管理");//
-			systemMenu.setParentId("1");// 已经是跟目录了，所以未设定目录
+			systemMenu.setParentId("100");// 已经是跟目录了，所以未设定目录
 			systemMenu.setRemark("系统自动创建");// 设定拥有GUEST权限即可访问
 			systemMenu.setRoleTag("ROLE_SYSTEM_USER");// 具有ADMIN权限才能使用该菜单
 			systemMenu.setSystemId("0");
@@ -111,18 +114,19 @@ public class StartupRunner implements CommandLineRunner {
 			systemMenu.setMenuIco("fa-users");
 			rootMenus.add(systemMenuRepository.save(systemMenu));
 		}
-		systemMenu = systemMenuService.findMenuById("3");
+		
+		systemMenu = systemMenuService.findMenuById("111");
 		if (systemMenu == null) {
 			systemMenu = new SystemMenu();
-			systemMenu.setId("3");
+			systemMenu.setId("111");
 			systemMenu.setCreater("0");// 设定系统管理员创建
 			systemMenu.setDelFlag(false);// 设定未删除
 			systemMenu.setEnableFlag(true);// 设定开启状态
 			systemMenu.setIsShow(true);// 设定是可以显示的
 			systemMenu.setMenuName("用户列表");// 设定目录名称
-			systemMenu.setMenuSort(98110);// 设定目录排序未最后一项
+			systemMenu.setMenuSort(991011);// 设定目录排序未最后一项
 			systemMenu.setMenuTile("用户列表");//
-			systemMenu.setParentId("2");
+			systemMenu.setParentId("110");
 			systemMenu.setRemark("系统自动创建");// 设定拥有GUEST权限即可访问
 			systemMenu.setRoleTag("ROLE_SYSTEM_USER_LIST");// 具有ADMIN权限才能使用该菜单
 			systemMenu.setSystemId("0");
@@ -131,18 +135,19 @@ public class StartupRunner implements CommandLineRunner {
 			systemMenu.setMenuIco("fa-th-list");
 			rootMenus.add(systemMenuRepository.save(systemMenu));
 		}
-		systemMenu = systemMenuService.findMenuById("4");
+		
+		systemMenu = systemMenuService.findMenuById("112");
 		if (systemMenu == null) {
 			systemMenu = new SystemMenu();
-			systemMenu.setId("4");
+			systemMenu.setId("112");
 			systemMenu.setCreater("0");// 设定系统管理员创建
 			systemMenu.setDelFlag(false);// 设定未删除
 			systemMenu.setEnableFlag(true);// 设定开启状态
 			systemMenu.setIsShow(false);// 设定是可以显示的
 			systemMenu.setMenuName("添加用户");// 设定目录名称
-			systemMenu.setMenuSort(98111);// 设定目录排序未最后一项
+			systemMenu.setMenuSort(991012);// 设定目录排序未最后一项
 			systemMenu.setMenuTile("添加用户");//
-			systemMenu.setParentId("3");
+			systemMenu.setParentId("110");
 			systemMenu.setRemark("系统自动创建");// 设定拥有GUEST权限即可访问
 			systemMenu.setRoleTag("ROLE_SYSTEM_USER_ADD");// 具有ADMIN权限才能使用该菜单
 			systemMenu.setSystemId("0");
@@ -150,18 +155,19 @@ public class StartupRunner implements CommandLineRunner {
 			systemMenu.setMenuIco("fa-plus");
 			rootMenus.add(systemMenuRepository.save(systemMenu));
 		}
-		systemMenu = systemMenuService.findMenuById("5");
+
+		systemMenu = systemMenuService.findMenuById("113");
 		if (systemMenu == null) {
 			systemMenu = new SystemMenu();
-			systemMenu.setId("5");
+			systemMenu.setId("113");
 			systemMenu.setCreater("0");// 设定系统管理员创建
 			systemMenu.setDelFlag(false);// 设定未删除
 			systemMenu.setEnableFlag(true);// 设定开启状态
 			systemMenu.setIsShow(false);// 设定是可以显示的
-			systemMenu.setMenuName("添加用户");// 设定目录名称
-			systemMenu.setMenuSort(98112);// 设定目录排序未最后一项
-			systemMenu.setMenuTile("添加用户");//
-			systemMenu.setParentId("3");
+			systemMenu.setMenuName("修改用户");// 设定目录名称
+			systemMenu.setMenuSort(991013);// 设定目录排序未最后一项
+			systemMenu.setMenuTile("修改用户");//
+			systemMenu.setParentId("110");
 			systemMenu.setRemark("系统自动创建");// 设定拥有GUEST权限即可访问
 			systemMenu.setRoleTag("ROLE_SYSTEM_USER_EDIT");// 具有ADMIN权限才能使用该菜单
 			systemMenu.setSystemId("0");
@@ -169,18 +175,19 @@ public class StartupRunner implements CommandLineRunner {
 			systemMenu.setMenuIco("fa-pencil");
 			rootMenus.add(systemMenuRepository.save(systemMenu));
 		}
-		systemMenu = systemMenuService.findMenuById("6");
+		
+		systemMenu = systemMenuService.findMenuById("114");
 		if (systemMenu == null) {
 			systemMenu = new SystemMenu();
-			systemMenu.setId("6");
+			systemMenu.setId("114");
 			systemMenu.setCreater("0");// 设定系统管理员创建
 			systemMenu.setDelFlag(false);// 设定未删除
 			systemMenu.setEnableFlag(true);// 设定开启状态
 			systemMenu.setIsShow(false);// 设定是可以显示的
 			systemMenu.setMenuName("删除用户");// 设定目录名称
-			systemMenu.setMenuSort(98113);// 设定目录排序未最后一项
+			systemMenu.setMenuSort(991014);// 设定目录排序未最后一项
 			systemMenu.setMenuTile("删除用户");//
-			systemMenu.setParentId("3");
+			systemMenu.setParentId("110");
 			systemMenu.setRemark("系统自动创建");// 设定拥有GUEST权限即可访问
 			systemMenu.setRoleTag("ROLE_SYSTEM_USER_DEL");// 具有ADMIN权限才能使用该菜单
 			systemMenu.setSystemId("0");
@@ -188,39 +195,141 @@ public class StartupRunner implements CommandLineRunner {
 			systemMenu.setMenuIco("fa-times");
 			rootMenus.add(systemMenuRepository.save(systemMenu));
 		}
-
-		systemMenu = systemMenuService.findMenuById("7");
+		
+		//角色管理
+		systemMenu = systemMenuService.findMenuById("120");
 		if (systemMenu == null) {
 			systemMenu = new SystemMenu();
-			systemMenu.setId("7");
+			systemMenu.setId("120");
+			systemMenu.setCreater("0");// 设定系统管理员创建
+			systemMenu.setDelFlag(false);// 设定未删除
+			systemMenu.setEnableFlag(true);// 设定开启状态
+			systemMenu.setIsShow(true);// 设定是可以显示的
+			systemMenu.setMenuName("角色管理");// 设定目录名称
+			systemMenu.setMenuSort(991020);// 设定目录排序未最后一项
+			systemMenu.setMenuTile("角色管理");//
+			systemMenu.setParentId("100");// 已经是跟目录了，所以未设定目录
+			systemMenu.setRemark("系统自动创建");// 设定拥有GUEST权限即可访问
+			systemMenu.setRoleTag("ROLE_SYSTEM_GROUP");// 具有ADMIN权限才能使用该菜单
+			systemMenu.setSystemId("0");
+			systemMenu.setUpdater("0");
+			systemMenu.setMenuIco("fa-users");
+			rootMenus.add(systemMenuRepository.save(systemMenu));
+		}
+		
+		systemMenu = systemMenuService.findMenuById("121");
+		if (systemMenu == null) {
+			systemMenu = new SystemMenu();
+			systemMenu.setId("121");
+			systemMenu.setCreater("0");// 设定系统管理员创建
+			systemMenu.setDelFlag(false);// 设定未删除
+			systemMenu.setEnableFlag(true);// 设定开启状态
+			systemMenu.setIsShow(true);// 设定是可以显示的
+			systemMenu.setMenuName("角色列表");// 设定目录名称
+			systemMenu.setMenuSort(991021);// 设定目录排序未最后一项
+			systemMenu.setMenuTile("角色列表");//
+			systemMenu.setParentId("120");
+			systemMenu.setRemark("系统自动创建");// 设定拥有GUEST权限即可访问
+			systemMenu.setRoleTag("ROLE_SYSTEM_GROUP_LIST");// 具有ADMIN权限才能使用该菜单
+			systemMenu.setSystemId("0");
+			systemMenu.setSourceUrl("/system/group/list");
+			systemMenu.setUpdater("0");
+			systemMenu.setMenuIco("fa-th-list");
+			rootMenus.add(systemMenuRepository.save(systemMenu));
+		}
+		
+		systemMenu = systemMenuService.findMenuById("122");
+		if (systemMenu == null) {
+			systemMenu = new SystemMenu();
+			systemMenu.setId("122");
+			systemMenu.setCreater("0");// 设定系统管理员创建
+			systemMenu.setDelFlag(false);// 设定未删除
+			systemMenu.setEnableFlag(true);// 设定开启状态
+			systemMenu.setIsShow(false);// 设定是可以显示的
+			systemMenu.setMenuName("添加角色");// 设定目录名称
+			systemMenu.setMenuSort(991022);// 设定目录排序未最后一项
+			systemMenu.setMenuTile("添加角色");//
+			systemMenu.setParentId("120");
+			systemMenu.setRemark("系统自动创建");// 设定拥有GUEST权限即可访问
+			systemMenu.setRoleTag("ROLE_SYSTEM_GROUP_ADD");// 具有ADMIN权限才能使用该菜单
+			systemMenu.setSystemId("0");
+			systemMenu.setUpdater("0");
+			systemMenu.setMenuIco("fa-plus");
+			rootMenus.add(systemMenuRepository.save(systemMenu));
+		}
+
+		systemMenu = systemMenuService.findMenuById("123");
+		if (systemMenu == null) {
+			systemMenu = new SystemMenu();
+			systemMenu.setId("123");
+			systemMenu.setCreater("0");// 设定系统管理员创建
+			systemMenu.setDelFlag(false);// 设定未删除
+			systemMenu.setEnableFlag(true);// 设定开启状态
+			systemMenu.setIsShow(false);// 设定是可以显示的
+			systemMenu.setMenuName("修改角色");// 设定目录名称
+			systemMenu.setMenuSort(991023);// 设定目录排序未最后一项
+			systemMenu.setMenuTile("修改角色");//
+			systemMenu.setParentId("120");
+			systemMenu.setRemark("系统自动创建");// 设定拥有GUEST权限即可访问
+			systemMenu.setRoleTag("ROLE_SYSTEM_GROUP_EDIT");// 具有ADMIN权限才能使用该菜单
+			systemMenu.setSystemId("0");
+			systemMenu.setUpdater("0");
+			systemMenu.setMenuIco("fa-pencil");
+			rootMenus.add(systemMenuRepository.save(systemMenu));
+		}
+		
+		systemMenu = systemMenuService.findMenuById("124");
+		if (systemMenu == null) {
+			systemMenu = new SystemMenu();
+			systemMenu.setId("124");
+			systemMenu.setCreater("0");// 设定系统管理员创建
+			systemMenu.setDelFlag(false);// 设定未删除
+			systemMenu.setEnableFlag(true);// 设定开启状态
+			systemMenu.setIsShow(false);// 设定是可以显示的
+			systemMenu.setMenuName("删除角色");// 设定目录名称
+			systemMenu.setMenuSort(991024);// 设定目录排序未最后一项
+			systemMenu.setMenuTile("删除角色");//
+			systemMenu.setParentId("120");
+			systemMenu.setRemark("系统自动创建");// 设定拥有GUEST权限即可访问
+			systemMenu.setRoleTag("ROLE_SYSTEM_GROUP_DEL");// 具有ADMIN权限才能使用该菜单
+			systemMenu.setSystemId("0");
+			systemMenu.setUpdater("0");
+			systemMenu.setMenuIco("fa-times");
+			rootMenus.add(systemMenuRepository.save(systemMenu));
+		}
+		//菜单管理
+		systemMenu = systemMenuService.findMenuById("130");
+		if (systemMenu == null) {
+			systemMenu = new SystemMenu();
+			systemMenu.setId("130");
 			systemMenu.setCreater("0");// 设定系统管理员创建
 			systemMenu.setDelFlag(false);// 设定未删除
 			systemMenu.setEnableFlag(true);// 设定开启状态
 			systemMenu.setIsShow(true);// 设定是可以显示的
 			systemMenu.setMenuName("菜单管理");// 设定目录名称
-			systemMenu.setMenuSort(98200);// 设定目录排序未最后一项
+			systemMenu.setMenuSort(991030);// 设定目录排序未最后一项
 			systemMenu.setMenuTile("菜单管理");//
-			systemMenu.setParentId("1");// 已经是跟目录了，所以未设定目录
+			systemMenu.setParentId("100");// 已经是跟目录了，所以未设定目录
 			systemMenu.setRemark("系统自动创建");// 设定拥有GUEST权限即可访问
 			systemMenu.setRoleTag("ROLE_SYSTEM_MENU");// 具有ADMIN权限才能使用该菜单
 			systemMenu.setSystemId("0");
 			systemMenu.setUpdater("0");
-			systemMenu.setRoleTag("fa-book");
+			systemMenu.setMenuIco("fa-book");
 			rootMenus.add(systemMenuRepository.save(systemMenu));
 		}
 
-		systemMenu = systemMenuService.findMenuById("8");
+		systemMenu = systemMenuService.findMenuById("131");
 		if (systemMenu == null) {
 			systemMenu = new SystemMenu();
-			systemMenu.setId("8");
+			systemMenu.setId("131");
 			systemMenu.setCreater("0");// 设定系统管理员创建
 			systemMenu.setDelFlag(false);// 设定未删除
 			systemMenu.setEnableFlag(true);// 设定开启状态
 			systemMenu.setIsShow(true);// 设定是可以显示的
 			systemMenu.setMenuName("菜单列表");// 设定目录名称
-			systemMenu.setMenuSort(98210);// 设定目录排序未最后一项
+			systemMenu.setMenuSort(991031);// 设定目录排序未最后一项
 			systemMenu.setMenuTile("菜单列表");//
-			systemMenu.setParentId("7");
+			systemMenu.setParentId("130");
 			systemMenu.setRemark("系统自动创建");// 设定拥有GUEST权限即可访问
 			systemMenu.setRoleTag("ROLE_SYSTEM_MENU_LIST");// 具有ADMIN权限才能使用该菜单
 			systemMenu.setSystemId("0");
@@ -229,18 +338,18 @@ public class StartupRunner implements CommandLineRunner {
 			systemMenu.setMenuIco("fa-times");
 			rootMenus.add(systemMenuRepository.save(systemMenu));
 		}
-		systemMenu = systemMenuService.findMenuById("9");
+		systemMenu = systemMenuService.findMenuById("132");
 		if (systemMenu == null) {
 			systemMenu = new SystemMenu();
-			systemMenu.setId("9");
+			systemMenu.setId("132");
 			systemMenu.setCreater("0");// 设定系统管理员创建
 			systemMenu.setDelFlag(false);// 设定未删除
 			systemMenu.setEnableFlag(true);// 设定开启状态
 			systemMenu.setIsShow(false);// 设定是可以显示的
 			systemMenu.setMenuName("添加菜单");// 设定目录名称
-			systemMenu.setMenuSort(98211);// 设定目录排序未最后一项
+			systemMenu.setMenuSort(991032);// 设定目录排序未最后一项
 			systemMenu.setMenuTile("添加菜单");//
-			systemMenu.setParentId("8");
+			systemMenu.setParentId("130");
 			systemMenu.setRemark("系统自动创建");// 设定拥有GUEST权限即可访问
 			systemMenu.setRoleTag("ROLE_SYSTEM_MENU_ADD");// 具有ADMIN权限才能使用该菜单
 			systemMenu.setSystemId("0");
@@ -248,18 +357,18 @@ public class StartupRunner implements CommandLineRunner {
 			systemMenu.setMenuIco("fa-times");
 			rootMenus.add(systemMenuRepository.save(systemMenu));
 
-			systemMenu = systemMenuService.findMenuById("10");
+			systemMenu = systemMenuService.findMenuById("133");
 			if (systemMenu == null) {
 				systemMenu = new SystemMenu();
-				systemMenu.setId("10");
+				systemMenu.setId("133");
 				systemMenu.setCreater("0");// 设定系统管理员创建
 				systemMenu.setDelFlag(false);// 设定未删除
 				systemMenu.setEnableFlag(true);// 设定开启状态
 				systemMenu.setIsShow(false);// 设定是可以显示的
 				systemMenu.setMenuName("修改菜单");// 设定目录名称
-				systemMenu.setMenuSort(98212);// 设定目录排序未最后一项
+				systemMenu.setMenuSort(991033);// 设定目录排序未最后一项
 				systemMenu.setMenuTile("修改菜单");//
-				systemMenu.setParentId("8");
+				systemMenu.setParentId("130");
 				systemMenu.setRemark("系统自动创建");// 设定拥有GUEST权限即可访问
 				systemMenu.setRoleTag("ROLE_SYSTEM_MENU_EDIT");// 具有ADMIN权限才能使用该菜单
 				systemMenu.setSystemId("0");
@@ -268,18 +377,18 @@ public class StartupRunner implements CommandLineRunner {
 				rootMenus.add(systemMenuRepository.save(systemMenu));
 			}
 			
-			systemMenu = systemMenuService.findMenuById("11");
+			systemMenu = systemMenuService.findMenuById("134");
 			if (systemMenu == null) {
 				systemMenu = new SystemMenu();
-				systemMenu.setId("11");
+				systemMenu.setId("134");
 				systemMenu.setCreater("0");// 设定系统管理员创建
 				systemMenu.setDelFlag(false);// 设定未删除
 				systemMenu.setEnableFlag(true);// 设定开启状态
 				systemMenu.setIsShow(false);// 设定是可以显示的
 				systemMenu.setMenuName("删除菜单");// 设定目录名称
-				systemMenu.setMenuSort(98213);// 设定目录排序未最后一项
+				systemMenu.setMenuSort(991034);// 设定目录排序未最后一项
 				systemMenu.setMenuTile("删除菜单");//
-				systemMenu.setParentId("8");
+				systemMenu.setParentId("130");
 				systemMenu.setRemark("系统自动创建");// 设定拥有GUEST权限即可访问
 				systemMenu.setRoleTag("ROLE_SYSTEM_MENU_DEL");// 具有ADMIN权限才能使用该菜单
 				systemMenu.setSystemId("0");

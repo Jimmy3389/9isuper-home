@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -34,50 +35,49 @@ public class SystemMenuController extends BaseController {
 	@PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_MENU_LIST')")
 	@RequestMapping(value = { "", "list" })
 	@ResponseBody
-	public ModelAndView toList(Model model,HttpServletRequest request, HttpServletResponse response) {
-		model.addAttribute("allSystemMenus", this.systemMenuService.findAllMenu());
-		model.addAttribute("hasAuthorityEdit",  request.isUserInRole("ROLE_SYSTEM_MENU_EDIT") );
-		model.addAttribute("hasAuthorityDel", request.isUserInRole("ROLE_SYSTEM_MENU_DEL") );
-		model.addAttribute("hasAuthorityAdd", request.isUserInRole("ROLE_SYSTEM_MENU_ADD") );
+	public ModelAndView toList(Model model, HttpServletRequest request, HttpServletResponse response) {
+		model.addAttribute("allSystemMenus", this.systemMenuService.findMainMenu());
+		model.addAttribute("hasAuthorityEdit", request.isUserInRole("ROLE_SYSTEM_MENU_EDIT"));
+		model.addAttribute("hasAuthorityDel", request.isUserInRole("ROLE_SYSTEM_MENU_DEL"));
+		model.addAttribute("hasAuthorityAdd", request.isUserInRole("ROLE_SYSTEM_MENU_ADD"));
 		return new ModelAndView("system/menulist");
 	}
-	
+
 	@PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_MENU_DEL')")
-	@RequestMapping(value = { "delete", "doDelete" },method = RequestMethod.POST)
+	@RequestMapping(value = { "delete", "doDelete" }, method = RequestMethod.POST)
 	@ResponseBody
-	public ModelAndView doAdd(String id, HttpServletRequest request, HttpServletResponse response, Model model) {
-		this.systemMenuService.delMenu(id,super.getCurrentUser().getId());
+	public ModelAndView doDel(String id, HttpServletRequest request, HttpServletResponse response, Model model) {
+		this.systemMenuService.delMenu(id, super.getCurrentUser().getId());
 		return this.toList(model, request, response);
 	}
 
 	@PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_MENU_EDIT')")
 	@RequestMapping(value = "/edit")
 	@ResponseBody
-	public Map<String, Object> editSystemMenu(HttpServletRequest request) {
+	public Map<String, Object> editSystemMenu(String id, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Map<String, Object> result = new HashMap<>();
-		try {
-			result.put("status", true);
-			result.put("message", "删除成功");
-		} catch (Exception e) {
-			result.put("status", false);
-			result.put("message", "删除异常");
+		if (StringUtils.isNotBlank(id)) {
+			SystemMenu systemMenu = this.systemMenuService.findMenuById(id);
+			if (systemMenu != null) {
+				result.put("systemMenu", systemMenu);
+				result.put("allSystemMenus", this.systemMenuService.findAllMenu());
+			}
 		}
 		return result;
 	}
-	
+
 	@PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_MENU_LIST')")
 	@RequestMapping("queryChildMenus")
 	@ResponseBody
-	public List<SystemMenu> queryChildMenus(String parentId){
+	public List<SystemMenu> queryChildMenus(String parentId) {
 		return this.systemMenuService.findByParentId(parentId);
 	}
-	
-	
+
 	@PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_MENU_ADD')")
-	@RequestMapping(value = { "add", "doAdd" },method = RequestMethod.POST)
+	@RequestMapping(value = { "add", "doAdd" }, method = RequestMethod.POST)
 	@ResponseBody
 	public ModelAndView doAdd(SystemMenu systemMenu, HttpServletRequest request, HttpServletResponse response, Model model) {
-		if(systemMenu.getEnableFlag() == null) {
+		if (systemMenu.getEnableFlag() == null) {
 			systemMenu.setEnableFlag(true);
 		}
 		systemMenu.setDelFlag(false);
