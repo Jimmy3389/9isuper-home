@@ -288,7 +288,6 @@ function expandMenu(id,level){
 					addTable += "<td>"+data.roleTag+"</td>";
 					addTable += "<td>"+(data.enableFlag?"启用":"禁用")+"</td>";
 					addTable += "<td>";
-					alert($("#user_has_add_role").val());
 					if(level != 2 && $("#user_has_add_role").val()){
 						addTable += "<a href=\"#\" class=\"fa fa-plus\" title=\"添加下级菜单\"  onclick=\"javascript:addMenu('"+data.id+"','"+data.menuName+"');\"></a>";
 					}
@@ -297,7 +296,7 @@ function expandMenu(id,level){
 							addTable += "&nbsp;&nbsp;&nbsp;<a href=\"#\" class=\"fa fa-pencil\" title=\"编辑\"></a>";
 						}
 						if($("#user_has_del_role").val()){
-							addTable += "&nbsp;&nbsp;&nbsp;<a href=\"#\" class=\"fa fa-times\" title=\"删除\" onclick=\"javascript:deleteMenu(\''+${item.id}+'\');\"></a>";
+							addTable += "&nbsp;&nbsp;&nbsp;<a href=\"#\" class=\"fa fa-times\" title=\"删除\" onclick=\"javascript:deleteMenu('"+data.id+"');\"></a>";
 						}
 					}
 					addTable += "</td>";
