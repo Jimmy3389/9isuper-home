@@ -313,7 +313,6 @@ function expandMenu(id,level){
 		delChildRow(id);
 	}
 }
-
 function delChildRow(id){
 	$(".parentId_"+id).each(function () {
 		var childId = $(this).attr("id");
@@ -324,13 +323,10 @@ function delChildRow(id){
 		$(this).parent().remove();
 	});
 }
-
 function deleteMenu(id){
 	$('#deleteMenuModal').find('#id').val(id);
 	$('#deleteMenuModal').modal('show');
 }
-
-
 function addMenu(parentId,parentName){
 	$('#form_traditional_validation')[0].reset();
 	$("#parentId").empty(); 

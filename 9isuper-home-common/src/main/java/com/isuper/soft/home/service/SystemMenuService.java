@@ -57,7 +57,7 @@ public class SystemMenuService {
 	}
 
 	private Sort sortByMenuSortAsc() {
-		return new Sort(Sort.Direction.ASC, "menuSort");
+		return new Sort(Sort.Direction.DESC, "menuSort");
 	}
 
 	public void addMenu(SystemMenu systemMenu) {
