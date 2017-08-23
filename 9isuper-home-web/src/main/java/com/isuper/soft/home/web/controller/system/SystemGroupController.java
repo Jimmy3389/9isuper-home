@@ -1,8 +1,5 @@
 package com.isuper.soft.home.web.controller.system;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,14 +10,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.isuper.soft.home.domain.system.entity.SystemGroup;
-import com.isuper.soft.home.domain.system.entity.SystemMenu;
 import com.isuper.soft.home.service.SystemGroupService;
-import com.isuper.soft.home.service.SystemUserService;
 import com.isuper.soft.home.web.controller.BaseController;
 
 @Controller

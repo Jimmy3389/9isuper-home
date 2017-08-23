@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.isuper.soft.home.domain.system.entity.QSystemGroup;
 import com.isuper.soft.home.domain.system.entity.SystemGroup;
-import com.isuper.soft.home.domain.system.entity.SystemMenu;
 import com.isuper.soft.home.repository.SystemGroupRepository;
 import com.querydsl.core.BooleanBuilder;
 
