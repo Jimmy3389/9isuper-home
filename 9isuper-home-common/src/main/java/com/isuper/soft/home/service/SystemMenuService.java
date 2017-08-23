@@ -46,18 +46,22 @@ public class SystemMenuService {
 		BooleanBuilder booleanBuilder = new BooleanBuilder();
 		booleanBuilder.and(qSystemMenu.delFlag.eq(false));
 		booleanBuilder.and(qSystemMenu.parentId.eq("0"));
-		return (List<SystemMenu>) systemMenuRepository.findAll(booleanBuilder.getValue(), this.sortByMenuSortAsc());
+		return (List<SystemMenu>) systemMenuRepository.findAll(booleanBuilder.getValue(), this.sortByMenuSortDESC());
 	}
 
 	public List<SystemMenu> findByParentId(String parentId) {
 		BooleanBuilder booleanBuilder = new BooleanBuilder();
 		booleanBuilder.and(qSystemMenu.delFlag.eq(false));
 		booleanBuilder.and(qSystemMenu.parentId.eq(parentId));
-		return (List<SystemMenu>) systemMenuRepository.findAll(booleanBuilder.getValue(), this.sortByMenuSortAsc());
+		return (List<SystemMenu>) systemMenuRepository.findAll(booleanBuilder.getValue(), this.sortByMenuSortDESC());
 	}
 
-	private Sort sortByMenuSortAsc() {
+	private Sort sortByMenuSortDESC() {
 		return new Sort(Sort.Direction.DESC, "menuSort");
+	}
+	
+	private Sort sortByMenuSortAsc() {
+		return new Sort(Sort.Direction.ASC, "menuSort");
 	}
 
 	public void addMenu(SystemMenu systemMenu) {
