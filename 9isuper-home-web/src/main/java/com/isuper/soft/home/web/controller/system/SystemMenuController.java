@@ -1,13 +1,17 @@
 package com.isuper.soft.home.web.controller.system;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,20 +56,62 @@ public class SystemMenuController extends BaseController {
 	}
 
 	@PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_MENU_EDIT')")
-	@RequestMapping(value = "/edit")
+	@RequestMapping("doEdit")
 	@ResponseBody
-	public Map<String, Object> editSystemMenu(String id, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Map<String, Object> result = new HashMap<>();
+	public SystemMenu editSystemMenu(String id) {
+		SystemMenu menu = new SystemMenu();
 		if (StringUtils.isNotBlank(id)) {
 			SystemMenu systemMenu = this.systemMenuService.findMenuById(id);
 			if (systemMenu != null) {
-				result.put("systemMenu", systemMenu);
-				result.put("allSystemMenus", this.systemMenuService.findAllMenu());
+				return systemMenu;
 			}
 		}
-		return result;
+		return menu;
 	}
 
+	@PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_MENU_EDIT','ROLE_SYSTEM_MENU_LIST')")
+	@RequestMapping("toSelectMenu")
+	@ResponseBody
+	public List<String> editSystemMenu() {
+		List<SystemMenu> allMenus=this.systemMenuService.findAllMenu();
+		return this.getMenuTree(allMenus, 0, "0",1);
+	}
+	
+	
+	@SuppressWarnings("unused")
+	private List<String> getAllMenuTree(List<SystemMenu> allMenus,int count,String menuId) {
+		List<String> menuList= new ArrayList<String>();
+		List<SystemMenu> childMenus  = allMenus.stream().filter(menu -> menu.getParentId().equals(menuId)).distinct().collect(Collectors.toList());
+		if(CollectionUtils.isNotEmpty(childMenus)) {
+			for (SystemMenu systemMenu : childMenus) {
+				menuList.add(this.menuPrefix(count)+systemMenu.getMenuName()+"!"+systemMenu.getId());
+				menuList.addAll(this.getAllMenuTree(allMenus, count+1, systemMenu.getId()));
+			}
+		}
+		return menuList;
+	}
+	
+	private List<String> getMenuTree(List<SystemMenu> allMenus,int count,String menuId,int deep) {
+		List<String> menuList= new ArrayList<String>();
+		List<SystemMenu> childMenus  = allMenus.stream().filter(menu -> menu.getParentId().equals(menuId)).distinct().collect(Collectors.toList());
+		if(CollectionUtils.isNotEmpty(childMenus) && deep <= 3) {
+			for (SystemMenu systemMenu : childMenus) {
+				menuList.add(this.menuPrefix(count)+systemMenu.getMenuName()+"!"+systemMenu.getId());
+				menuList.addAll(this.getMenuTree(allMenus, count+1, systemMenu.getId(),deep +1));
+			}
+		}
+		return menuList;
+	}
+	
+	
+	private String menuPrefix(int count){
+		StringBuffer sb= new StringBuffer();
+		for(int i = 0;i<count;i++) {
+			sb.append("│&nbsp;&nbsp;&nbsp;&nbsp;");
+		}
+		return sb.toString()+"├─";
+	}
+	
 	@PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_MENU_LIST')")
 	@RequestMapping("queryChildMenus")
 	@ResponseBody
