@@ -1,10 +1,7 @@
 package com.isuper.soft.home.web.controller.system;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -72,7 +69,7 @@ public class SystemMenuController extends BaseController {
 	@PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_MENU_EDIT','ROLE_SYSTEM_MENU_LIST')")
 	@RequestMapping("toSelectMenu")
 	@ResponseBody
-	public List<String> editSystemMenu() {
+	public List<String> querySelectMenu() {
 		List<SystemMenu> allMenus=this.systemMenuService.findAllMenu();
 		return this.getMenuTree(allMenus, 0, "0",1);
 	}

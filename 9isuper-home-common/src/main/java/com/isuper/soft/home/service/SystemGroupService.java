@@ -1,6 +1,7 @@
 package com.isuper.soft.home.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.isuper.soft.home.domain.system.entity.QSystemGroup;
 import com.isuper.soft.home.domain.system.entity.SystemGroup;
+import com.isuper.soft.home.domain.system.entity.SystemMenu;
 import com.isuper.soft.home.repository.SystemGroupRepository;
 import com.querydsl.core.BooleanBuilder;
 
@@ -20,6 +22,12 @@ public class SystemGroupService {
 	private SystemGroupRepository systemGroupRepository;
 
 	private QSystemGroup qSystemGroup = QSystemGroup.systemGroup;
+
+	public List<SystemGroup> findAllGroup() {
+		BooleanBuilder booleanBuilder = new BooleanBuilder();
+		booleanBuilder.and(qSystemGroup.delFlag.eq(false));
+		return (List<SystemGroup>) systemGroupRepository.findAll(booleanBuilder.getValue());
+	}
 
 	public SystemGroup findGroupById(String id) {
 		List<String> ids = new ArrayList<String>();
@@ -47,5 +55,19 @@ public class SystemGroupService {
 
 	public List<SystemGroup> findGroupByUserId(String... ids) {
 		return null;
+	}
+
+	public void delGroup(String id, String creater) {
+		SystemGroup group = this.findGroupById(id);
+		if (group != null && StringUtils.isNotBlank(group.getId())) {
+			group.setDelFlag(true);
+			group.setUpdater(creater);
+			group.setUpdateDate(new Date());
+			this.systemGroupRepository.save(group);
+		}
+	}
+
+	public void addGroup(SystemGroup group) {
+		this.systemGroupRepository.save(group);
 	}
 }
