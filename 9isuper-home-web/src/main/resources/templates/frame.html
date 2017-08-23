@@ -356,20 +356,20 @@
 				</a>
 			</li>
 			
-			<li th:each="item : ${systemMenu}" th:if="${item.parentId eq'0'}">
-				<a href="javascript:;" th:title="${#lists.size(item)}"> 
+			<li th:each="item : ${systemMenu}" th:if="${item.parentId eq'0' &&  item.isShow}">
+				<a href="javascript:;" th:title="${#lists.size(item)}" th:onclick="'javascript:menuSkip(\''+${item.sourceUrl}+'\');'"> 
 					<i th:class="'fa '+${item.menuIco eq '' ? 'fa-folder' : item.menuIco }"></i> 
 					<span class="title" th:text="${item.menuName}"></span> 
 					<span class="arrow "></span>
 				</a>
 				<ul class="sub-menu">
-					<li th:each="item1 : ${systemMenu}" th:if="${item1.parentId eq item.id }" >
-						<a href="javascript:;">
+					<li th:each="item1 : ${systemMenu}" th:if="${item1.parentId eq item.id  &&  item1.isShow }" >
+						<a href="javascript:;" th:onclick="'javascript:menuSkip(\''+${item1.sourceUrl}+'\');'">
 							<i th:class="'fa '+${item1.menuIco eq null ? 'fa-folder' : item1.menuIco }"></i> 
 							<span class="title" th:text="${item1.menuName }"></span> 
 						</a>
 						<ul class="sub-menu">
-							<li th:each="item2 : ${systemMenu}" th:if="${item2.parentId eq item1.id }" >
+							<li th:each="item2 : ${systemMenu}" th:if="${item2.parentId eq item1.id &&  item2.isShow}" >
 								<a th:class="'fa '+${item2.menuIco eq null ? 'fa-circle' : item2.menuIco }" href="#" th:text="'&nbsp;&nbsp;&nbsp;&nbsp;'+${item2.menuName}" th:onclick="'javascript:menuSkip(\''+${item2.sourceUrl}+'\');'"></a>
 							</li>
 						</ul>
