@@ -31,7 +31,7 @@
             		<div class="grid-title">
               			<h4>角色列表</h4>
               			<div class="tools"> 
-              				<a sec:authorize="hasRole('ROLE_ADMIN','ROLE_SYSTEM_USER_ADD')" href="javascript:;" class="add" ></a> 
+              				<a sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_SYSTEM_USER_ADD')" href="javascript:;" class="add" ></a> 
               				<a href="#grid-config" data-toggle="modal" class="config"></a> 
               				<a href="javascript:;" class="reload" ></a> 
               			</div>
@@ -55,8 +55,8 @@
                 					<td th:text="${item.remark}"></td>
                 					<td th:text="${item.enableFlag ? '启用':'禁用'}"></td>
                 					<td th:if="${item.groupCode  ne 'admin'}">
-                						<a sec:authorize="hasRole('ROLE_ADMIN','ROLE_SYSTEM_GROUP_EDIT')" href="#" class="fa fa-pencil" title="编辑"></a>
-                						<a sec:authorize="hasRole('ROLE_ADMIN','ROLE_SYSTEM_GROUP_DEL')" href="#" class="fa fa-times" title="删除" th:onclick="'javascript:deleteGroup(\''+${item.id}+'\');'"></a>
+                						<a sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_SYSTEM_GROUP_EDIT')" href="#" class="fa fa-pencil" title="编辑"></a>
+                						<a sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_SYSTEM_GROUP_DEL')" href="#" class="fa fa-times" title="删除" th:onclick="'javascript:deleteGroup(\''+${item.id}+'\');'"></a>
                 					</td>
                 					<td th:if="${item.groupCode eq 'admin'}"></td>
                 				</tr>
