@@ -365,6 +365,7 @@ function fnFormatDetails ( oTable, nTr )
     sOut += '<tr><td>登陆时间</td><td>'+aData[8]+'</td><td>登陆IP</td><td>'+aData[9]+'</td></tr>';
     sOut += '<tr><td>登陆次数:</td><td>'+aData[10]+'</td><td>会员生日:</td><td>'+aData[11]+'</td></tr>';
     sOut += '<tr><td>会员图像:</td><td colspan=3><img src='+img+' width="35" height="35"></img></td></tr>';
+    sOut += '<tr><td>所属角色:</td><td colspan=3>'+aData[13]+'</tr>';
     sOut += '</table>';
     return sOut;
 }

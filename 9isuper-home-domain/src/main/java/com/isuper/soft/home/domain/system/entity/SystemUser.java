@@ -16,6 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -113,6 +114,9 @@ public class SystemUser extends DataEntity implements UserDetails {
 	// 配置用户与角色多对多关系
 	@ManyToMany(cascade = { CascadeType.REFRESH }, fetch = FetchType.EAGER)
 	private List<SystemGroup> systemGroups;
+
+	@Transient
+	private String userGroups;
 
 	// 将用户的角色作为权限
 	@Override
@@ -332,6 +336,21 @@ public class SystemUser extends DataEntity implements UserDetails {
 
 	public void setSystemGroups(List<SystemGroup> systemGroups) {
 		this.systemGroups = systemGroups;
+	}
+
+	public String getUserGroups() {
+		StringBuffer sb = new StringBuffer();
+		if (CollectionUtils.isNotEmpty(systemGroups)) {
+			for (SystemGroup systemGroup : systemGroups) {
+				sb.append(systemGroup.getGroupName()).append(",");
+			}
+		}
+		String groups = sb.toString();
+		return StringUtils.isNotBlank(groups) ? groups.substring(0, groups.length() - 1) : "";
+	}
+
+	public void setUserGroups(String userGroups) {
+		this.userGroups = userGroups;
 	}
 
 }

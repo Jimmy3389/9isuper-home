@@ -43,6 +43,7 @@
                   				<tr>
                   					<th></th>
                     				<th>菜单名称</th>
+                    				<th>显示图标</th>
                     				<th>所属系统</th>
                     				<th>菜单URL</th>
                     				<th>是否显示</th>
@@ -57,10 +58,15 @@
                 					<td th:text="${item.parentId}" hidden="hidden">
                 					</td>
                 					<td hidden="hidden">
-                					<input th:id="${'menu_list_expend_'+item.id}" hidden="hidden" value="0"></input>
+                						<input th:id="${'menu_list_expend_'+item.id}" hidden="hidden" value="0"></input>
                 					</td>
-                					<td class="fa fa-arrow-circle-right" th:id="${'menu_expand_status_'+item.id}" th:onclick="'javascript:expandMenu(\''+${item.id}+'\',0);'"></td>
+                					<td class="center">
+                						<i class="fa fa-arrow-circle-right" th:id="${'menu_expand_status_'+item.id}" th:onclick="'javascript:expandMenu(\''+${item.id}+'\',0);'"></i>
+                					</td>
                 					<td th:text="${item.menuName}"></td>
+                					<td class="center">
+                						<i th:class="'fa '+${item.menuIco eq null ? 'fa-folder' : item.menuIco }"></i>
+                					</td>
                 					<td th:text="${item.systemId}"></td>
                 					<td th:text="${item.sourceUrl}"></td>
                 					<td th:text="${item.isShow ? '显示':'隐藏'}"></td>
@@ -280,11 +286,11 @@ function expandMenu(id,level){
 					var addTable= "<tr id=\"menu_list_"+data.id+"\" name=\"menu_list_"+data.id+"\">";
 					addTable += "<td class=\"parentId_"+data.parentId+"\" hidden=\"hidden\" id=\"menu_id_"+data.id+"\" ></td>";
 					addTable += "<td hidden=\"hidden\"><input id=\"menu_list_expend_"+data.id+"\" hidden=\"hidden\" value=\"0\"></input></td>";
-					if(level == 2){
-						addTable += "<td></td>";
-					}else{
-						addTable += "<td class=\"fa fa-arrow-circle-right\" id=\"menu_expand_status_"+data.id+"\" onclick=\"javascript:expandMenu('"+data.id+"',"+(level+1)+");\"></td>";
+					addTable += "<td>";
+					if(level != 2){
+						addTable += "<i class=\"fa fa-arrow-circle-right\" id=\"menu_expand_status_"+data.id+"\" onclick=\"javascript:expandMenu('"+data.id+"',"+(level+1)+");\"></i>";
 					}
+					addTable += "</td>";
 					if(level == 0){
 						addTable += "<td>&nbsp;&nbsp;&nbsp;"+data.menuName+"</td>";
 					}else if(level == 1){
@@ -292,6 +298,11 @@ function expandMenu(id,level){
 					}else{
 						addTable += "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+data.menuName+"</td>";
 					}
+					addTable += "<td>";
+					if(data.menuIco != null){
+						addTable += "<i class=\"fa "+data.menuIco+"\"></i>";
+					}
+					addTable += "</td>";
 					addTable += "<td>"+data.systemId+"</td>";
 					addTable += "<td>"+(data.sourceUrl == null ? "" : data.sourceUrl)+"</td>";
 					addTable += "<td>"+(data.isShow ? "显示":"隐藏")+"</td>";
