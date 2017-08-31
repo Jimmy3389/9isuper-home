@@ -3,8 +3,11 @@ package com.isuper.soft.home.domain.system.entity;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -53,6 +56,9 @@ public class SystemMenu extends DataEntity implements Serializable {
 	/** 所有子目录 */
 	@Transient
 	private List<SystemMenu> childMenus;
+	
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "systemMenus",fetch=FetchType.LAZY)
+	private List<SystemGroup> systemGroups;
 
 	public String getMenuName() {
 		return menuName;
@@ -118,16 +124,10 @@ public class SystemMenu extends DataEntity implements Serializable {
 		this.parentId = parentId;
 	}
 
-	/**
-	 * @return the menuIco
-	 */
 	public String getMenuIco() {
 		return menuIco;
 	}
 
-	/**
-	 * @param menuIco the menuIco to set
-	 */
 	public void setMenuIco(String menuIco) {
 		this.menuIco = menuIco;
 	}
@@ -140,4 +140,13 @@ public class SystemMenu extends DataEntity implements Serializable {
 		this.childMenus = childMenus;
 	}
 
+	public List<SystemGroup> getSystemGroups() {
+		return systemGroups;
+	}
+
+	public void setSystemGroups(List<SystemGroup> systemGroups) {
+		this.systemGroups = systemGroups;
+	}
+
+	
 }

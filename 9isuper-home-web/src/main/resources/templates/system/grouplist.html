@@ -45,6 +45,8 @@
                     				<th>角色名称</th>
                     				<th>备注</th>
                     				<th>角色状态</th>
+                    				<th sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_ROLE_USER_VIEW')">用户列表</th>
+                    				<th sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_ROLE_MENU_VIEW')">权限列表</th>
                     				<th>操作</th>
                   				</tr>
                 			</thead>
@@ -54,6 +56,14 @@
                 					<td th:text="${item.groupName}"></td>
                 					<td th:text="${item.remark}"></td>
                 					<td th:text="${item.enableFlag ? '启用':'禁用'}"></td>
+                					<td sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_ROLE_USER_VIEW')">
+                						<a sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_ROLE_USER_EDIT')" href="#" class="fa fa-pencil"></a>
+                						<i th:text="${#strings.abbreviate(item.users,20)}"  data-toggle="tooltip" data-placement="bottom" th:title="${#strings.abbreviate(item.users,500)}"></i>
+                					</td>
+                					<td sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_ROLE_MENU_VIEW')">
+                						<a sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_ROLE_MENU_EDIT')" href="#" class="fa fa-pencil"></a>
+                						<i th:text="${#strings.abbreviate(item.menus,20)}"  data-toggle="tooltip" data-placement="bottom" th:title="${#strings.abbreviate(item.menus,500)}"></i> 
+                					</td>
                 					<td th:if="${item.groupCode  ne 'admin'}">
                 						<a sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_SYSTEM_GROUP_EDIT')" href="#" class="fa fa-pencil" title="编辑"></a>
                 						<a sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_SYSTEM_GROUP_DEL')" href="#" class="fa fa-times" title="删除" th:onclick="'javascript:deleteGroup(\''+${item.id}+'\');'"></a>

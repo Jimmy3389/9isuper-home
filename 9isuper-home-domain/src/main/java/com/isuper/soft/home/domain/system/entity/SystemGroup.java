@@ -7,8 +7,15 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.isuper.soft.home.domain.common.DataEntity;
 
@@ -27,9 +34,21 @@ public class SystemGroup extends DataEntity implements Serializable {
 	private String groupCode;
 
 	// 配置用户与角色多对多关系
-	@ManyToMany(cascade = { CascadeType.REFRESH }, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinTable(name = "SYSTEM_GROUP_SYSTEM_MENUS", joinColumns = { @JoinColumn(name = "SYSTEM_GROUP_ID") }, inverseJoinColumns = { @JoinColumn(name = "SYSTEM_MENUS_ID") })
+	@OrderBy("menuSort")
 	private List<SystemMenu> systemMenus;
 
+	// 配置用户与角色多对多关系
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "systemGroups",fetch=FetchType.LAZY)
+	private List<SystemUser> systemUsers;
+	
+	@Transient
+	private String menus;
+	
+	@Transient
+	private String users;
+	
 	public String getGroupName() {
 		return groupName;
 	}
@@ -54,5 +73,52 @@ public class SystemGroup extends DataEntity implements Serializable {
 		this.groupCode = groupCode;
 	}
 
+	public List<SystemUser> getSystemUsers() {
+		return systemUsers;
+	}
+
+	public void setSystemUsers(List<SystemUser> systemUsers) {
+		this.systemUsers = systemUsers;
+	}
+
+	public String getMenus() {
+		StringBuffer sb = new StringBuffer();
+		if (CollectionUtils.isNotEmpty(this.systemMenus)) {
+			for (SystemMenu systemMenu : this.systemMenus) {
+				sb.append(systemMenu.getMenuName());
+				if(StringUtils.isNotBlank(systemMenu.getRoleTag())) {
+					sb.append("("+systemMenu.getRoleTag()+")");
+				}
+				sb.append(",");
+			}
+		}
+		String users = sb.toString();
+		return StringUtils.isNotBlank(users) ? users.substring(0, users.length() - 1) : "";
+	}
+
+	public void setMenus(String menus) {
+		this.menus = menus;
+	}
+
+	public String getUsers() {
+		StringBuffer sb = new StringBuffer();
+		if (CollectionUtils.isNotEmpty(this.systemUsers)) {
+			for (SystemUser systemUser : this.systemUsers) {
+				sb.append(systemUser.getNickName());
+				if(StringUtils.isNotBlank(systemUser.getRealName())) {
+					sb.append("("+systemUser.getRealName()+")");
+				}
+				sb.append(",");
+			}
+		}
+		String users = sb.toString();
+		return StringUtils.isNotBlank(users) ? users.substring(0, users.length() - 1) : "";
+	}
+
+	public void setUsers(String users) {
+		this.users = users;
+	}
+
+	
 	
 }

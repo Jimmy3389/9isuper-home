@@ -11,7 +11,8 @@ import java.util.TreeSet;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -112,7 +113,9 @@ public class SystemUser extends DataEntity implements UserDetails {
 	private Date birthDay;
 
 	// 配置用户与角色多对多关系
-	@ManyToMany(cascade = { CascadeType.REFRESH }, fetch = FetchType.EAGER)
+	// @ManyToMany(cascade = { CascadeType.REFRESH }, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinTable(name = "SYSTEM_USER_SYSTEM_GROUPS", joinColumns = { @JoinColumn(name = "SYSTEM_USER_ID") }, inverseJoinColumns = { @JoinColumn(name = "SYSTEM_GROUPS_ID") })
 	private List<SystemGroup> systemGroups;
 
 	@Transient
