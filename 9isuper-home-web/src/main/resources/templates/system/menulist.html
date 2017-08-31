@@ -160,24 +160,21 @@
 							<div class="row-fluid">
 								<div class="input-group">
 					  				<span class="input-group-addon primary">				  
-					  					<span class="arrow"></span>
-										<i class="fa fa-align-justify"></i>
+										菜单名称
 					  				</span>
 					  				<input type="text" class="form-control" id="menuName" name="menuName" placeholder="菜单名称">
 								</div>
 								<br>
 								<div class="input-group">
 					  				<span class="input-group-addon primary">				  
-					  					<span class="arrow"></span>
-										<i class="fa fa-align-justify"></i>
+										菜单标题
 					  				</span>
 					  				<input type="text" class="form-control" id="menuTile" name="menuTile" placeholder="菜单标题">
 								</div>
 								<br>
 								<div class="input-group">
 					  				<span class="input-group-addon primary">				  
-					  					<span class="arrow"></span>
-										<i class="fa fa-align-justify"></i>
+										菜单权限
 					  				</span>
 					  				<input type="hidden" id="id" name="id" value="">
 					  				<input type="text" class="form-control" id="roleTag" name="roleTag" placeholder="菜单权限">
@@ -185,46 +182,52 @@
 								<br>
 								<div class="input-group">
 					  				<span class="input-group-addon primary">				  
-					  					<span class="arrow"></span>
-										<i class="fa fa-align-justify"></i>
+										所属系统
 					  				</span>
 					  				<input type="text" class="form-control" id="systemId" name="systemId" placeholder="所属系统" value="0">
 								</div>
 								<br>
 								<div class="input-group">
 					  				<span class="input-group-addon primary">				  
-					  					<span class="arrow"></span>
-										<i class="fa fa-align-justify"></i>
+										菜单路径
 					  				</span>
 					  				<input type="text" class="form-control" id="sourceUrl" name="sourceUrl" placeholder="菜单路径">
 								</div>
 								<br>
 								<div class="input-group">
 					  				<span class="input-group-addon primary">				  
-					  					<span class="arrow"></span>
-										<i class="fa fa-align-justify"></i>
+										菜单图标
 					  				</span>
 					  				<input type="text" class="form-control" id="menuIco" name="menuIco" placeholder="菜单图标">
 								</div>
 								<br>
-	                    		<div class="radio radio-success">
-	                     			<input id="yes" type="radio" name="isShow" value="yes" checked="checked">
-	                      			<label for="yes">显示菜单</label>
-	                      			<input id="no" type="radio" name="isShow" value="no" >
-	                      			<label for="no">隐藏菜单</label>
+								<div class="input-group">
+									<span class="input-group-addon primary">				  
+										显示状态
+					  				</span>
+		                    		<div class="radio radio-success">
+		                     			<input id="yes" type="radio" name="isShow" value="yes" checked="checked">
+		                      			<label for="yes">显示菜单</label>
+		                      			<input id="no" type="radio" name="isShow" value="no" >
+		                      			<label for="no">隐藏菜单</label>
+		                    		</div>
 	                    		</div>
 								<br>
 								<div class="input-group">
-					  				<span class="input-group-addon primary">				  
-					  					<span class="arrow"></span>
-										<i class="fa fa-align-justify"></i>
+					  				<span class="input-group-addon primary">
+					  					菜单排序				  
 					  				</span>
 					  				<input type="text" class="form-control" id="menuSort" name="menuSort" placeholder="菜单排序">
 								</div>
 								<br>
-								<select id="parentId" name="parentId" style="width:100%">
-									<option value="0">顶级菜单</option>
-								</select>
+								<div class="input-group">
+					  				<span class="input-group-addon primary">
+					  					上级菜单			  
+					  				</span>
+									<select id="parentId" name="parentId" style="width:100%">
+										<option value="0">顶级菜单</option>
+									</select>
+								</div>
 	
 						       	<div class="modal-footer">
 						     		<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
