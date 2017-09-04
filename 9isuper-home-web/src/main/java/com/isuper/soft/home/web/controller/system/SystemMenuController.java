@@ -44,6 +44,15 @@ public class SystemMenuController extends BaseController {
 		return new ModelAndView("system/menulist");
 	}
 
+	
+	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SYSTEM_MENU_ADD')")
+	@RequestMapping(value = "toAdd", method = RequestMethod.GET)
+	@ResponseBody
+	public ModelAndView toAdd( HttpServletRequest request, HttpServletResponse response, Model model) {
+		return new ModelAndView("system/menuAdd");
+	}
+
+	
 	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SYSTEM_MENU_DEL')")
 	@RequestMapping(value = { "delete", "doDelete" }, method = RequestMethod.POST)
 	@ResponseBody

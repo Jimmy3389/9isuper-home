@@ -33,8 +33,17 @@ public class SystemGroupController extends BaseController {
 		model.addAttribute("systemGroups", this.systemGroupService.findAllGroup());
 		return new ModelAndView("system/grouplist");
 	}
+	
+	
+	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SYSTEM_GROUP_ADD')")
+	@RequestMapping(value = "toAdd")
+	@ResponseBody
+	public ModelAndView toAdd(Model model, HttpServletRequest request, HttpServletResponse response) {
+		return new ModelAndView("system/groupAdd");
+	}
 
-	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SYSTEM_GROUP_DEL')")
+
+	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SYSTEM_GROUP_ADD')")
 	@RequestMapping(value = "/add")
 	@ResponseBody
 	public ModelAndView AddSystemGroup(SystemGroup systemGroup, HttpServletRequest request, HttpServletResponse response, Model model) {

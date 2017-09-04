@@ -35,6 +35,15 @@ public class SystemUserController extends BaseController {
 		return new ModelAndView("system/userlist");
 	}
 
+	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SYSTEM_USER_ADD')")
+	@RequestMapping(value = "toAdd")
+	@ResponseBody
+	public ModelAndView toAdd(Model model) {
+		return new ModelAndView("system/userAdd");
+	}
+	
+	
+	
 	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SYSTEM_USER_DEL')")
 	@RequestMapping(value = "/delete")
 	@ResponseBody

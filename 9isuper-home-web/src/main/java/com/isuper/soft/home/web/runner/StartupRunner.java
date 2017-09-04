@@ -143,14 +143,15 @@ public class StartupRunner implements CommandLineRunner {
 			systemMenu.setCreater("0");// 设定系统管理员创建
 			systemMenu.setDelFlag(false);// 设定未删除
 			systemMenu.setEnableFlag(true);// 设定开启状态
-			systemMenu.setIsShow(false);// 设定是可以显示的
+			systemMenu.setIsShow(true);// 设定是可以显示的
 			systemMenu.setMenuName("添加用户");// 设定目录名称
 			systemMenu.setMenuSort(991012);// 设定目录排序未最后一项
 			systemMenu.setMenuTile("添加用户");//
-			systemMenu.setParentId("111");
+			systemMenu.setParentId("110");
 			systemMenu.setRemark("系统自动创建");// 设定拥有GUEST权限即可访问
 			systemMenu.setRoleTag("ROLE_SYSTEM_USER_ADD");// 具有ADMIN权限才能使用该菜单
 			systemMenu.setSystemId("0");
+			systemMenu.setSourceUrl("/system/user/toAdd");
 			systemMenu.setUpdater("0");
 			systemMenu.setMenuIco("fa-plus");
 			rootMenus.add(systemMenuRepository.save(systemMenu));
@@ -245,14 +246,15 @@ public class StartupRunner implements CommandLineRunner {
 			systemMenu.setCreater("0");// 设定系统管理员创建
 			systemMenu.setDelFlag(false);// 设定未删除
 			systemMenu.setEnableFlag(true);// 设定开启状态
-			systemMenu.setIsShow(false);// 设定是可以显示的
+			systemMenu.setIsShow(true);// 设定是可以显示的
 			systemMenu.setMenuName("添加角色");// 设定目录名称
 			systemMenu.setMenuSort(991022);// 设定目录排序未最后一项
 			systemMenu.setMenuTile("添加角色");//
-			systemMenu.setParentId("121");
+			systemMenu.setParentId("120");
 			systemMenu.setRemark("系统自动创建");// 设定拥有GUEST权限即可访问
 			systemMenu.setRoleTag("ROLE_SYSTEM_GROUP_ADD");// 具有ADMIN权限才能使用该菜单
 			systemMenu.setSystemId("0");
+			systemMenu.setSourceUrl("/system/group/toAdd");
 			systemMenu.setUpdater("0");
 			systemMenu.setMenuIco("fa-plus");
 			rootMenus.add(systemMenuRepository.save(systemMenu));
@@ -345,14 +347,15 @@ public class StartupRunner implements CommandLineRunner {
 			systemMenu.setCreater("0");// 设定系统管理员创建
 			systemMenu.setDelFlag(false);// 设定未删除
 			systemMenu.setEnableFlag(true);// 设定开启状态
-			systemMenu.setIsShow(false);// 设定是可以显示的
+			systemMenu.setIsShow(true);// 设定是可以显示的
 			systemMenu.setMenuName("添加菜单");// 设定目录名称
 			systemMenu.setMenuSort(991032);// 设定目录排序未最后一项
 			systemMenu.setMenuTile("添加菜单");//
-			systemMenu.setParentId("131");
+			systemMenu.setParentId("130");
 			systemMenu.setRemark("系统自动创建");// 设定拥有GUEST权限即可访问
 			systemMenu.setRoleTag("ROLE_SYSTEM_MENU_ADD");// 具有ADMIN权限才能使用该菜单
 			systemMenu.setSystemId("0");
+			systemMenu.setSourceUrl("/system/menu/toAdd");
 			systemMenu.setUpdater("0");
 			systemMenu.setMenuIco("fa-plus");
 			rootMenus.add(systemMenuRepository.save(systemMenu));
