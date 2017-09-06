@@ -1,15 +1,19 @@
 package com.isuper.soft.home.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.isuper.soft.home.domain.system.entity.QSystemUser;
+import com.isuper.soft.home.domain.system.entity.SystemGroup;
 import com.isuper.soft.home.domain.system.entity.SystemUser;
 import com.isuper.soft.home.repository.SystemUserRepository;
 import com.querydsl.core.BooleanBuilder;
@@ -62,6 +66,54 @@ public class SystemUserService {
 	public List<SystemUser> findAllUser() {
 		BooleanBuilder booleanBuilder = new BooleanBuilder();
 		booleanBuilder.and(qSystemUser.delFlag.eq(false));
-		return  (List<SystemUser>) this.systemUserRepository.findAll(booleanBuilder.getValue());
+		return (List<SystemUser>) this.systemUserRepository.findAll(booleanBuilder.getValue());
 	}
+
+	public void setUserGroup(SystemGroup group, String updater, String... userIds) {
+		List<SystemUser> systemUsers = this.findAllUser();// 查找出所有的用户
+		List<SystemUser> needUpdateUsers = new ArrayList<SystemUser>();
+		for (SystemUser systemUser : systemUsers) {
+			 List<SystemGroup> userHasGroup = systemUser.getSystemGroups();
+			if(this.userInGroupUpdateList(systemUser.getId(), userIds)) {
+				//说明这些用户需要有这个分组
+				if(!this.groupIdInList(userHasGroup, group.getId())) {
+					systemUser.getSystemGroups().add(group);
+					systemUser.setUpdater(updater);
+					systemUser.setUpdateDate(new Date());
+					needUpdateUsers.add(systemUser);
+				}
+			}else {
+				//说明这些用户如果有这个分组则需要去掉
+				if(this.groupIdInList(userHasGroup, group.getId())) {
+					systemUser.setSystemGroups(this.removeGroupId(systemUser.getSystemGroups(), group.getId()));
+					systemUser.setUpdater(updater);
+					systemUser.setUpdateDate(new Date());
+					needUpdateUsers.add(systemUser);
+				}
+			}
+		}
+		if (CollectionUtils.isNotEmpty(needUpdateUsers)) {
+			this.systemUserRepository.saveAll(needUpdateUsers);
+		}
+	}
+
+	private boolean userInGroupUpdateList(String userId, String... userIds) {
+		if (userIds != null && userIds.length > 1) {
+			for (String string : userIds) {
+				if (string.equals(userId)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	private boolean groupIdInList(List<SystemGroup> groups,String groupId) {
+		return groups.stream().anyMatch(e -> e.getId().equals(groupId));
+	}
+	
+	private List<SystemGroup> removeGroupId(List<SystemGroup> groups,String groupId) {
+		return groups.stream().filter(e -> !e.getId().equals(groupId)).collect(Collectors.toList());
+	}
+
 }

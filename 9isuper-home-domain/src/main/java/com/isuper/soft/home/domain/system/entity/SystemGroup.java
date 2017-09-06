@@ -9,6 +9,10 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.isuper.soft.home.domain.common.DataEntity;
 
@@ -29,6 +33,12 @@ public class SystemGroup extends DataEntity implements Serializable {
 	// 配置用户与角色多对多关系
 	@ManyToMany(cascade = { CascadeType.REFRESH }, fetch = FetchType.EAGER)
 	private List<SystemMenu> systemMenus;
+
+	@Transient
+	private String users;
+
+	@Transient
+	private String menus;
 
 	public String getGroupName() {
 		return groupName;
@@ -54,5 +64,24 @@ public class SystemGroup extends DataEntity implements Serializable {
 		this.groupCode = groupCode;
 	}
 
-	
+	public String getUsers() {
+		return users;
+	}
+
+	public void setUsers(String users) {
+		this.users = users;
+	}
+
+	public String getMenus() {
+		StringBuffer sb = new StringBuffer();
+		if (CollectionUtils.isNotEmpty(this.systemMenus)) {
+			this.systemMenus.stream().forEach(e -> sb.append(e.getMenuName()).append("(").append(e.getRoleTag()).append(")").append(","));
+		}
+		return StringUtils.isBlank(sb) ? "" : sb.substring(0, sb.length() - 1);
+	}
+
+	public void setMenus(String menus) {
+		this.menus = menus;
+	}
+
 }

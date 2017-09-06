@@ -1,5 +1,7 @@
 package com.isuper.soft.home.web.controller.system;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,7 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.isuper.soft.home.domain.system.entity.SystemGroup;
+import com.isuper.soft.home.domain.system.entity.SystemMenu;
 import com.isuper.soft.home.service.SystemGroupService;
+import com.isuper.soft.home.service.SystemUserService;
 import com.isuper.soft.home.web.controller.BaseController;
 
 @Controller
@@ -26,6 +30,9 @@ public class SystemGroupController extends BaseController {
 	@Inject
 	private SystemGroupService systemGroupService;
 
+	@Inject
+	private SystemUserService systemUserService;
+
 	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SYSTEM_GROUP_LIST')")
 	@RequestMapping(value = { "", "list" })
 	@ResponseBody
@@ -33,27 +40,29 @@ public class SystemGroupController extends BaseController {
 		model.addAttribute("systemGroups", this.systemGroupService.findAllGroup());
 		return new ModelAndView("system/grouplist");
 	}
-	
-	
+
 	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SYSTEM_GROUP_ADD')")
 	@RequestMapping(value = "toAdd")
 	@ResponseBody
 	public ModelAndView toAdd(Model model, HttpServletRequest request, HttpServletResponse response) {
+		model.addAttribute("allSystemUsers", this.systemUserService.findAllUser());
 		return new ModelAndView("system/groupAdd");
 	}
-
 
 	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SYSTEM_GROUP_ADD')")
 	@RequestMapping(value = "/add")
 	@ResponseBody
-	public ModelAndView AddSystemGroup(SystemGroup systemGroup, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public ModelAndView AddSystemGroup(SystemGroup systemGroup, String[] groupUsers, HttpServletRequest request, HttpServletResponse response, Model model) {
 		if (systemGroup.getEnableFlag() == null) {
 			systemGroup.setEnableFlag(true);
 		}
 		systemGroup.setDelFlag(false);
 		systemGroup.setCreater(super.getCurrentUser().getId());
 		systemGroup.setUpdater(super.getCurrentUser().getId());
-		this.systemGroupService.addGroup(systemGroup);
+		systemGroup=this.systemGroupService.addGroup(systemGroup);
+		if (groupUsers != null && groupUsers.length > 0) {
+			this.systemUserService.setUserGroup(systemGroup, getCurrentUser().getId(), groupUsers);
+		}
 		return this.toList(model, request, response);
 	}
 
@@ -77,5 +86,12 @@ public class SystemGroupController extends BaseController {
 		systemGroup.setUpdater(super.getCurrentUser().getId());
 		this.systemGroupService.addGroup(systemGroup);
 		return this.toList(model, request, response);
+	}
+	
+	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SYSTEM_GROUP_LIST')")
+	@RequestMapping("queryById")
+	@ResponseBody
+	public SystemGroup queryById(String id) {
+		return this.systemGroupService.findById(id);
 	}
 }
