@@ -119,7 +119,9 @@ $(document).ready(function() {
 			},
 			groupCode:{
 				minlength: 2,
-                required: true
+				maxlength: 10,
+                required: true,
+                isEnglish: true
 			}
 		},
 		messages:{
@@ -128,8 +130,9 @@ $(document).ready(function() {
 				maxlength: jQuery.format("群组名称不能超过{0}个字 符")
 			},
 			groupName:{
-				minlength: jQuery.format("群组标识不能小于{0}个字 符"),
-				maxlength: jQuery.format("群组标识不能超过{0}个字 符")
+				minlength: jQuery.format("角色标识不能小于{0}个字 符"),
+				maxlength: jQuery.format("角色标识不能超过{0}个字 符"),
+				isEnglish: jQuery.format("角色标识含有非法字符")
 			}
 		},
 
@@ -158,7 +161,26 @@ $(document).ready(function() {
         },
 
         submitHandler: function (form) {
-        	form.submit();
+        	var goupId = "";  
+     	    var groupCode = $('#groupCode').val();  
+     	    $.ajax({
+     	    	url : "checkSameGroup",
+     	    	timeout : 1000, // 超时时间设置，单位毫秒
+     			type : "GET",
+     			dataType : "JSON",
+     			data :  { groupId : goupId , groupCode : groupCode},
+     			cache: false,
+     			success : function(data) {
+     				if(!data){
+	     				return form.submit();
+     				}else{
+     					alert("已经存在相同的角色标识！");
+     				}
+     			},
+     			error: function(e) {
+     				alert("系统出现异常！"+e);
+     			} 
+     	    });
         }
 	});
 })
