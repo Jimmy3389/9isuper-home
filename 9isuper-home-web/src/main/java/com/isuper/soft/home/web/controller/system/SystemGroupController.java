@@ -24,8 +24,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.isuper.soft.home.domain.system.entity.SystemGroup;
+import com.isuper.soft.home.domain.system.entity.SystemMenu;
 import com.isuper.soft.home.domain.system.entity.SystemUser;
 import com.isuper.soft.home.service.SystemGroupService;
+import com.isuper.soft.home.service.SystemMenuService;
 import com.isuper.soft.home.service.SystemUserService;
 import com.isuper.soft.home.web.controller.BaseController;
 
@@ -40,6 +42,9 @@ public class SystemGroupController extends BaseController {
 
 	@Inject
 	private SystemUserService systemUserService;
+
+	@Inject
+	private SystemMenuService systemMenuService;
 
 	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SYSTEM_GROUP_LIST')")
 	@RequestMapping(value = { "", "list" })
@@ -146,15 +151,15 @@ public class SystemGroupController extends BaseController {
 		List<SystemUser> needUpdateUser = new ArrayList<SystemUser>();
 		if (systemGroup != null && CollectionUtils.isNotEmpty(allUser)) {
 			allUser.stream().forEach(u -> {
-				if(idInList(u.getId(),selectedUser)) {
-					if(!u.getSystemGroups().stream().anyMatch(g -> g.getId().equals(id))) {
+				if (idInList(u.getId(), selectedUser)) {
+					if (!u.getSystemGroups().stream().anyMatch(g -> g.getId().equals(id))) {
 						u.getSystemGroups().add(systemGroup);
 						u.setUpdateDate(new Date());
 						u.setUpdater(super.getCurrentUser().getId());
 						needUpdateUser.add(u);
 					}
-				}else {
-					if(u.getSystemGroups().stream().anyMatch(g -> g.getId().equals(id))) {
+				} else {
+					if (u.getSystemGroups().stream().anyMatch(g -> g.getId().equals(id))) {
 						u.setSystemGroups(u.getSystemGroups().stream().filter(g -> !g.getId().equals(id)).collect(Collectors.toList()));
 						u.setUpdateDate(new Date());
 						u.setUpdater(super.getCurrentUser().getId());
@@ -168,11 +173,11 @@ public class SystemGroupController extends BaseController {
 		}
 		return this.toList(model, request, response);
 	}
-	
-	private boolean idInList(String id,String[] ids) {
-		if(ids!=null&&ids.length>0) {
-			for(String s : ids) {
-				if(s.equalsIgnoreCase(id)) {
+
+	private boolean idInList(String id, String[] ids) {
+		if (ids != null && ids.length > 0) {
+			for (String s : ids) {
+				if (s.equalsIgnoreCase(id)) {
 					return true;
 				}
 			}
@@ -180,4 +185,44 @@ public class SystemGroupController extends BaseController {
 		return false;
 	}
 
+	@RequestMapping("getGroupMenusSelect")
+	@ResponseBody
+	public Map<String, Object> getGroupMenusSelect(String groupId) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		SystemGroup systemGroup = this.systemGroupService.findById(groupId);
+		// noSelectMenus = noSelectMenus.stream().filter(m ->
+		// !selectMenus.stream().anyMatch(s ->
+		// s.getId().equals(m.getId()))).collect(Collectors.toList());
+		if (super.getCurrentUser().getLoginAccount().equalsIgnoreCase("admin")) {
+			map.put("allMenus", this.systemMenuService.findAllMenu());
+		} else {
+			map.put("allMenus", this.systemUserService.findByUserId(super.getCurrentUser().getId()).getUserMenu());
+		}
+		map.put("hasMenus", systemGroup.getSystemMenus());
+		return map;
+	}
+
+	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SYSTEM_GROUP_EDIT')")
+	@RequestMapping("editGroupMenu")
+	@ResponseBody
+	public ModelAndView editGroupMenu(String groupid, String[] selectedMenus, HttpServletRequest request, HttpServletResponse response, Model model) {
+		SystemGroup systemGroup = this.systemGroupService.findById(groupid);
+		SystemUser systemUser = this.systemUserService.findByUserId(super.getCurrentUser().getId());
+		// 查找出找个角色有的权限，而且改用户没有的权限
+		List<SystemMenu> groupMenu = systemGroup.getSystemMenus().stream().filter(m -> !systemUser.getUserMenu().stream().anyMatch(a -> a.getId().equals(m.getId()))).collect(Collectors.toList());
+		// 现在开始再找个用户框架下修改权限
+		for (String select : selectedMenus) {
+			systemUser.getUserMenu().stream().forEach(m -> {
+				if (m.getId().equalsIgnoreCase(select)) {
+					groupMenu.add(m);
+				}
+			});
+		}
+
+		systemGroup.setUpdater(super.getCurrentUser().getId());
+		systemGroup.setUpdateDate(new Date());
+		systemGroup.setSystemMenus(groupMenu);
+		this.systemGroupService.addGroup(systemGroup);
+		return this.toList(model, request, response);
+	}
 }
