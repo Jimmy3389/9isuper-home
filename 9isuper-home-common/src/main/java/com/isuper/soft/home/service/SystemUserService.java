@@ -46,6 +46,10 @@ public class SystemUserService {
 		return systemUserRepository.save(systemUser);
 	}
 
+	public Iterable<SystemUser> saveAll(List<SystemUser> systemUsers) {
+		return systemUserRepository.saveAll(systemUsers);
+	}
+	
 	public boolean modifyPassword(String useId, String updater, String password) {
 		if (systemUserRepository.findById(useId).isPresent()) {
 			SystemUser systemUser = new SystemUser();
