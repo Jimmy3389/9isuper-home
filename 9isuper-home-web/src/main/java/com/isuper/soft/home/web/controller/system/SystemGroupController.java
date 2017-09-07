@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.isuper.soft.home.domain.system.entity.SystemGroup;
-import com.isuper.soft.home.domain.system.entity.SystemMenu;
 import com.isuper.soft.home.service.SystemGroupService;
 import com.isuper.soft.home.service.SystemUserService;
 import com.isuper.soft.home.web.controller.BaseController;
@@ -59,7 +59,7 @@ public class SystemGroupController extends BaseController {
 		systemGroup.setDelFlag(false);
 		systemGroup.setCreater(super.getCurrentUser().getId());
 		systemGroup.setUpdater(super.getCurrentUser().getId());
-		systemGroup=this.systemGroupService.addGroup(systemGroup);
+		systemGroup = this.systemGroupService.addGroup(systemGroup);
 		if (groupUsers != null && groupUsers.length > 0) {
 			this.systemUserService.setUserGroup(systemGroup, getCurrentUser().getId(), groupUsers);
 		}
@@ -87,11 +87,21 @@ public class SystemGroupController extends BaseController {
 		this.systemGroupService.addGroup(systemGroup);
 		return this.toList(model, request, response);
 	}
-	
+
 	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SYSTEM_GROUP_LIST')")
 	@RequestMapping("queryById")
 	@ResponseBody
 	public SystemGroup queryById(String id) {
 		return this.systemGroupService.findById(id);
+	}
+
+	@RequestMapping("checkSameGroup")
+	@ResponseBody
+	public Boolean checkSameGroup(String groupCode, String groupId) {
+		List<SystemGroup> groups = this.systemGroupService.findByGroupCode(groupCode);
+		if (CollectionUtils.isNotEmpty(groups)) {
+			return groups.stream().filter(e -> !e.getId().equals(groupId)).count() > 0L;
+		}
+		return false;
 	}
 }

@@ -80,6 +80,13 @@ public class SystemGroupService {
 			return new SystemGroup();
 		}
 	}
+	
+	public List<SystemGroup> findByGroupCode(String groupCode){
+		BooleanBuilder booleanBuilder = new BooleanBuilder();
+		booleanBuilder.and(qSystemGroup.delFlag.eq(false));// 查询用户没有被删除的并且是开启状态的
+		booleanBuilder.and(qSystemGroup.groupCode.equalsIgnoreCase(groupCode));
+		return (List<SystemGroup>) systemGroupRepository.findAll(booleanBuilder.getValue());
+	}
 
 	public void delGroup(String id, String creater) {
 		SystemGroup group = this.findGroupById(id);

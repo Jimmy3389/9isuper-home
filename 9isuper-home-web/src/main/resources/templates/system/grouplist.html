@@ -172,6 +172,7 @@
 <script th:src="@{/plugins/jquery-datatable/extra/js/TableTools.min.js}" type="text/javascript" ></script>
 <script type="text/javascript" th:src="@{/plugins/datatables-responsive/js/datatables.responsive.js}"></script>
 <script type="text/javascript" th:src="@{/plugins/datatables-responsive/js/lodash.min.js}"></script>
+<script th:src="@{/plugins/jquery-validation/js/jquery.validate.min.js}" type="text/javascript" ></script>
 <!-- END PAGE LEVEL PLUGINS -->
  <script th:src="@{/js/datatables.js}" type="text/javascript"></script>
 <!--BEGIN CORE TEMPLATE JS
@@ -179,6 +180,82 @@
 <script src="assets/js/chat.js" type="text/javascript"></script> 
 <script src="assets/js/demo.js" type="text/javascript"></script> -->
 <script th:inline="javascript">
+$(document).ready(function() {	
+	$('#form_traditional_validation').validate({
+		focusInvalid: false, 
+		ignore: "",
+		rules: {
+			groupName:{
+				minlength: 2,
+				maxlength: 10,
+                required: true
+			},
+			groupCode:{
+				minlength: 2,
+				maxlength: 10,
+                required: true,
+			}
+		},
+		messages:{
+			groupName:{
+				minlength: jQuery.format("角色名称不能小于{0}个字 符"),
+				maxlength: jQuery.format("角色名称不能超过{0}个字 符")
+			},
+			groupName:{
+				minlength: jQuery.format("角色标识不能小于{0}个字 符"),
+				maxlength: jQuery.format("角色标识不能超过{0}个字 符")
+			}
+		},
+		invalidHandler: function (event, validator) {
+			//display error alert on form submit    
+        },
+        errorPlacement: function (label, element) { // render error placement for each input type   
+			$('<span class="error"></span>').insertAfter(element).append(label)
+            var parent = $(element).parent('.input-with-icon');
+            parent.removeClass('success-control').addClass('error-control');  
+        },
+
+        highlight: function (element) { // hightlight error inputs
+			var parent = $(element).parent();
+            parent.removeClass('success-control').addClass('error-control'); 
+        },
+
+        unhighlight: function (element) { // revert the change done by hightlight
+            
+        },
+        success: function (label, element) {
+			var parent = $(element).parent('.input-with-icon');
+			parent.removeClass('error-control').addClass('success-control'); 
+        },
+        submitHandler: function (form) {
+        	var goupId = $('#editGroupModal').find('#id').val();  
+     	    var groupCode = $('#editGroupModal').find('#groupCode').val();  
+     	    $.ajax({
+     	    	url : "checkSameGroup",
+     	    	timeout : 1000, // 超时时间设置，单位毫秒
+     			type : "GET",
+     			dataType : "JSON",
+     			data :  { groupId : goupId , groupCode : groupCode},
+     			cache: false,
+     			success : function(data) {
+     				if(!data){
+	     				return form.submit();
+     				}else{
+     					alert("已经存在相同的角色标识！");
+     				}
+     			},
+     			error: function(e) {
+     				alert("系统出现异常！"+e);
+     			} 
+     	    });
+        }
+	});
+	 
+})
+
+
+
+
 function deleteGroup(id){
 	$('#deleteGroupModal').find('#id').val(id);
 	$('#deleteGroupModal').modal('show');
@@ -203,6 +280,7 @@ function editGroup(id){
 	});
 	$('#editGroupModal').modal('show');
 }
+
 </script>
 		
 <body th:include="frame :: frame_js" />
