@@ -83,38 +83,6 @@ public class SystemMenuController extends BaseController {
 		return this.getMenuTree(allMenus, 0, "0", 1);
 	}
 
-	@SuppressWarnings("unused")
-	private List<String> getAllMenuTree(List<SystemMenu> allMenus, int count, String menuId) {
-		List<String> menuList = new ArrayList<String>();
-		List<SystemMenu> childMenus = allMenus.stream().filter(menu -> menu.getParentId().equals(menuId)).distinct().collect(Collectors.toList());
-		if (CollectionUtils.isNotEmpty(childMenus)) {
-			for (SystemMenu systemMenu : childMenus) {
-				menuList.add(this.menuPrefix(count) + systemMenu.getMenuName() + "!" + systemMenu.getId());
-				menuList.addAll(this.getAllMenuTree(allMenus, count + 1, systemMenu.getId()));
-			}
-		}
-		return menuList;
-	}
-
-	private List<String> getMenuTree(List<SystemMenu> allMenus, int count, String menuId, int deep) {
-		List<String> menuList = new ArrayList<String>();
-		List<SystemMenu> childMenus = allMenus.stream().filter(menu -> menu.getParentId().equals(menuId)).distinct().collect(Collectors.toList());
-		if (CollectionUtils.isNotEmpty(childMenus) && deep <= 3) {
-			for (SystemMenu systemMenu : childMenus) {
-				menuList.add(this.menuPrefix(count) + systemMenu.getMenuName() + "!" + systemMenu.getId());
-				menuList.addAll(this.getMenuTree(allMenus, count + 1, systemMenu.getId(), deep + 1));
-			}
-		}
-		return menuList;
-	}
-
-	private String menuPrefix(int count) {
-		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < count; i++) {
-			sb.append("│&nbsp;&nbsp;&nbsp;&nbsp;");
-		}
-		return sb.toString() + "├─";
-	}
 
 	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SYSTEM_MENU_LIST')")
 	@RequestMapping("queryChildMenus")

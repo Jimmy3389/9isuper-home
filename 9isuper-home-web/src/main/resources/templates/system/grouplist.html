@@ -203,41 +203,29 @@
 </div>
 
 <div class="modal fade" id="editGroupMenuModal" tabindex="-1" role="dialog" aria-labelledby="editGroupMenuModal" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-        	    <div class="row">
-        <div class="col-xs-5">
-            <select name="from[]" id="undo_redo" class="form-control" size="13" multiple="multiple">
-                <option value="1">C++</option>
-                <option value="2">C#</option>
-                <option value="3">Haskell</option>
-                <option value="4">Java</option>
-                <option value="5">JavaScript</option>
-                <option value="6">Lisp</option>
-                <option value="7">Lua</option>
-                <option value="8">MATLAB</option>
-                <option value="9">NewLISP</option>
-                <option value="10">PHP</option>
-                <option value="11">Perl</option>
-                <option value="12">SQL</option>
-                <option value="13">Unix shell</option>
-            </select>
-        </div>
-        
-        <div class="col-xs-2">
-            <button type="button" id="undo_redo_undo" class="btn btn-primary btn-block">undo</button>
-            <button type="button" id="undo_redo_rightAll" class="btn btn-default btn-block"><i class="glyphicon glyphicon-forward"></i></button>
-            <button type="button" id="undo_redo_rightSelected" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-right"></i></button>
-            <button type="button" id="undo_redo_leftSelected" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-left"></i></button>
-            <button type="button" id="undo_redo_leftAll" class="btn btn-default btn-block"><i class="glyphicon glyphicon-backward"></i></button>
-            <button type="button" id="undo_redo_redo" class="btn btn-warning btn-block">redo</button>
-        </div>
-        
-        <div class="col-xs-5">
-            <select name="to[]" id="undo_redo_to" class="form-control" size="13" multiple="multiple"></select>
-        </div>
-    </div>
-   		</div>
+   <div class="modal-dialog">
+    	<div class="modal-content">
+    		<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<br>
+					<i class="icon-credit-card icon-7x"></i>
+					<h4 id="myModalLabel" class="semi-bold">修改角色权限</h4>
+				<br>
+			</div>
+			<div class="grid simple">
+				<form id="form_edit_group_menus" th:action="@{/system/group/editGroupMenu}" method="post" autocomplete="off">
+					<div class="grid-body no-border">
+						<input type="hidden" id="id" name="id" value=""></input>
+						<select id="selectedMenus" name="selectedMenus" class="selectpicker show-tick form-control" multiple="multiple">
+					 	</select>
+				    	<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+							<button type="submit" class="btn btn-primary">确定</button>
+						</div>
+					</div>
+				</form>
+    		</div>
+    	</div>
     </div>
 </div>
 	
@@ -378,7 +366,24 @@ function editUserGroup(id){
 }
 
 function editGroupMenu(id){
+	$('#form_edit_group_menus')[0].reset();
+	$("#selectedMenus").empty(); 
 	$('#editGroupMenuModal').find('#id').val(id);
+	
+	$.ajax({
+		url : "getGroupMenusSelect",
+		timeout : 1000, // 超时时间设置，单位毫秒
+		type : "GET",
+		dataType : "JSON",
+		data :  { groupId : id },
+		cache: false,
+		success : function(data) {
+			$.each(data.allMenus, function(index, menu){
+				$("#selectedMenus").append("<option value='"+menu.split("!")[1]+"' >"+menu.split("!")[0]+"</option>");
+			})
+		}
+	});
+	
 	$('#editGroupMenuModal').modal('show');
 }
 

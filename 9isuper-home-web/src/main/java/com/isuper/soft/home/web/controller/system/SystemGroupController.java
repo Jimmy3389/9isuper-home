@@ -1,7 +1,6 @@
 package com.isuper.soft.home.web.controller.system;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -194,9 +193,9 @@ public class SystemGroupController extends BaseController {
 		// !selectMenus.stream().anyMatch(s ->
 		// s.getId().equals(m.getId()))).collect(Collectors.toList());
 		if (super.getCurrentUser().getLoginAccount().equalsIgnoreCase("admin")) {
-			map.put("allMenus", this.systemMenuService.findAllMenu());
+			map.put("allMenus", this.getMenuTree(this.systemMenuService.findAllMenu(), 0, "0", 1));
 		} else {
-			map.put("allMenus", this.systemUserService.findByUserId(super.getCurrentUser().getId()).getUserMenu());
+			map.put("allMenus", this.getMenuTree(this.systemUserService.findByUserId(super.getCurrentUser().getId()).getUserMenu(), 0, "0", 1));
 		}
 		map.put("hasMenus", systemGroup.getSystemMenus());
 		return map;
@@ -205,8 +204,8 @@ public class SystemGroupController extends BaseController {
 	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SYSTEM_GROUP_EDIT')")
 	@RequestMapping("editGroupMenu")
 	@ResponseBody
-	public ModelAndView editGroupMenu(String groupid, String[] selectedMenus, HttpServletRequest request, HttpServletResponse response, Model model) {
-		SystemGroup systemGroup = this.systemGroupService.findById(groupid);
+	public ModelAndView editGroupMenu(String id, String[] selectedMenus, HttpServletRequest request, HttpServletResponse response, Model model) {
+		SystemGroup systemGroup = this.systemGroupService.findById(id);
 		SystemUser systemUser = this.systemUserService.findByUserId(super.getCurrentUser().getId());
 		// 查找出找个角色有的权限，而且改用户没有的权限
 		List<SystemMenu> groupMenu = systemGroup.getSystemMenus().stream().filter(m -> !systemUser.getUserMenu().stream().anyMatch(a -> a.getId().equals(m.getId()))).collect(Collectors.toList());

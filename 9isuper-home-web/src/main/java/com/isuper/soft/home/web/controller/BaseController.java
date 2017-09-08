@@ -1,13 +1,20 @@
 package com.isuper.soft.home.web.controller;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.isuper.soft.home.domain.system.entity.SystemMenu;
 import com.isuper.soft.home.domain.system.entity.SystemUser;
 import com.isuper.soft.home.utils.NetworkUtil;
 
@@ -20,7 +27,7 @@ public class BaseController {
 
 	protected SystemUser getCurrentUser() {
 		Object pinciba = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		if(pinciba==null||pinciba.equals("anonymousUser") ){
+		if (pinciba == null || pinciba.equals("anonymousUser")) {
 			return null;
 		}
 		return (SystemUser) pinciba;
@@ -31,7 +38,7 @@ public class BaseController {
 		// 设置IP
 		remoteIp = NetworkUtil.getClientIpAddr(request);
 		SystemUser systemUser = this.getCurrentUser();
-		if(systemUser !=null){
+		if (systemUser != null) {
 			logger.debug(systemUser.getLoginAccount());
 		}
 		// 获取可以访问的目录
@@ -48,4 +55,23 @@ public class BaseController {
 		logger.debug("message", sb.toString());
 	}
 
+	protected List<String> getMenuTree(Collection<SystemMenu> allMenus, int count, String menuId, int deep) {
+		List<String> menuList = new ArrayList<String>();
+		List<SystemMenu> childMenus = allMenus.stream().filter(menu -> menu.getParentId().equals(menuId)).distinct().collect(Collectors.toList());
+		if (CollectionUtils.isNotEmpty(childMenus) && deep <= 3) {
+			for (SystemMenu systemMenu : childMenus) {
+				menuList.add(this.menuPrefix(count) + systemMenu.getMenuName() + "!" + systemMenu.getId());
+				menuList.addAll(this.getMenuTree(allMenus, count + 1, systemMenu.getId(), deep + 1));
+			}
+		}
+		return menuList;
+	}
+
+	protected String menuPrefix(int count) {
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < count; i++) {
+			sb.append("│&nbsp;&nbsp;&nbsp;&nbsp;");
+		}
+		return sb.toString() + "├─";
+	}
 }
