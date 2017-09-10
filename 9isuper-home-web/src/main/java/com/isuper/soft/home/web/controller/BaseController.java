@@ -55,13 +55,15 @@ public class BaseController {
 		logger.debug("message", sb.toString());
 	}
 
-	protected List<String> getMenuTree(Collection<SystemMenu> allMenus, int count, String menuId, int deep) {
+	protected List<String> getMenuTree(Collection<SystemMenu> allMenus, int count, String menuId, int deep,
+			Integer allDeep) {
 		List<String> menuList = new ArrayList<String>();
-		List<SystemMenu> childMenus = allMenus.stream().filter(menu -> menu.getParentId().equals(menuId)).distinct().collect(Collectors.toList());
-		if (CollectionUtils.isNotEmpty(childMenus) && deep <= 3) {
+		List<SystemMenu> childMenus = allMenus.stream().filter(menu -> menu.getParentId().equals(menuId)).distinct()
+				.collect(Collectors.toList());
+		if (CollectionUtils.isNotEmpty(childMenus) && deep <= (allDeep == null || allDeep <= 0 ? 3 : allDeep)) {
 			for (SystemMenu systemMenu : childMenus) {
-				menuList.add(this.menuPrefix(count) + systemMenu.getMenuName() + "!" + systemMenu.getId());
-				menuList.addAll(this.getMenuTree(allMenus, count + 1, systemMenu.getId(), deep + 1));
+				menuList.add(this.menuPrefix(count) + systemMenu.getMenuName() + "!" + systemMenu.getId()+"!"+systemMenu.getParentId());
+				menuList.addAll(this.getMenuTree(allMenus, count + 1, systemMenu.getId(), deep + 1, allDeep));
 			}
 		}
 		return menuList;

@@ -64,7 +64,8 @@ public class SystemGroupController extends BaseController {
 	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SYSTEM_GROUP_ADD')")
 	@RequestMapping(value = "/add")
 	@ResponseBody
-	public ModelAndView AddSystemGroup(SystemGroup systemGroup, String[] groupUsers, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public ModelAndView AddSystemGroup(SystemGroup systemGroup, String[] groupUsers, HttpServletRequest request,
+			HttpServletResponse response, Model model) {
 		if (systemGroup.getEnableFlag() == null) {
 			systemGroup.setEnableFlag(true);
 		}
@@ -89,7 +90,8 @@ public class SystemGroupController extends BaseController {
 	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SYSTEM_GROUP_EDIT')")
 	@RequestMapping(value = "/edit")
 	@ResponseBody
-	public ModelAndView editSystemGroup(SystemGroup systemGroup, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public ModelAndView editSystemGroup(SystemGroup systemGroup, HttpServletRequest request,
+			HttpServletResponse response, Model model) {
 		if (systemGroup.getEnableFlag() == null) {
 			systemGroup.setEnableFlag(true);
 		}
@@ -144,7 +146,8 @@ public class SystemGroupController extends BaseController {
 	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SYSTEM_GROUP_EDIT')")
 	@RequestMapping("editUserGroup")
 	@ResponseBody
-	public ModelAndView editUserGroup(String id, String[] selectedUser, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public ModelAndView editUserGroup(String id, String[] selectedUser, HttpServletRequest request,
+			HttpServletResponse response, Model model) {
 		List<SystemUser> allUser = this.systemUserService.findAllUser();// 所有的用户查找出来
 		SystemGroup systemGroup = this.systemGroupService.findById(id);// 查找出对应ID的角色
 		List<SystemUser> needUpdateUser = new ArrayList<SystemUser>();
@@ -159,7 +162,8 @@ public class SystemGroupController extends BaseController {
 					}
 				} else {
 					if (u.getSystemGroups().stream().anyMatch(g -> g.getId().equals(id))) {
-						u.setSystemGroups(u.getSystemGroups().stream().filter(g -> !g.getId().equals(id)).collect(Collectors.toList()));
+						u.setSystemGroups(u.getSystemGroups().stream().filter(g -> !g.getId().equals(id))
+								.collect(Collectors.toList()));
 						u.setUpdateDate(new Date());
 						u.setUpdater(super.getCurrentUser().getId());
 						needUpdateUser.add(u);
@@ -186,29 +190,32 @@ public class SystemGroupController extends BaseController {
 
 	@RequestMapping("getGroupMenusSelect")
 	@ResponseBody
-	public Map<String, Object> getGroupMenusSelect(String groupId) {
-		Map<String, Object> map = new HashMap<String, Object>();
+	public List<String> getGroupMenusSelect(String groupId) {
 		SystemGroup systemGroup = this.systemGroupService.findById(groupId);
-		// noSelectMenus = noSelectMenus.stream().filter(m ->
-		// !selectMenus.stream().anyMatch(s ->
-		// s.getId().equals(m.getId()))).collect(Collectors.toList());
-		if (super.getCurrentUser().getLoginAccount().equalsIgnoreCase("admin")) {
-			map.put("allMenus", this.getMenuTree(this.systemMenuService.findAllMenu(), 0, "0", 1));
-		} else {
-			map.put("allMenus", this.getMenuTree(this.systemUserService.findByUserId(super.getCurrentUser().getId()).getUserMenu(), 0, "0", 1));
-		}
-		map.put("hasMenus", systemGroup.getSystemMenus());
-		return map;
+		List<String> allMenus = super.getCurrentUser().getLoginAccount().equalsIgnoreCase("admin")
+				? this.getMenuTree(this.systemMenuService.findAllMenu(), 0, "0", 1, 10)/* 如果是admin的话可以查询所有权限菜单 */
+				: this.getMenuTree(this.systemUserService.findByUserId(super.getCurrentUser().getId()).getUserMenu(), 0,
+						"0", 1, 10);/* 如果是普通用户的话只能查询他自己的权限菜单 */
+		List<String> resultMenu = new ArrayList<String>();
+		allMenus.stream().forEach(s -> {
+			resultMenu.add(
+					s + "!" + (systemGroup.getSystemMenus().stream().anyMatch(m -> m.getId().equals(s.split("!")[1]))
+							? "1" : "0"));
+		});
+		return resultMenu;
 	}
 
 	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SYSTEM_GROUP_EDIT')")
 	@RequestMapping("editGroupMenu")
 	@ResponseBody
-	public ModelAndView editGroupMenu(String id, String[] selectedMenus, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public ModelAndView editGroupMenu(String id, String[] selectedMenus, HttpServletRequest request,
+			HttpServletResponse response, Model model) {
 		SystemGroup systemGroup = this.systemGroupService.findById(id);
 		SystemUser systemUser = this.systemUserService.findByUserId(super.getCurrentUser().getId());
 		// 查找出找个角色有的权限，而且改用户没有的权限
-		List<SystemMenu> groupMenu = systemGroup.getSystemMenus().stream().filter(m -> !systemUser.getUserMenu().stream().anyMatch(a -> a.getId().equals(m.getId()))).collect(Collectors.toList());
+		List<SystemMenu> groupMenu = systemGroup.getSystemMenus().stream()
+				.filter(m -> !systemUser.getUserMenu().stream().anyMatch(a -> a.getId().equals(m.getId())))
+				.collect(Collectors.toList());
 		// 现在开始再找个用户框架下修改权限
 		for (String select : selectedMenus) {
 			systemUser.getUserMenu().stream().forEach(m -> {
