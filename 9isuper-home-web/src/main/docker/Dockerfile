@@ -9,7 +9,7 @@ ADD 9isuper-home-web-0.0.1-SNAPSHOT.jar app.jar
 RUN sh -c 'touch /app.jar'
 
 #声明需要暴露的端口
-EXPOSE 8890
+EXPOSE 8891
 
 ENV JAVA_OPTS=""
 ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /app.jar" ]
