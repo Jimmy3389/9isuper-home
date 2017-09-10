@@ -217,12 +217,14 @@ public class SystemGroupController extends BaseController {
 				.filter(m -> !systemUser.getUserMenu().stream().anyMatch(a -> a.getId().equals(m.getId())))
 				.collect(Collectors.toList());
 		// 现在开始再找个用户框架下修改权限
-		for (String select : selectedMenus) {
-			systemUser.getUserMenu().stream().forEach(m -> {
-				if (m.getId().equalsIgnoreCase(select)) {
-					groupMenu.add(m);
-				}
-			});
+		if (selectedMenus != null && selectedMenus.length > 0) {
+			for (String select : selectedMenus) {
+				systemUser.getUserMenu().stream().forEach(m -> {
+					if (m.getId().equalsIgnoreCase(select)) {
+						groupMenu.add(m);
+					}
+				});
+			}
 		}
 
 		systemGroup.setUpdater(super.getCurrentUser().getId());
