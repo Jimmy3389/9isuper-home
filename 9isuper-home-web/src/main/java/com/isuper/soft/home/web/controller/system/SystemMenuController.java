@@ -1,14 +1,11 @@
 package com.isuper.soft.home.web.controller.system;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,7 +77,7 @@ public class SystemMenuController extends BaseController {
 	@ResponseBody
 	public List<String> querySelectMenu() {
 		List<SystemMenu> allMenus = this.systemMenuService.findAllMenu();
-		return this.getMenuTree(allMenus, 0, "0", 1);
+		return this.getMenuTree(allMenus, 0, "0", 1,3);
 	}
 
 

@@ -182,7 +182,7 @@
 					            <button type="button" id="undo_redo_rightSelected" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-right"></i></button>
 					            <button type="button" id="undo_redo_leftSelected" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-left"></i></button>
 					            <button type="button" id="undo_redo_leftAll" class="btn btn-default btn-block"><i class="glyphicon glyphicon-backward"></i></button>
-					            <button type="button" id="undo_redo_redo" class="btn btn-warning btn-block">反撤销</button>
+					            <button type="button" id="undo_redo_redo" class="btn btn-warning btn-block" >反撤销</button>
 					        </div>
 				        
 					        <div class="col-xs-5">
@@ -216,8 +216,8 @@
 				<form id="form_edit_group_menus" th:action="@{/system/group/editGroupMenu}" method="post" autocomplete="off">
 					<div class="grid-body no-border">
 						<input type="hidden" id="id" name="id" value=""></input>
-						<select id="selectedMenus" name="selectedMenus" class="selectpicker show-tick form-control" multiple="multiple">
-					 	</select>
+						<i id="selectedMenus">
+						</i>
 				    	<div class="modal-footer">
 							<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 							<button type="submit" class="btn btn-primary">确定</button>
@@ -378,13 +378,36 @@ function editGroupMenu(id){
 		data :  { groupId : id },
 		cache: false,
 		success : function(data) {
-			$.each(data.allMenus, function(index, menu){
-				$("#selectedMenus").append("<option value='"+menu.split("!")[1]+"' >"+menu.split("!")[0]+"</option>");
+			$.each(data, function(index, menu){
+				var checked = "";
+				if(menu.split("!")[3] == "1"){
+					checked = "checked";
+				}
+				var menuId = menu.split("!")[1];
+				$("#selectedMenus").append("<input type=\"checkbox\"  name=\"selectedMenus\" value=\""+menu.split("!")[1]+"\" class=\"select_name_"+menu.split("!")[2]+"\" id=\"select_name_"+menu.split("!")[1]+"\" "+checked+"  onclick=\"javascript:checkedMenu('"+menuId+"')\">"+menu.split("!")[0]+"</input><br>");
 			})
 		}
 	});
 	
 	$('#editGroupMenuModal').modal('show');
+}
+
+function checkedMenu(id){
+	var parent =$("#select_name_"+id).attr("class").split("_")[2];
+	if($("#select_name_"+id).is(':checked')){
+		if(parent != 0){
+			$("#select_name_"+parent).attr("checked", true);
+			checkedMenu(parent);
+		}
+	}else{
+		if(parent!=null){
+			$("input[class='select_name_"+id+"']").attr("checked",false);
+			$("input[class='select_name_"+id+"']").each(function(){
+				var childId = $(this).attr('id').split("_")[2];
+				checkedMenu(childId);
+			});
+		}
+	}
 }
 
 
