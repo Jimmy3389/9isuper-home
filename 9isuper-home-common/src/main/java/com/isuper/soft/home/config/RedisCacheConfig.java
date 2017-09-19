@@ -21,7 +21,7 @@ import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer
 public class RedisCacheConfig {
 
 	@Bean
-	public CacheManager cacheManager(RedisTemplate redisTemplate) {
+	public CacheManager cacheManager(RedisTemplate<?, ?> redisTemplate) {
 		JdkSerializationRedisSerializer jdkSerializationRedisSerializer = new JdkSerializationRedisSerializer();
 		redisTemplate.setValueSerializer(jdkSerializationRedisSerializer);
 		RedisCacheManager cacheManager = new RedisCacheManager(redisTemplate);
